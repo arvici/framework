@@ -1,2 +1,2 @@
-# framework
+# Arvici Framework
 Arvici Framework
