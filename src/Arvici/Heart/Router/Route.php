@@ -7,6 +7,8 @@
  */
 
 namespace Arvici\Heart\Router;
+use Arvici\Component\Controller\BaseController;
+use Arvici\Exception\ControllerNotFoundException;
 
 /**
  * Route Entry
@@ -34,12 +36,6 @@ class Route
      * @var string
      */
     private $match;
-
-    /**
-     * Hold the url path parameter keys. In order!
-     * @var array
-     */
-    private $parameters = array();
 
     /**
      * Compiled String
@@ -116,6 +112,7 @@ class Route
      * Execute the route callback with given parameters.
      *
      * @param string $compiled
+     * @throws ControllerNotFoundException
      */
     public function execute($compiled)
     {
@@ -132,6 +129,35 @@ class Route
             }, $params);
         }
 
-        call_user_func_array($this->callback, $params);
+        if (is_string($this->callback) && stristr($this->callback, '::')) {
+            // Will call the controller here
+            $parts = explode('::', $this->callback);
+            $controllerClass = $parts[0];
+            $controllerMethod = $parts[1];
+
+            if (! class_exists($controllerClass)) {
+                throw new ControllerNotFoundException("The controller declared in your route is not found: '{$controllerClass}'");
+            }
+
+            $controller = new $controllerClass();
+
+            if (! $controller instanceof BaseController) {
+                throw new ControllerNotFoundException("The controller doesn't extend the BaseController: '{$controllerClass}'");
+            }
+
+            if (! method_exists($controller, $controllerMethod)) {
+                throw new ControllerNotFoundException("The controller doesn't have the method you declared in the route!: '{$controllerClass}' method: {$controllerMethod}");
+            }
+
+            // When the prepare is false we will stop!
+            if ($controller->prepare() === false) {
+                return;
+            }
+
+            // Call the method
+            call_user_func_array(array($controller, $controllerMethod), $params);
+        }elseif (is_callable($this->callback)) {
+            call_user_func_array($this->callback, $params);
+        }
     }
 }
