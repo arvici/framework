@@ -1,6 +1,6 @@
 <?php
 /**
- * ControllerNotFoundException
+ * Response Already Send Exception
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -9,10 +9,10 @@
 namespace Arvici\Exception;
 
 
-class ControllerNotFoundException extends ArviciException
+class ResponseAlreadySendException extends ArviciException
 {
     /**
-     * ControllerNotFoundException constructor.
+     * ResponseAlreadySendException constructor.
      * @param string $message
      * @param int $code
      * @param \Exception $previous

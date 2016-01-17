@@ -7,6 +7,8 @@
  */
 
 namespace Arvici\Heart\Http;
+use Arvici\Exception\ResponseAlreadySendException;
+use Arvici\Heart\Collections\DataCollection;
 
 /**
  * Response Handler
@@ -17,18 +19,327 @@ namespace Arvici\Heart\Http;
  */
 class Response
 {
-    private $headers = array();
-    private $code = 200;
-
-    private $send = false;
+    /**
+     * Headers.
+     * @var DataCollection
+     */
+    protected $headers = array();
 
     /**
-     * Response Constructor
-     * Don't call this directly, use the controller or service providers!
+     * Response Code (http code).
+     * @var int
      */
-    public function __construct()
+    protected $code = 200;
+
+    /**
+     * Body to sent with the response
+     *
+     * @var string
+     */
+    protected $body;
+
+    /**
+     * Cookies to sent
+     *
+     * @var DataCollection<Cookie>
+     */
+    protected $cookies;
+
+    /**
+     * Is the response already sent? If we already sent it, we will lock the response!
+     *
+     * @var bool
+     */
+    protected $sent = false;
+
+    /**
+     * Response Constructor.
+     * Don't call this directly, use the controller or service providers!
+     *
+     * @param string $body
+     */
+    public function __construct($body = '')
     {
-        // Clean response
         $this->send = false;
+        $this->body($body);
+
+        $this->headers = new DataCollection();
+        $this->cookies = new DataCollection();
+    }
+
+    /**
+     * Set body, or get when body parameter is null.
+     *
+     * @param null $body
+     * @return Response|string
+     *
+     * @throws ResponseAlreadySendException
+     */
+    public function body($body = null)
+    {
+        if ($body === null) {
+            return $this->body;
+        }
+
+        $this->requireUnsent();
+
+        $this->body = $body;
+
+        return $this;
+    }
+
+    /**
+     * Set or get the status code (http code).
+     *
+     * @param int|null $code Code, null for getting the code
+     * @return Response|int
+     *
+     * @throws ResponseAlreadySendException
+     */
+    public function status($code = null)
+    {
+        if ($code === null || ! is_int($code)) {
+            return $this->code;
+        }
+
+        $this->requireUnsent();
+
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Set or get the status code (http code).
+     *
+     * @param int|null $code Code, null for getting the code
+     * @return Response|int
+     *
+     * @throws ResponseAlreadySendException
+     */
+    public function code($code = null)
+    {
+        return $this->status($code);
+    }
+
+    /**
+     * Get cookies
+     * @return DataCollection
+     */
+    public function cookies()
+    {
+        return $this->cookies;
+    }
+
+    /**
+     * Get headers
+     * @return DataCollection
+     */
+    public function headers()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * Append data to the body.
+     *
+     * @param string $data
+     *
+     * @return Response
+     *
+     * @throws ResponseAlreadySendException
+     */
+    public function append($data)
+    {
+        $this->requireUnsent();
+
+        $this->body .= $data;
+
+        return $this;
+    }
+
+    /**
+     * Prepend data to the body.
+     *
+     * @param string $data
+     *
+     * @return Response
+     *
+     * @throws ResponseAlreadySendException
+     */
+    public function prepend($data)
+    {
+        $this->requireUnsent();
+
+        $this->body = $data . $this->body;
+
+        return $this;
+    }
+
+    /**
+     * Will send redirect, if stop is true, we will send and exit the application!
+     *
+     * @param string $url
+     * @param bool $stop Send and stop application!
+     * @param int $code Http code used for redirect
+     *
+     * @throws ResponseAlreadySendException
+     */
+    public function redirect($url, $stop = false, $code = 302)
+    {
+        $this->requireUnsent();
+
+        $this->header('Location', $url);
+        $this->code($code);
+
+        if ($stop) {
+            $this->send();
+            exit();
+        }
+    }
+
+    /**
+     * Is response already sent
+     *
+     * @return bool
+     */
+    public function isSent()
+    {
+        return $this->sent;
+    }
+
+    /**
+     * Add header.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return Response
+     */
+    public function header($key, $value)
+    {
+        $this->headers->set($key, $value);
+        return $this;
+    }
+
+    /**
+     * Add cookie
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param int $expiry
+     * @param string $domain
+     * @param string $path
+     * @param bool $secure
+     * @param bool $httpOnly
+     *
+     * @return Response
+     */
+    public function cookie($name, $value, $expiry = null, $domain = null, $path = '/', $secure = false, $httpOnly = false)
+    {
+        if ($expiry === null) {
+            $expiry = time() + (60 * 60 * 24 * 30); // 30 days, default.
+        }
+        $cookie = new Cookie($name, $value, $expiry, $path, $domain, $httpOnly, $secure);
+        $this->cookies->set($name, $cookie);
+
+        return $this;
+    }
+
+    /**
+     * Enable (or disable when false is given) the cache.
+     *
+     * @param bool $disable
+     *
+     * @return Response
+     */
+    public function cache($disable = false)
+    {
+        if ($disable) {
+            $this->header('Pragma', 'no-cache');
+            $this->header('Cache-Control', 'no-store, no-cache');
+
+            return $this;
+        }
+        $this->headers->remove('Pragma');
+        $this->headers->remove('Cache-Control');
+
+        return $this;
+    }
+
+
+    /**
+     * Send response to the client.
+     *
+     * @param int $code Override the response code send to the client.
+     * @return Response
+     *
+     * @throws ResponseAlreadySendException
+     */
+    public function send($code = null)
+    {
+        $this->requireUnsent();
+
+        if ($code !== null) {
+            $this->code($code);
+        }
+
+        // Try to send headers first.
+        $this->sendHeaders();
+        $this->sendBody();
+
+        $this->sent = true;
+
+        return $this;
+    }
+
+
+    /**
+     * Send Headers and Cookies
+     */
+    protected function sendHeaders()
+    {
+        // Set the response code
+        http_response_code($this->code);
+
+        // Send headers
+        foreach ($this->headers as $name => $value) {
+            header($name . ': ' . $value, false);
+        }
+
+        // Set cookies
+        foreach ($this->cookies as $name => $value) { /** @var Cookie $value */
+            setcookie($name,
+                $value->getValue(),
+                $value->getExpiry(),
+                $value->getPath(),
+                $value->getDomain(),
+                $value->isSecure(),
+                $value->isHttpOnly());
+        }
+    }
+
+    /**
+     * Send Body
+     */
+    protected function sendBody()
+    {
+        echo $this->body;
+    }
+
+
+
+
+    /**
+     * Check for current response, if it's already sent, or any headers are already sent.
+     * @throws ResponseAlreadySendException
+     */
+    protected function requireUnsent()
+    {
+        if ($this->sent) {
+            throw new ResponseAlreadySendException("Current response already sent!");
+        }
+        if (headers_sent()) {
+            throw new ResponseAlreadySendException("Some response already sent, make sure you don't set the headers directly, or output something before calling response object!");
+        }
     }
 }

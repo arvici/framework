@@ -13,6 +13,8 @@ use Traversable;
 /**
  * Paremeter Collection
  *
+ * @template <T> The type of the indicidual elements.
+ *
  * @package Arvici\Heart\Http\Request
  */
 class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
@@ -21,14 +23,14 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Contents
      *
-     * @var array $contents
+     * @var array<T> $contents
      */
     protected $contents = array();
 
 
     /**
      * Construct Collection
-     * @param array $contents
+     * @param array<T> $contents
      */
     public function __construct(array $contents = array())
     {
@@ -49,7 +51,7 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Get values only (strip the keys)
      *
-     * @return array
+     * @return array<T>
      */
     public function values()
     {
@@ -59,7 +61,7 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Get the whole raw array
      *
-     * @return array
+     * @return array<T>
      */
     public function all()
     {
@@ -71,7 +73,7 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @param string $key
      * @param mixed $value
-     * @return DataCollection
+     * @return DataCollection<T>
      */
     public function set($key, $value)
     {
@@ -119,7 +121,7 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * Replace all values.
      *
      * @param array $array
-     * @return DataCollection $this
+     * @return DataCollection<T> $this
      */
     public function replace(array $array = array())
     {
@@ -131,8 +133,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Merge current content with given array
      *
-     * @param array $secondArray
-     * @return DataCollection
+     * @param array<T> $secondArray
+     * @return DataCollection<T>
      */
     public function merge(array $secondArray)
     {
@@ -154,7 +156,7 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Clear collection
      *
-     * @return DataCollection
+     * @return DataCollection<T>
      */
     public function clear()
     {
@@ -199,9 +201,7 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
     /**
      * Retrieve an external iterator
      *
-     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
-     * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     * <b>Traversable</b>
+     * @return \Iterator<T> Iterator
      *
      * @codeCoverageIgnore
      */
@@ -212,13 +212,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
 
     /**
      * Whether a offset exists
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
-     * @param string $key <p>
-     * An offset to check for.
-     * </p>
+     * @param string $key
      * @return boolean true on success or false on failure.
-     * </p>
-     * <p>
      * The return value will be casted to boolean if non-boolean was returned.
      *
      * @codeCoverageIgnore
@@ -230,12 +225,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
 
     /**
      * Offset to retrieve
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
-     * @param string $key <p>
-     * The offset to retrieve.
-     * </p>
+     * @param string $key
      * @return mixed Can return all value types.
-     * @since 5.0.0
      *
      * @codeCoverageIgnore
      */
@@ -246,15 +237,9 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
 
     /**
      * Offset to set
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
-     * @param string $key <p>
-     * The offset to assign the value to.
-     * </p>
-     * @param mixed $value <p>
-     * The value to set.
-     * </p>
+     * @param string $key
+     * @param mixed $value
      * @return void
-     * @since 5.0.0
      *
      * @codeCoverageIgnore
      */
@@ -265,12 +250,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
 
     /**
      * Offset to unset
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-     * @param string $key <p>
-     * The offset to unset.
-     * </p>
+     * @param string $key
      * @return void
-     * @since 5.0.0
      *
      * @codeCoverageIgnore
      */
@@ -281,12 +262,7 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
 
     /**
      * Count elements of an object
-     * @link http://php.net/manual/en/countable.count.php
      * @return int The custom count as an integer.
-     * </p>
-     * <p>
-     * The return value is cast to an integer.
-     * @since 5.1.0
      */
     public function count()
     {
