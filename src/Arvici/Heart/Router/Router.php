@@ -51,11 +51,23 @@ class Router
     /**
      * Run the router
      *
-     * @param $url
+     * @param string $method
+     * @param string $url
      */
-    public function run($url)
+    public function run($method = null, $url = null)
     {
+        if ($method === null) $method = $_SERVER['REQUEST_METHOD'];
+        if ($url === null) $url = $_SERVER['REQUEST_URI'];
 
+        // Compile
+        $compiled = strtoupper($method) . '~' . $url;
+
+        // Try to match
+        foreach($this->routes as $route) {
+            if ($route->match($compiled)) {
+                $this->executeRoute($route);
+            }
+        }
     }
 
 
@@ -68,6 +80,17 @@ class Router
      */
     public function addRoute(Route &$route)
     {
-        $this->routes[$route->getCompiledKey()] = $route;
+        $this->routes[] = $route;
+    }
+
+
+    /**
+     * Will try to match parameters and execute the callback
+     *
+     * @param Route $route
+     */
+    private function executeRoute(Route &$route)
+    {
+        $route->execute();
     }
 }

@@ -17,6 +17,12 @@ namespace Arvici\Heart\Router;
  */
 class Route
 {
+    private static $patterns = array(
+        '(?)' => '([^/]+)',
+        '(int)' => '-?[0-9]+',
+        '(all)' => '.*'
+    );
+
     /**
      * Match the http methods
      * @var array
@@ -36,19 +42,30 @@ class Route
     private $parameters = array();
 
     /**
+     * Compiled String
+     * @var string|null
+     */
+    private $compiled = null;
+
+    /**
+     * @var callable
+     */
+    private $callback;
+
+    /**
      * Route constructor.
      * @param string $match Match url, can contain regexpressions.
      * @param array|string $methods Single or multiple method names.
-     * @param array $parameters Parameter names in name.
+     * @param callable $callback Callback to call when it's done
      */
-    public function __construct($match, $methods = array(), $parameters = array())
+    public function __construct($match, $methods, $callback)
     {
         if (is_string($methods)) {
             $methods = array($methods);
         }
         $this->methods = $methods;
-        $this->match = $match;
-        $this->parameters = $parameters;
+        $this->match = str_replace(array_keys(self::$patterns), array_values(self::$patterns), $match);
+        $this->callback = $callback;
     }
 
     /**
@@ -56,8 +73,47 @@ class Route
      *
      * @return string
      */
-    public function getCompiledKey()
+    public function getCompiled()
     {
-        return "";
+        if ($this->compiled === null) {
+            $regexp = "/^";
+
+            // Method(s)
+            $methodIdx = 0;
+            foreach($this->methods as $method) {
+                $regexp .= "(?:" . strtoupper($method) . ")";
+                if (($methodIdx + 1) < count($this->methods)) {
+                    $regexp .= "|";
+                }
+                $methodIdx++;
+            }
+
+            // Separator
+            $regexp .= "~";
+
+            // Url
+            $regexp .= str_replace('/', '\/', $this->match);
+
+            $regexp .= "$/";
+
+            $this->compiled = $regexp;
+        }
+        return $this->compiled;
+    }
+
+    /**
+     * Try to match with the given compiled url.
+     *
+     * @param string $compiled
+     * @return bool match
+     */
+    public function match($compiled)
+    {
+        return (bool) preg_match($this->getCompiled(), $compiled);
+    }
+
+    public function execute()
+    {
+        call_user_func_array($this->callback, array());
     }
 }
