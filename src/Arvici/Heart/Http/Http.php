@@ -37,7 +37,7 @@ class Http
      */
     private function __construct()
     {
-        $this->request = new Request();
+        $this->request = Request::detect();
         $this->response = new Response();
     }
 
