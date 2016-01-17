@@ -1,6 +1,6 @@
 <?php
 /**
- * ParameterCollection.php Description
+ * ParameterCollection
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -8,7 +8,12 @@
 
 namespace Arvici\Heart\Collections;
 
-
+/**
+ * Parameter Collection
+ * @package Arvici\Heart\Collections
+ *
+ * @codeCoverageIgnore
+ */
 class ParameterCollection extends DataCollection
 {
     /**

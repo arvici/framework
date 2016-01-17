@@ -215,6 +215,8 @@ class Request
      * Get full user agent string
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function userAgent()
     {
@@ -226,6 +228,8 @@ class Request
      * WHEN BEHIND A REVERSE PROXY THIS WILL NOT WORK (YET).
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function ip()
     {

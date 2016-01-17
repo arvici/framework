@@ -37,7 +37,7 @@ class TestUtils
         $_SERVER['REQUEST_METHOD'] = strtoupper($method);
 
         $_GET = $get;
-        $_POST = array();
+        $_POST = $post;
         $_COOKIE = $cookies;
         $_SERVER = array_merge($_SERVER, $server);
     }

@@ -8,7 +8,11 @@
 
 namespace Arvici\Heart\Collections;
 
-
+/**
+ * Server Collection
+ *
+ * @package Arvici\Heart\Collections
+ */
 class ServerCollection extends DataCollection
 {
     private static $HttpPrefix = "HTTP_";
@@ -29,7 +33,7 @@ class ServerCollection extends DataCollection
 
         foreach ($this->contents as $key => $value) {
             if (strpos($key, self::$HttpPrefix) === 0) {
-                $return[substr($key, strlen(self::$HttpPrefix))] = $value;
+                $return[substr($key, strlen(self::$HttpPrefix))] = $value; // @codeCoverageIgnore
             }
 
             if (in_array($key, self::$HttpCustomHeaders)) {
