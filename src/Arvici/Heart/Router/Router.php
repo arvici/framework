@@ -59,7 +59,14 @@ class Router
     public function run($method = null, $url = null)
     {
         if ($method === null) $method = $_SERVER['REQUEST_METHOD'];
-        if ($url === null) $url = $_SERVER['REQUEST_URI'];
+        if ($url === null) {
+            $url = $_SERVER['REQUEST_URI'];
+            // Strip query from url
+            if (strstr($url, '?')) {
+                $parts = explode('?', $url, 2);
+                $url = $parts[0];
+            }
+        }
 
         // Compile
         $this->compiled = strtoupper($method) . '~' . $url;
