@@ -271,13 +271,18 @@ class Response
      * Send response to the client.
      *
      * @param int $code Override the response code send to the client.
+     * @param bool $force Force, don't check if headers are already sent.
      * @return Response
      *
      * @throws ResponseAlreadySendException
      */
-    public function send($code = null)
+    public function send($code = null, $force = false)
     {
         $this->requireUnsent();
+
+        if (!$force && headers_sent()) {
+            throw new ResponseAlreadySendException("Some response already sent, make sure you don't set the headers directly, or output something before calling response object!");
+        }
 
         if ($code !== null) {
             $this->code($code);
@@ -337,9 +342,6 @@ class Response
     {
         if ($this->sent) {
             throw new ResponseAlreadySendException("Current response already sent!");
-        }
-        if (headers_sent()) {
-            throw new ResponseAlreadySendException("Some response already sent, make sure you don't set the headers directly, or output something before calling response object!");
         }
     }
 }
