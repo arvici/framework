@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Tests\Heart\Router;
+use Arvici\Exception\ControllerNotFoundException;
 use Arvici\Heart\Router\Route;
 use Arvici\Heart\Router\Router;
 
@@ -88,5 +89,26 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $router->run();
 
         $this->assertEquals(2, $done1);
+    }
+
+    /**
+     * @covers \Arvici\Heart\Router\Router
+     * @covers \Arvici\Heart\Router\Route
+     */
+    public function testNonExistingController()
+    {
+        $router = Router::getInstance();
+        $router->clearRoutes();
+
+        $router->addRoute(new Route('/test/get/no/controller', array('GET', 'POST'), '\App\Controller\TestControllerDoesntExists::getNo'));
+
+        $this->spoof('/test/get/no/controller', 'GET');
+
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch(ControllerNotFoundException $e) {
+            $this->assertTrue(true);
+        }
     }
 }
