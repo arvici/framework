@@ -66,4 +66,27 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($done1);
     }
+
+    /**
+     * @covers \Arvici\Heart\Router\Router
+     * @covers \Arvici\Heart\Router\Route
+     */
+    public function testMultipleMethods()
+    {
+        $router = Router::getInstance();
+        $router->clearRoutes();
+
+        $done1 = 0;
+        $router->addRoute(new Route('/test/all', array('GET', 'POST'), function() use (&$done1) {
+            $done1++;
+        }));
+
+        $this->spoof('/test/all', 'GET');
+        $router->run();
+
+        $this->spoof('/test/all', 'POST');
+        $router->run();
+
+        $this->assertEquals(2, $done1);
+    }
 }
