@@ -16,6 +16,10 @@ use Arvici\Heart\Router\Router;
  * @package Arvici\Tests\Heart\Router
  *
  * @coversDefaultClass \Arvici\Heart\Router\Router
+ *
+ * @covers \Arvici\Heart\Http\Http
+ * @covers \Arvici\Heart\Router\Router
+ * @covers \Arvici\Heart\Router\Route
  */
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -150,6 +154,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Arvici\Heart\Router\Router
      * @covers \Arvici\Heart\Router\Route
+     * @covers \Arvici\Component\Controller\BaseController
+     * @covers \Arvici\Heart\Http\Http
+     * @covers \Arvici\Heart\Http\Request
+     * @covers \Arvici\Heart\Http\Response
      */
     public function testController()
     {

@@ -7,6 +7,9 @@
  */
 
 namespace Arvici\Component\Controller;
+use Arvici\Heart\Http\Http;
+use Arvici\Heart\Http\Request;
+use Arvici\Heart\Http\Response;
 
 /**
  * Abstract Base Controller
@@ -15,6 +18,20 @@ namespace Arvici\Component\Controller;
  */
 abstract class BaseController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var Response */
+    protected $response;
+
+    /**
+     * Controller constructor, will prepare the request and response objects.
+     */
+    public function __construct()
+    {
+        $this->request = Http::getInstance()->request();
+        $this->response = Http::getInstance()->response();
+    }
 
     /**
      * Do something before the route method is called.
