@@ -125,6 +125,8 @@ class Response
     /**
      * Get cookies
      * @return DataCollection
+     *
+     * @codeCoverageIgnore
      */
     public function cookies()
     {
@@ -177,11 +179,25 @@ class Response
     }
 
     /**
+     * Parse json for sending.
+     *
+     * @param mixed $object
+     * @param bool $pretty Pretty Print , default false.
+     * @return Response
+     */
+    public function json($object, $pretty = false)
+    {
+        return $this->body(json_encode($object, $pretty ? JSON_PRETTY_PRINT : 0));
+    }
+
+    /**
      * Will send redirect, if stop is true, we will send and exit the application!
      *
      * @param string $url
      * @param bool $stop Send and stop application!
      * @param int $code Http code used for redirect
+     *
+     * @return Response
      *
      * @throws ResponseAlreadySendException
      */
@@ -193,9 +209,11 @@ class Response
         $this->code($code);
 
         if ($stop) {
-            $this->send();
-            exit();
+            $this->send();  // @codeCoverageIgnore
+            exit();         // @codeCoverageIgnore
         }
+
+        return $this;
     }
 
     /**
@@ -233,6 +251,8 @@ class Response
      * @param bool $httpOnly
      *
      * @return Response
+     *
+     * @codeCoverageIgnore
      */
     public function cookie($name, $value, $expiry = null, $domain = null, $path = '/', $secure = false, $httpOnly = false)
     {
@@ -248,13 +268,13 @@ class Response
     /**
      * Enable (or disable when false is given) the cache.
      *
-     * @param bool $disable
+     * @param bool $enabled default true.
      *
      * @return Response
      */
-    public function cache($disable = false)
+    public function cache($enabled = true)
     {
-        if ($disable) {
+        if (! $enabled) {
             $this->header('Pragma', 'no-cache');
             $this->header('Cache-Control', 'no-store, no-cache');
 
@@ -281,7 +301,7 @@ class Response
         $this->requireUnsent();
 
         if (!$force && headers_sent()) {
-            throw new ResponseAlreadySendException("Some response already sent, make sure you don't set the headers directly, or output something before calling response object!");
+            throw new ResponseAlreadySendException("Some response already sent, make sure you don't set the headers directly, or output something before calling response object!"); // @codeCoverageIgnore
         }
 
         if ($code !== null) {
@@ -313,13 +333,7 @@ class Response
 
         // Set cookies
         foreach ($this->cookies as $name => $value) { /** @var Cookie $value */
-            setcookie($name,
-                $value->getValue(),
-                $value->getExpiry(),
-                $value->getPath(),
-                $value->getDomain(),
-                $value->isSecure(),
-                $value->isHttpOnly());
+            setcookie($name, $value->getValue(), $value->getExpiry(), $value->getPath(), $value->getDomain(), $value->isSecure(), $value->isHttpOnly()); // @codeCoverageIgnore
         }
     }
 

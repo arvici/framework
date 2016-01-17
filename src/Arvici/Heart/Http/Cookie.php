@@ -11,6 +11,8 @@ namespace Arvici\Heart\Http;
 /**
  * Cookie
  * @package Arvici\Heart\Http
+ *
+ * @codeCoverageIgnore
  */
 class Cookie
 {
