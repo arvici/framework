@@ -7,6 +7,8 @@
  */
 
 namespace Arvici\Tests\Heart\Router;
+use Arvici\Heart\Router\Route;
+use Arvici\Heart\Router\Router;
 
 /**
  * Router Tests
@@ -17,8 +19,51 @@ namespace Arvici\Tests\Heart\Router;
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testDefine()
+    private function spoof($url, $method)
     {
-        $this->assertTrue(true);
+        $_SERVER['SCRIPT_NAME'] = 'index.php';
+        $_SERVER['REQUEST_URI'] = $url;
+        $_SERVER['REQUEST_METHOD'] = strtoupper($method);
+    }
+
+    /**
+     * @covers \Arvici\Heart\Router\Router
+     * @covers \Arvici\Heart\Router\Route
+     */
+    public function testBasicGet()
+    {
+        $router = Router::getInstance();
+
+        $done = false;
+        $router->addRoute(new Route('/test/get', 'GET', function() use (&$done) {
+            $done = true;
+        }));
+
+        $this->spoof('/test/get', 'GET');
+
+        $router->run();
+
+        $this->assertTrue($done);
+    }
+
+    /**
+     * @covers \Arvici\Heart\Router\Router
+     * @covers \Arvici\Heart\Router\Route
+     */
+    public function testParameterGet()
+    {
+        $router = Router::getInstance();
+
+        $done1 = false;
+        $router->addRoute(new Route('/test/get/(!int)/(!int)', 'GET', function($num1, $num2) use (&$done1) {
+            if ($num1 == 555 && $num2 == 111) {
+                $done1 = true;
+            }
+        }));
+
+        $this->spoof('/test/get/555/111', 'GET');
+        $router->run();
+
+        $this->assertTrue($done1);
     }
 }
