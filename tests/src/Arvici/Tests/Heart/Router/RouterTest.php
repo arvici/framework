@@ -7,7 +7,9 @@
  */
 
 namespace Arvici\Tests\Heart\Router;
+use App\TestUtils;
 use Arvici\Exception\ControllerNotFoundException;
+use Arvici\Heart\Http\Http;
 use Arvici\Heart\Router\Route;
 use Arvici\Heart\Router\Router;
 
@@ -24,11 +26,9 @@ use Arvici\Heart\Router\Router;
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
 
-    private function spoof($url, $method)
+    private function spoof($url, $method, $get = array(), $post = array())
     {
-        $_SERVER['SCRIPT_NAME'] = 'index.php';
-        $_SERVER['REQUEST_URI'] = $url;
-        $_SERVER['REQUEST_METHOD'] = strtoupper($method);
+        TestUtils::spoofUrl($url, $method, $get, $post);
     }
 
     /**
@@ -78,8 +78,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testMultipleMethods()
     {
+        TestUtils::clear();
         $router = Router::getInstance();
-        $router->clearRoutes();
 
         $done1 = 0;
         $router->addRoute(new Route('/test/all', array('GET', 'POST'), function() use (&$done1) {
@@ -101,8 +101,9 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonExistingController()
     {
+        TestUtils::clear();
         $router = Router::getInstance();
-        $router->clearRoutes();
+
 
         $router->addRoute(new Route('/test/get/no/controller', array('GET', 'POST'), 'App\Controller\TestControllerDoesntExists::getNo'));
 
@@ -123,8 +124,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidController()
     {
+        TestUtils::clear();
         $router = Router::getInstance();
-        $router->clearRoutes();
 
         $router->addRoute(new Route('/test/get/existing/not/extending', 'GET', 'App\Controller\TestNoExtending::get'));
         $router->addRoute(new Route('/test/get/existing/non/existing/method', 'GET', 'App\Controller\TestNoMethod::get'));
@@ -161,8 +162,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testController()
     {
+        TestUtils::clear();
         $router = Router::getInstance();
-        $router->clearRoutes();
 
         $router->addRoute(new Route('/test/get/controller/get', 'GET', 'App\Controller\TestCalled::get'));
         $router->addRoute(new Route('/test/get/controller/get/(!int)/(!int)', 'GET', 'App\Controller\TestCalled::getParameters1'));
@@ -196,5 +197,36 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         }catch (\Exception $e) {
             $this->assertEquals(999, $e->getCode());
         }
+    }
+
+    /**
+     * @covers \Arvici\Heart\Router\Router
+     * @covers \Arvici\Heart\Router\Route
+     * @covers \Arvici\Component\Controller\BaseController
+     * @covers \Arvici\Heart\Http\Http
+     * @covers \Arvici\Heart\Http\Request
+     * @covers \Arvici\Heart\Http\Response
+     */
+    public function testQueryParameters()
+    {
+        TestUtils::clear();
+        $router = Router::getInstance();
+
+        $router->addRoute(new Route('/test/get/controller/query', 'GET', 'App\Controller\TestQuery::basicQuery'));
+
+        $this->spoof('/test/get/controller/query?test=yes', 'GET', array('test' => 'yes'));
+
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch(\Exception $e) {
+            $this->assertEquals(999, $e->getCode());
+        }
+
+        // Test via request object (right here)
+        $request = Http::getInstance()->request();
+        $this->assertEquals(array('test' => 'yes'), $request->get()->all());
+
+        // More testing on REQUEST is done in a separate case
     }
 }

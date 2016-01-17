@@ -33,6 +33,14 @@ class Http
     }
 
     /**
+     * Clear instance, create new request and response
+     */
+    public static function clearInstance()
+    {
+        self::$instance = null;
+    }
+
+    /**
      * Private HttpService constructor.
      */
     private function __construct()
