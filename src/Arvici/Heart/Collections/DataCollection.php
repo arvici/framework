@@ -174,6 +174,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * @see set()
      * @param string $name
      * @param mixed $value
+     *
+     * @codeCoverageIgnore
      */
     public function __set($name, $value)
     {
@@ -186,6 +188,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * @see get()
      * @param string $name
      * @return mixed
+     *
+     * @codeCoverageIgnore
      */
     public function __get($name)
     {
@@ -198,6 +202,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
      * @return Traversable An instance of an object implementing <b>Iterator</b> or
      * <b>Traversable</b>
+     *
+     * @codeCoverageIgnore
      */
     public function getIterator()
     {
@@ -214,6 +220,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * </p>
      * <p>
      * The return value will be casted to boolean if non-boolean was returned.
+     *
+     * @codeCoverageIgnore
      */
     public function offsetExists($key)
     {
@@ -228,6 +236,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * </p>
      * @return mixed Can return all value types.
      * @since 5.0.0
+     *
+     * @codeCoverageIgnore
      */
     public function offsetGet($key)
     {
@@ -245,6 +255,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * </p>
      * @return void
      * @since 5.0.0
+     *
+     * @codeCoverageIgnore
      */
     public function offsetSet($key, $value)
     {
@@ -259,6 +271,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * </p>
      * @return void
      * @since 5.0.0
+     *
+     * @codeCoverageIgnore
      */
     public function offsetUnset($key)
     {
@@ -285,6 +299,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      * @see exists()
      * @param string $name
      * @return bool
+     *
+     * @codeCoverageIgnore
      */
     public function __isset($name)
     {
@@ -296,6 +312,8 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @see remove()
      * @param string $name
+     *
+     * @codeCoverageIgnore
      */
     public function __unset($name)
     {
