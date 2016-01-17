@@ -100,7 +100,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $router = Router::getInstance();
         $router->clearRoutes();
 
-        $router->addRoute(new Route('/test/get/no/controller', array('GET', 'POST'), '\App\Controller\TestControllerDoesntExists::getNo'));
+        $router->addRoute(new Route('/test/get/no/controller', array('GET', 'POST'), 'App\Controller\TestControllerDoesntExists::getNo'));
 
         $this->spoof('/test/get/no/controller', 'GET');
 
@@ -109,6 +109,84 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         }catch(ControllerNotFoundException $e) {
             $this->assertTrue(true);
+        }
+    }
+
+
+    /**
+     * @covers \Arvici\Heart\Router\Router
+     * @covers \Arvici\Heart\Router\Route
+     */
+    public function testInvalidController()
+    {
+        $router = Router::getInstance();
+        $router->clearRoutes();
+
+        $router->addRoute(new Route('/test/get/existing/not/extending', 'GET', 'App\Controller\TestNoExtending::get'));
+        $router->addRoute(new Route('/test/get/existing/non/existing/method', 'GET', 'App\Controller\TestNoMethod::get'));
+        $router->addRoute(new Route('/test/get/prepare/stop', 'GET', 'App\Controller\TestPrepare::get'));
+
+        $this->spoof('/test/get/existing/not/extending', 'GET');
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch (ControllerNotFoundException $e) {
+            $this->assertTrue(true);
+        }
+
+        $this->spoof('/test/get/existing/non/existing/method', 'GET');
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch (ControllerNotFoundException $e) {
+            $this->assertTrue(true);
+        }
+
+
+        $this->spoof('/test/get/prepare/stop', 'GET');
+        $router->run();
+    }
+
+    /**
+     * @covers \Arvici\Heart\Router\Router
+     * @covers \Arvici\Heart\Router\Route
+     */
+    public function testController()
+    {
+        $router = Router::getInstance();
+        $router->clearRoutes();
+
+        $router->addRoute(new Route('/test/get/controller/get', 'GET', 'App\Controller\TestCalled::get'));
+        $router->addRoute(new Route('/test/get/controller/get/(!int)/(!int)', 'GET', 'App\Controller\TestCalled::getParameters1'));
+        $router->addRoute(new Route('/test/get/controller/get/(!?)/(!int)', 'GET', 'App\Controller\TestCalled::getParameters2'));
+
+        $this->spoof('/test/get/controller/get', 'GET');
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch (\Exception $e) {
+            $this->assertEquals(999, $e->getCode());
+        }
+
+
+
+
+        $this->spoof('/test/get/controller/get/11/54', 'GET');
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch (\Exception $e) {
+            $this->assertEquals(999, $e->getCode());
+        }
+
+
+
+        $this->spoof('/test/get/controller/get/test/555', 'GET');
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch (\Exception $e) {
+            $this->assertEquals(999, $e->getCode());
         }
     }
 }
