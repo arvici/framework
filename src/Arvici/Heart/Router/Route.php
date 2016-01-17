@@ -18,9 +18,9 @@ namespace Arvici\Heart\Router;
 class Route
 {
     private static $patterns = array(
-        '(?)' => '([^/]+)',
-        '(int)' => '-?[0-9]+',
-        '(all)' => '.*'
+        '(!?)' => '([^/]+)',
+        '(!int)' => '(-?[0-9]+)',
+        '(!all)' => '(.*+)'
     );
 
     /**
@@ -112,8 +112,26 @@ class Route
         return (bool) preg_match($this->getCompiled(), $compiled);
     }
 
-    public function execute()
+    /**
+     * Execute the route callback with given parameters.
+     *
+     * @param string $compiled
+     */
+    public function execute($compiled)
     {
-        call_user_func_array($this->callback, array());
+        // Get matched parameters
+        $matches = null;
+        preg_match_all($this->getCompiled(), $compiled, $matches);
+
+        $params = array();
+        if (count($matches) > 1) {
+            // Has parameters, parse.
+            $params = array_slice($matches, 1);
+            $params = array_map(function($param) {
+                return $param[0];
+            }, $params);
+        }
+
+        call_user_func_array($this->callback, $params);
     }
 }

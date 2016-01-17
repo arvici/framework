@@ -26,6 +26,8 @@ class Router
     /** @var Router */
     private static $instance;
 
+    private $compiled;
+
     /**
      * Get Router instance
      *
@@ -60,11 +62,11 @@ class Router
         if ($url === null) $url = $_SERVER['REQUEST_URI'];
 
         // Compile
-        $compiled = strtoupper($method) . '~' . $url;
+        $this->compiled = strtoupper($method) . '~' . $url;
 
         // Try to match
         foreach($this->routes as $route) {
-            if ($route->match($compiled)) {
+            if ($route->match($this->compiled)) {
                 $this->executeRoute($route);
             }
         }
@@ -83,6 +85,14 @@ class Router
         $this->routes[] = $route;
     }
 
+    /**
+     * Clear all routes
+     */
+    public function clearRoutes()
+    {
+        $this->routes = array();
+    }
+
 
     /**
      * Will try to match parameters and execute the callback
@@ -91,6 +101,6 @@ class Router
      */
     private function executeRoute(Route &$route)
     {
-        $route->execute();
+        $route->execute($this->compiled);
     }
 }
