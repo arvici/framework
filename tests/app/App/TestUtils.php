@@ -10,7 +10,7 @@ namespace App;
 
 
 use Arvici\Heart\Http\Http;
-use Arvici\Heart\Router\Router;
+use Arvici\Component\Router;
 
 class TestUtils
 {

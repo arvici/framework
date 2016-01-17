@@ -11,7 +11,7 @@ use App\TestUtils;
 use Arvici\Exception\ControllerNotFoundException;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Router\Route;
-use Arvici\Heart\Router\Router;
+use Arvici\Component\Router;
 
 /**
  * Router Tests
@@ -21,6 +21,7 @@ use Arvici\Heart\Router\Router;
  *
  * @covers \Arvici\Heart\Http\Http
  * @covers \Arvici\Heart\Router\Router
+ * @covers \Arvici\Component\Router
  * @covers \Arvici\Heart\Router\Route
  */
 class RouterTest extends \PHPUnit_Framework_TestCase

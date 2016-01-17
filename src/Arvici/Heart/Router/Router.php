@@ -13,9 +13,8 @@ namespace Arvici\Heart\Router;
  *
  * @package Arvici\Heart\Router
  *
- * @api
  */
-class Router
+abstract class Router
 {
     /**
      * Route registry
@@ -23,32 +22,7 @@ class Router
      */
     private $routes = array();
 
-    /** @var Router */
-    private static $instance;
-
     private $compiled;
-
-    /**
-     * Get Router instance
-     *
-     * @return Router
-     */
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new Router();
-        }
-        return self::$instance;
-    }
-
-    /**
-     * Router constructor.
-     * @internal Constructor should never be called outside of the router, use singleton!
-     */
-    private function __construct()
-    {
-
-    }
 
     /**
      * Run the router
