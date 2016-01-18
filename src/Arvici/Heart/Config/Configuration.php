@@ -25,7 +25,7 @@ class Configuration implements \ArrayAccess
     private function __construct()
     {
         if (self::$instance !== null) {
-            throw new \Exception("Use the static functions on the configuration class!");
+            throw new \Exception("Use the static functions on the configuration class!"); // @codeCoverageIgnore
         }
 
 
