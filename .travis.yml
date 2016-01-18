@@ -5,8 +5,8 @@ php:
   - hhvm
   - 'nightly'
 
-#services:
-#  - mysql
+services:
+  - mysql
 
 matrix:
   allow_failures:
