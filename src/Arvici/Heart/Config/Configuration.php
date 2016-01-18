@@ -23,7 +23,7 @@ class Configuration implements \ArrayAccess
     private function __construct()
     {
         if (self::$instance !== null) {
-            throw new \Exception("Use the static functions on the configuration class!");
+            throw new \Exception("Use the static functions on the configuration class!"); // @codeCoverageIgnore
         }
 
 
@@ -144,6 +144,8 @@ class Configuration implements \ArrayAccess
      * <p>
      * The return value will be casted to boolean if non-boolean was returned.
      * @since 5.0.0
+     *
+     * @codeCoverageIgnore
      */
     public function offsetExists($offset)
     {
@@ -159,6 +161,8 @@ class Configuration implements \ArrayAccess
      * </p>
      * @return mixed Can return all value types.
      * @since 5.0.0
+     *
+     * @codeCoverageIgnore
      */
     public function offsetGet($offset)
     {
@@ -176,6 +180,8 @@ class Configuration implements \ArrayAccess
      * </p>
      * @return void
      * @since 5.0.0
+     *
+     * @codeCoverageIgnore
      */
     public function offsetSet($offset, $value)
     {
@@ -190,6 +196,8 @@ class Configuration implements \ArrayAccess
      * </p>
      * @return void
      * @since 5.0.0
+     *
+     * @codeCoverageIgnore
      */
     public function offsetUnset($offset)
     {
