@@ -12,6 +12,8 @@ namespace Arvici\Heart\Config;
  * Configuration Class.
  *
  * @package Arvici\Heart\Config
+ *
+ * @api
  */
 class Configuration implements \ArrayAccess
 {
@@ -23,7 +25,7 @@ class Configuration implements \ArrayAccess
     private function __construct()
     {
         if (self::$instance !== null) {
-            throw new \Exception("Use the static functions on the configuration class!"); // @codeCoverageIgnore
+            throw new \Exception("Use the static functions on the configuration class!");
         }
 
 
