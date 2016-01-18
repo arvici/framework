@@ -49,12 +49,19 @@ class Route
     private $callback;
 
     /**
+     * @var string|null
+     */
+    private $group;
+
+    /**
      * Route constructor.
+     *
      * @param string $match Match url, can contain regexpressions.
      * @param array|string $methods Single or multiple method names.
-     * @param callable $callback Callback to call when it's done
+     * @param callable $callback Callback to call when it's done.
+     * @param null|string $group Group of route.
      */
-    public function __construct($match, $methods, $callback)
+    public function __construct($match, $methods, $callback, $group = null)
     {
         if (is_string($methods)) {
             $methods = array($methods);
@@ -62,6 +69,7 @@ class Route
         $this->methods = $methods;
         $this->match = str_replace(array_keys(self::$patterns), array_values(self::$patterns), $match);
         $this->callback = $callback;
+        $this->group = $group;
     }
 
     /**

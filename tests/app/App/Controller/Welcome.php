@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-
 use Arvici\Component\Controller\BaseController;
 
 class Welcome extends BaseController

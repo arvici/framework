@@ -22,6 +22,12 @@ class Router extends \Arvici\Heart\Router\Router
     private static $instance;
 
     /**
+     * Group name
+     * @var null|string
+     */
+    private static $group = null;
+
+    /**
      * Get instance of the router.
      *
      * @return Router
@@ -47,6 +53,21 @@ class Router extends \Arvici\Heart\Router\Router
         call_user_func($closure, self::getInstance());
     }
 
+    /**
+     * Appending route entries to group.
+     *
+     * @param string $group
+     * @param \Closure $closure
+     *
+     * @codeCoverageIgnore
+     */
+    public static function group($group, \Closure $closure)
+    {
+        self::$group = $group;
+        call_user_func($closure, self::getInstance());
+        self::$group = null;
+    }
+
 
     /**
      * Add route for GET method.
@@ -58,7 +79,7 @@ class Router extends \Arvici\Heart\Router\Router
      */
     public function get($match, $callback)
     {
-        $this->addRoute(new Route($match, 'GET', $callback));
+        $this->addRoute(new Route($match, 'GET', $callback, self::$group));
     }
 
     /**
@@ -71,7 +92,7 @@ class Router extends \Arvici\Heart\Router\Router
      */
     public function post($match, $callback)
     {
-        $this->addRoute(new Route($match, 'POST', $callback));
+        $this->addRoute(new Route($match, 'POST', $callback, self::$group));
     }
 
     /**
@@ -84,7 +105,7 @@ class Router extends \Arvici\Heart\Router\Router
      */
     public function put($match, $callback)
     {
-        $this->addRoute(new Route($match, 'PUT', $callback));
+        $this->addRoute(new Route($match, 'PUT', $callback, self::$group));
     }
 
     /**
@@ -97,6 +118,6 @@ class Router extends \Arvici\Heart\Router\Router
      */
     public function delete($match, $callback)
     {
-        $this->addRoute(new Route($match, 'DELETE', $callback));
+        $this->addRoute(new Route($match, 'DELETE', $callback, self::$group));
     }
 }
