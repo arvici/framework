@@ -6,12 +6,15 @@
  * @copyright  2016 Tom Valk
  */
 
-/** @noinspection PhpIncludeInspection */
-require_once __DIR__ . DS . 'App' . DS . 'Config' . DS . 'App.php';
+$configDir = __DIR__ . '/App/Config/';
 
-/** @noinspection PhpIncludeInspection */
-require_once __DIR__ . DS . 'App' . DS . 'Config' . DS . 'Router.php';
+require_once $configDir . 'App.php';
+require_once $configDir . 'Router.php';
+require_once $configDir . 'Template.php';
 
+
+// Prepare any logging
+// TODO: Implement logger here.
 
 // Run the router.
 \Arvici\Component\Router::getInstance()->run();
