@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Heart\Renderer;
+
 use Arvici\Component\View\View;
 use Arvici\Heart\Collections\DataCollection;
 
@@ -33,5 +34,5 @@ interface RendererInterface
      * @param bool                  $return     Return result, false will output with echo.
      * @return string|void
      */
-    public function render(View $template, array $data, $return = false);
+    public function render(View $template, array $data = array(), $return = false);
 }
