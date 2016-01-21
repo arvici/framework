@@ -22,13 +22,13 @@
     "swiftmailer/swiftmailer": "~5.4",
 
     "fabfuel/prophiler": "~1.0",
-    "symfony/var-dumper": "3.0.*"
+    "symfony/var-dumper": "~3.0"
   },
   "require-dev": {
     "phpunit/phpunit": "5.1.4",
     "phpunit/php-code-coverage": "^3",
-    "satooshi/php-coveralls": "1.0.*",
-    "codacy/coverage": "dev-master"
+    "satooshi/php-coveralls": "^1.0",
+    "codacy/coverage": "^1.0"
   },
   "autoload": {
     "psr-4": {
