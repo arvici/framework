@@ -45,8 +45,8 @@ class PhpTemplate implements RendererInterface
      */
     public function render(View $template, array $data = array())
     {
-        if (! empty($data)) {
-            $this->data = $data;
+        if (! empty($this->data)) {
+            $data = array_merge($this->data, $data);
         }
 
         // Path

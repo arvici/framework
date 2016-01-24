@@ -192,6 +192,10 @@ class Render
                 $data = array();
             }
 
+            if ($view->getType() === View::PART_BODY_PLACEHOLDER) {
+                throw new RendererException("The body placeholder isn't replaced!"); // @codeCoverageIgnore
+            }
+
             if (! empty($this->globalData)) {
                 $data = array_merge($data, $this->globalData);
             }

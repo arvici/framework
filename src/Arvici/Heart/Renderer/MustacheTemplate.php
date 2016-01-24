@@ -10,6 +10,7 @@ namespace Arvici\Heart\Renderer;
 
 use Arvici\Component\View\View;
 use Arvici\Exception\ConfigurationException;
+use Arvici\Exception\FileNotFoundException;
 use Arvici\Exception\PermissionDeniedException;
 use Arvici\Exception\RendererException;
 use Arvici\Heart\Collections\DataCollection;
@@ -40,23 +41,29 @@ class MustacheTemplate implements RendererInterface
 
         // Prepare the cache folder.
         if ($cacheFolder === null || empty($cacheFolder)) {
-            throw new ConfigurationException("The configuration for the APP.CACHE entry is invalid, should be a path to the cache folder!");
+            throw new ConfigurationException("The configuration for the APP.CACHE entry is invalid, should be a path to the cache folder!"); // @codeCoverageIgnore
         }
 
-        if (! file_exists($cacheFolder . DS . 'template')) {
-            $makeDir = mkdir($cacheFolder . DS . 'template');
+        // TODO: Make cache heart component, for global cache folder prepare and usage.
+        if (! file_exists($cacheFolder)) { // @codeCoverageIgnore
+            $makeDir = mkdir($cacheFolder); // @codeCoverageIgnore
+            if (! $makeDir) { // @codeCoverageIgnore
+                throw new PermissionDeniedException("Could not make directory '" . $cacheFolder . "'! Please look at your permissions!"); // @codeCoverageIgnore
+            } // @codeCoverageIgnore
+        } // @codeCoverageIgnore
 
-            if (! $makeDir) {
-                throw new PermissionDeniedException("Could not make directory '" . $cacheFolder . DS . 'template' . "'! Please look at your permissions!");
-            }
+        if (! file_exists($cacheFolder . DS . 'template')) {
+            $makeDir = mkdir($cacheFolder . DS . 'template'); // @codeCoverageIgnore
+            if (! $makeDir) { // @codeCoverageIgnore
+                throw new PermissionDeniedException("Could not make directory '" . $cacheFolder . DS . 'template' . "'! Please look at your permissions!"); // @codeCoverageIgnore
+            } // @codeCoverageIgnore
         }
 
         if (! file_exists($cacheFolder . DS . 'template' . DS . 'mustache')) {
-            $makeDir = mkdir($cacheFolder . DS . 'template' . DS . 'mustache');
-
-            if (! $makeDir) {
-                throw new PermissionDeniedException("Could not make directory '" . $cacheFolder . DS . 'template' . DS . 'mustache' . "'! Please look at your permissions!");
-            }
+            $makeDir = mkdir($cacheFolder . DS . 'template' . DS . 'mustache'); // @codeCoverageIgnore
+            if (! $makeDir) { // @codeCoverageIgnore
+                throw new PermissionDeniedException("Could not make directory '" . $cacheFolder . DS . 'template' . DS . 'mustache' . "'! Please look at your permissions!"); // @codeCoverageIgnore
+            } // @codeCoverageIgnore
         }
 
         // Prepare the instance
@@ -87,15 +94,23 @@ class MustacheTemplate implements RendererInterface
      *
      * @return string|void
      *
+     * @throws ConfigurationException
+     * @throws FileNotFoundException
      * @throws RendererException
      */
     public function render(View $template, array $data = array())
     {
-        if ($template->getType() === View::PART_BODY_PLACEHOLDER) {
-            throw new RendererException("The body placeholder isn't replaced!");
+        if (! empty($this->data)) {
+            $data = array_merge($this->data, $data);
         }
 
+        // Load file into string
+        $source = file_get_contents($template->getFullPath());
 
-        // TODO: Implement render() method.
+        if ($source === false) {
+            throw new FileNotFoundException("View file '" . $template->getFullPath() . "' is not found!"); // @codeCoverageIgnore
+        }
+
+        return $this->mustache->render($source, $data);
     }
 }

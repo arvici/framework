@@ -15,6 +15,8 @@ use Arvici\Heart\Collections\DataCollection;
  * Html Template renderer.
  *
  * @package Arvici\Heart\Renderer
+ *
+ * @codeCoverageIgnore
  */
 class HtmlTemplate implements RendererInterface
 {
