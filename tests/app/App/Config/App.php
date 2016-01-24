@@ -60,5 +60,11 @@ Configure::define('app', function ($config) {
         'services' => [
 
         ],
+
+
+        /**
+         * Path to the cache folder. Will be used for caching several framework components.
+         */
+        'cache' => BASEPATH . 'cache/',
     ];
 });

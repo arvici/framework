@@ -10,15 +10,23 @@ Configuration::define('template', function() {
 
         /**
          * Template Path, relative to the App path.
-         * Don't add a trailing slash.
+         * Don't add a trailing slash at the end!
          */
-        'path' => 'Template/Default',
+        'templatePath' => 'Template/Default',
+
+        /**
+         * View Path, used for body views, relative to App path.
+         * Don't add a trailing slash at the end!
+         */
+        'viewPath' => 'Views',
 
 
         /**
-         * Default template file.
+         * The default stack for template rendering.
+         * Use the body placeholder for defining the body part.
          */
-        'default' => 'Default'
+        'defaultStack' => [
 
+        ],
     ];
 });
