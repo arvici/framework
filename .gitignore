@@ -1,6 +1,8 @@
 ### Framework
 build/logs/*
 
+tests/app/cache
+
 ### Composer
 composer.phar
 vendor/
