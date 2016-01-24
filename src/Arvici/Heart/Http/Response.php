@@ -187,6 +187,7 @@ class Response
      */
     public function json($object, $pretty = false)
     {
+        $this->header('Content-Type', 'application/json');
         return $this->body(json_encode($object, $pretty ? JSON_PRETTY_PRINT : 0));
     }
 

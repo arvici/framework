@@ -51,6 +51,11 @@ Configuration::define('template', function() {
                 View::bodyPlaceholder(),
                 View::body('testContent'),
                 View::template('testFooter')
+            ],
+            'test-basicrender' => [
+                View::template('testHeader'),
+                View::bodyPlaceholder(),
+                View::template('testFooter')
             ]
         ],
     ];
