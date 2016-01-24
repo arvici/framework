@@ -82,6 +82,19 @@ class DataCollection implements \IteratorAggregate, \ArrayAccess, \Countable
     }
 
     /**
+     * Append value to array. Indexed with integer key.
+     *
+     * @param $value
+     *
+     * @return DataCollection<T>
+     */
+    public function append($value)
+    {
+        $this->contents[] = $value;
+        return $this;
+    }
+
+    /**
      * Get value for key
      *
      * @param string $key

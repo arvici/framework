@@ -27,9 +27,9 @@ Configuration::define('template', function() {
          * Use the body placeholder for defining the body part.
          */
         'defaultStack' => [
-            View::template('header.php'),
+            View::template('header'),
             View::bodyPlaceholder(),
-            View::template('footer.php')
+            View::template('footer')
         ],
 
 
@@ -46,8 +46,11 @@ Configuration::define('template', function() {
          * Define custom prepared stacks here.
          */
         'stacks' => [
-            'sample' => [
-
+            'test-sample' => [
+                View::template('testHeader'),
+                View::bodyPlaceholder(),
+                View::body('testContent'),
+                View::template('testFooter')
             ]
         ],
     ];

@@ -6,14 +6,14 @@
  * @copyright  2016 Tom Valk
  */
 
+// Set the base path
+define('BASEPATH', __DIR__ . DS);
+
 $configDir = __DIR__ . '/App/Config/';
 
 require_once $configDir . 'App.php';
 require_once $configDir . 'Router.php';
 require_once $configDir . 'Template.php';
-
-// Set the base path
-define('BASEPATH', __DIR__ . DS);
 
 // Prepare any logging
 // TODO: Implement logger here.

@@ -156,4 +156,18 @@ class DataCollectionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $collection);
     }
 
+    /**
+     * @covers ::__construct
+     * @covers ::append
+     */
+    public function testAppend()
+    {
+        $collection = new DataCollection();
+
+        $collection->append('first');
+        $collection->append('second');
+
+        $this->assertEquals(array(0 => 'first', 1 => 'second'), $collection->all());
+    }
+
 }
