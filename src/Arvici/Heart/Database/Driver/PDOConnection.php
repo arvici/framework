@@ -11,7 +11,7 @@ namespace Arvici\Heart\Database\Driver;
 
 use Arvici\Exception\DatabaseException;
 use Arvici\Heart\Database\Connection;
-use Arvici\Heart\Database\Statement;
+use Arvici\Heart\Database\Database;
 
 /**
  * Connection encapsulation for every pdo connection.
@@ -45,7 +45,23 @@ class PDOConnection extends \PDO implements Connection
      */
     public function select($query, $bind = array(), $returnType = null, $returnClass = null)
     {
-        // TODO: Implement select() method.
+        $statement = $this->prepare($query, $bind);
+
+        $returnType = Database::normalizeFetchType($returnType);
+
+        if ($returnType === Database::FETCH_CLASS) {
+            // Verify class
+            new \ReflectionClass($returnClass);
+
+            $statement->setFetchMode($returnType, $returnClass);
+        } else {
+            $statement->setFetchMode($returnType);
+        }
+
+        // Execute and fetch.
+        $statement->execute();
+
+        return $statement->fetchAll();
     }
 
     /**
@@ -60,7 +76,36 @@ class PDOConnection extends \PDO implements Connection
      */
     public function insert($table, array $data)
     {
-        // TODO: Implement insert() method.
+        // Prepare
+        $columnPart = "";
+        $valuePart = "";
+
+        $bind = array();
+
+        // Loop the data
+        foreach ($data as $column => $value) {
+            $columnPart .= "`$column`, ";
+            $valuePart .= "?, ";
+        }
+
+        // Remove last commas
+        $columnPart = substr($columnPart, 0, -2);
+        $valuePart = substr($valuePart, 0, -2);
+
+        $query = "INSERT INTO `$table` ($columnPart) VALUES ($valuePart)";
+
+
+        // Prepare and bind
+        $statement = $this->prepare($query);
+
+        $idx = 0;
+        foreach ($data as $key => $value) {
+            $statement->bindValue(($idx+1), $value);
+            $idx++;
+        }
+
+        // Execute and return the execute returning value.
+        return $statement->execute();
     }
 
     /**
@@ -108,21 +153,6 @@ class PDOConnection extends \PDO implements Connection
     public function truncate($table)
     {
         // TODO: Implement truncate() method.
-    }
-
-    /**
-     * Prepare statement.
-     *
-     * @param string $query
-     * @param array $bind
-     *
-     * @throws DatabaseException
-     *
-     * @return Statement
-     */
-    public function prepare($query, $bind = array())
-    {
-        // TODO: Implement prepare() method.
     }
 
     /**

@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Heart\Database;
+
 use Arvici\Exception\DatabaseException;
 
 /**

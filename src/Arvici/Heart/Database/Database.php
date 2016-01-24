@@ -17,10 +17,10 @@ use Arvici\Heart\Config\Configuration;
  */
 class Database
 {
-    const FETCH_ASSOC   = 1;
-    const FETCH_OBJECT  = 2;
-    const FETCH_CLASS   = 3;
-    const FETCH_NUMERIC = 4;
+    const FETCH_ASSOC   = 2;
+    const FETCH_OBJECT  = 5;
+    const FETCH_CLASS   = 8;
+    const FETCH_NUMERIC = 3;
 
     /** @var Driver[] $drivers Indexed by driver name! */
     private static $drivers = array();
@@ -92,7 +92,13 @@ class Database
      */
     private static function getConnectionConfiguration($name)
     {
-        $databaseConfig = Configuration::get('database.' . $name);
+        $databaseConfig = Configuration::get('database.connections');
+        if (isset($databaseConfig[$name])) {
+            $databaseConfig = $databaseConfig[$name];
+        } else {
+            $databaseConfig = null;
+        }
+
         if ($databaseConfig === null) {
             throw new ConfigurationException("Database configuration for connection '" . $name . "' doesn't exists!");
         }
@@ -110,5 +116,30 @@ class Database
     public static function clear()
     {
         self::$drivers = array();
+    }
+
+    /**
+     * Get default return type (fetch mode)
+     *
+     * @return int
+     */
+    public static function defaultReturnType()
+    {
+        return Configuration::get('database.fetchType', self::FETCH_ASSOC);
+    }
+
+    /**
+     * Normalize fetch type to a real one ;).
+     *
+     * @param int|null $returnType
+     *
+     * @return int
+     */
+    public static function normalizeFetchType($returnType)
+    {
+        if ($returnType === null) {
+            return self::defaultReturnType();
+        }
+        return $returnType;
     }
 }

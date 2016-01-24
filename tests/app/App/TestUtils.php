@@ -9,6 +9,7 @@
 namespace App;
 
 
+use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Database;
 use Arvici\Heart\Http\Http;
 use Arvici\Component\Router;
@@ -19,6 +20,7 @@ class TestUtils
     {
         self::clearRoutes();
         self::clearHttp();
+        self::clearDatabase();
     }
 
     public static function clearRoutes()
@@ -29,6 +31,33 @@ class TestUtils
     public static function clearDatabase()
     {
         Database::clear();
+    }
+
+    public static function resetDatabase($connection = 'default')
+    {
+        self::clearDatabase();
+
+        /** @var Connection $connection */
+        $connection = Database::connection($connection);
+        $connection->truncate('posts');
+
+
+        // Add test posts
+        $posts = [
+            ['id' => 1, 'title' => 'First Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
+            ['id' => 2, 'title' => 'Second Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
+            ['id' => 3, 'title' => 'Hello Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
+            ['id' => 4, 'title' => 'Mister Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
+            ['id' => 5, 'title' => 'Test Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
+            ['id' => 6, 'title' => 'Is Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
+            ['id' => 7, 'title' => 'Here Post', 'author' => 1, 'content' => 'Content', 'publishdate' => date('c', time() - 5000)],
+        ];
+        foreach ($posts as $post) {
+            $connection->insert('posts', $post);
+        }
+
+
+        self::clearDatabase();
     }
 
     public static function clearHttp()

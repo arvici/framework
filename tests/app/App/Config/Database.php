@@ -10,24 +10,31 @@ Configuration::define('database', function() {
     return [
 
         /**
+         * The default fetch type to use.
+         */
+        'fetchType' => \Arvici\Heart\Database\Database::FETCH_ASSOC,
+
+        /**
          * Database Connection names and configuration values.
          *
          * 'default' is used when no connection name is provided, or using SweetORM.
          */
-        'default' => [
-            'driver'        => 'MySQL',
+        'connections' => [
+            'default' => [
+                'driver'        => 'MySQL',
 
-            'host'          =>   'localhost',
-            'username'      => 'root',
-            'password'      => '',
-            'port'          => 3306,
-            'database'      => 'arvici_test'
+                'host'          =>   'localhost',
+                'username'      => 'root',
+                'password'      => '',
+                'port'          => 3306,
+                'database'      => 'arvici_test'
+            ],
+
+
+
+            'incomplete' => [
+                'driver'        => 'MySQL',
+            ]
         ],
-
-
-
-        'incomplete' => [
-            'driver'        => 'MySQL',
-        ]
     ];
 });

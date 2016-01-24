@@ -52,6 +52,8 @@ class Driver implements \Arvici\Heart\Database\Driver
      * Get driver name.
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -62,6 +64,8 @@ class Driver implements \Arvici\Heart\Database\Driver
      * Get the driver code. Will be a unique string for every driver.
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function getCode()
     {
