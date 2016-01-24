@@ -9,6 +9,7 @@
 namespace Arvici\Heart\Renderer;
 
 use Arvici\Component\View\View;
+use Arvici\Exception\ConfigurationException;
 use Arvici\Heart\Collections\DataCollection;
 
 /**
@@ -25,6 +26,8 @@ class PhpTemplate implements RendererInterface
      *
      * @param array|DataCollection $data
      * @return $this
+     *
+     * @codeCoverageIgnore
      */
     public function setData($data)
     {
@@ -36,7 +39,9 @@ class PhpTemplate implements RendererInterface
      *
      * @param View $template Template view instance.
      * @param array|DataCollection $data Data.
-     * @return string|void
+     * @return string
+     *
+     * @throws ConfigurationException
      */
     public function render(View $template, array $data = array())
     {
@@ -44,7 +49,19 @@ class PhpTemplate implements RendererInterface
             $this->data = $data;
         }
 
+        // Path
+        $path = $template->getFullPath();
 
-        // TODO: Implement render() method.
+        // Declare all data vars local if possible
+        foreach ($data as $name => $value) {
+            ${$name} = $value;
+        }
+
+        // Require and stop with OB.
+        ob_start();
+
+        require $path;
+
+        return ob_get_clean();
     }
 }

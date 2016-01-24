@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Component\View;
+use Arvici\Exception\ConfigurationException;
 use Arvici\Heart\Collections\DataCollection;
 use Arvici\Heart\Config\Configuration;
 
@@ -145,5 +146,37 @@ class View
     public function getEngine()
     {
         return $this->engine;
+    }
+
+
+    /**
+     * Get full path of view file.
+     *
+     * @return string
+     *
+     * @throws ConfigurationException
+     */
+    public function getFullPath()
+    {
+        $key = 'template.templatePath';
+
+        if ($this->type === self::PART_BODY) {
+            $key = 'template.viewPath';
+        }
+
+        $path = Configuration::get($key, null);
+        if ($path === null) {
+            throw new ConfigurationException("The template.templatePath or template.viewPath isn't configured right or doesn't exists!");
+        }
+
+        $path = BASEPATH . 'App' . DS . $path . DS . $this->path;
+
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        if ($extension === "") {
+            $path .= ".php";
+        }
+
+        return $path;
     }
 }

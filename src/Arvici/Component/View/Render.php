@@ -188,6 +188,10 @@ class Render
         foreach ($this->stack as $view) { /** @var View $view */
             $data = $view->getData();
 
+            if (! is_array($data)) {
+                $data = array();
+            }
+
             if (! empty($this->globalData)) {
                 $data = array_merge($data, $this->globalData);
             }
