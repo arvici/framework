@@ -34,9 +34,9 @@ class Router extends \Arvici\Heart\Router\Router
      */
     public static function getInstance()
     {
-        if (self::$instance === null) {
+        if (self::$instance === null) { // @codeCoverageIgnore
             self::$instance = new self(); // @codeCoverageIgnore
-        }
+        } // @codeCoverageIgnore
         return self::$instance;
     }
 

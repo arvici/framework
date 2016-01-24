@@ -204,9 +204,9 @@ class Render
             /** @var RendererInterface $engine */
             $engine = $engineClass->newInstance();
 
-            if (! $engine instanceof RendererInterface) {
-                throw new RendererException("Engine is not instance of the RendererInterface.");
-            }
+            if (! $engine instanceof RendererInterface) { // @codeCoverageIgnore
+                throw new RendererException("Engine is not instance of the RendererInterface."); // @codeCoverageIgnore
+            } // @codeCoverageIgnore
 
             // Render it!
             $output .= $engine->render($view, $data);
@@ -218,6 +218,7 @@ class Render
         }
 
         // Instead, push it into the response object and send.
-        Http::getInstance()->response()->body($output)->status(200)->send();
+        Http::getInstance()->response()->body($output)->status(200)->send(); // @codeCoverageIgnore
+        return; // @codeCoverageIgnore
     }
 }

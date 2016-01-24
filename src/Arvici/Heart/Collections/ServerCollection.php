@@ -32,9 +32,9 @@ class ServerCollection extends DataCollection
         $return = array();
 
         foreach ($this->contents as $key => $value) {
-            if (strpos($key, self::$HttpPrefix) === 0) {
+            if (strpos($key, self::$HttpPrefix) === 0) { // @codeCoverageIgnore
                 $return[substr($key, strlen(self::$HttpPrefix))] = $value; // @codeCoverageIgnore
-            }
+            } // @codeCoverageIgnore
 
             if (in_array($key, self::$HttpCustomHeaders)) {
                 $return[$key] = $value;

@@ -165,9 +165,9 @@ class View
         }
 
         $path = Configuration::get($key, null);
-        if ($path === null) {
-            throw new ConfigurationException("The template.templatePath or template.viewPath isn't configured right or doesn't exists!");
-        }
+        if ($path === null) { // @codeCoverageIgnore
+            throw new ConfigurationException("The template.templatePath or template.viewPath isn't configured right or doesn't exists!"); // @codeCoverageIgnore
+        } // @codeCoverageIgnore
 
         $path = BASEPATH . 'App' . DS . $path . DS . $this->path;
 

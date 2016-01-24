@@ -22,23 +22,27 @@ class Configuration implements \ArrayAccess
 
     private $config = array();
 
+    /**
+     * Configuration constructor.
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
         if (self::$instance !== null) {
-            throw new \Exception("Use the static functions on the configuration class!"); // @codeCoverageIgnore
+            throw new \Exception("Use the static functions on the configuration class!");
         }
-
-
     }
+
+
     /**
      * Get instance of Configuration class.
      * @return Configuration
      */
     private static function getInstance()
     {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
+        if (self::$instance === null) { // @codeCoverageIgnore
+            self::$instance = new self(); // @codeCoverageIgnore
+        } // @codeCoverageIgnore
         return self::$instance;
     }
 
