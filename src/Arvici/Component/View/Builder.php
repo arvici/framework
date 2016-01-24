@@ -29,6 +29,18 @@ class Builder
     }
 
     /**
+     * Clear the stack.
+     *
+     * @return Builder
+     */
+    public function clear()
+    {
+        $this->render->replaceAll(array());
+
+        return $this;
+    }
+
+    /**
      * Load in the default stack
      *
      * @return Builder
@@ -40,7 +52,7 @@ class Builder
         $stack = Configuration::get('template.defaultStack');
 
         if (! is_array($stack) || empty($stack)) {
-            throw new RendererException("The default stack, defined in the configuration is not defined or empty! Can't use it!");
+            throw new RendererException("The default stack, defined in the configuration is not defined or empty! Can't use it!"); // @codeCoverageIgnore
         }
 
         $this->render->replaceAll($stack);

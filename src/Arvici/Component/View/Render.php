@@ -30,7 +30,7 @@ class Render
     public static function getInstance()
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new self(); // @codeCoverageIgnore
         }
         return self::$instance;
     }
@@ -45,6 +45,10 @@ class Render
     /** @var array $globalData Global Data, will be merged into the current data of the views. */
     private $globalData;
 
+    /**
+     * Render constructor.
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
         $this->stack = new DataCollection();
@@ -60,7 +64,7 @@ class Render
     public function add(View $view)
     {
         // Append to the stack.
-        $this->stack[] = $view;
+        $this->stack->append($view);
 
         if ($view->getType() === View::PART_BODY_PLACEHOLDER) {
             $this->bodyKey = (count($this->stack) - 1);
@@ -73,6 +77,8 @@ class Render
      * Remove view by key. (integer number).
      * @param int $key
      * @return bool Successfully removed?
+     *
+     * @codeCoverageIgnore
      */
     public function remove($key)
     {
@@ -124,11 +130,9 @@ class Render
         if ($this->bodyKey !== null) {
             if (isset($this->stack[$this->bodyKey])) {
                 if ($this->stack[$this->bodyKey]->getType() === View::PART_BODY_PLACEHOLDER) {
-                    return false;
+                    return true;
                 }
-                return false; // Still return false, but something weird is going on.
             }
-            return true; // Yes, its not defined in the stack!
         }
         return false;
     }
@@ -147,14 +151,25 @@ class Render
      * Replace all stack items for the array given
      *
      * @param array|DataCollection $stack
+     * @param bool $resetBodyKey Reset the body placeholder. Will reindex the new stack for it.
      */
-    public function replaceAll($stack)
+    public function replaceAll($stack, $resetBodyKey = true)
     {
         if (! $stack instanceof DataCollection) {
             $stack = new DataCollection($stack);
         }
 
         $this->stack = $stack;
+
+        if ($resetBodyKey) {
+            $this->bodyKey = null;
+
+            foreach ($stack as $key => $view) {
+                if ($view->getType() === View::PART_BODY_PLACEHOLDER) {
+                    $this->bodyKey = $key;
+                }
+            }
+        }
     }
 
     /**
