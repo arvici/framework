@@ -44,7 +44,7 @@ class View
     private $type;
     /** @var DataCollection|array $data Data */
     private $data;
-
+    /** @var \ReflectionClass Engine class. */
     private $engine;
 
     /**
@@ -52,14 +52,52 @@ class View
      *
      * @param string $path
      * @param int $type
-     * @param string $engine The engine we will use, must be a constants value of the rendering engine.
+     * @param string $engine The engine we will use, must be the class name of the engine.
      */
-    public function __construct($path, $type, $engine)
+    public function __construct($path, $type = self::PART_BODY, $engine = 'PhpTemplate')
     {
         $this->path = $path;
         $this->type = $type;
+        $this->engine = new \ReflectionClass("\\Arvici\\Heart\\Renderer\\" . $engine);
         $this->data = new DataCollection();
     }
+
+    /**
+     * Factory creator for template.
+     *
+     * @param string $path
+     * @param string $engine
+     *
+     * @return View
+     */
+    public static function template($path, $engine = 'PhpTemplate')
+    {
+        return new self($path, self::PART_TEMPLATE, $engine);
+    }
+
+    /**
+     * Factory creator for body.
+     *
+     * @param string $path
+     * @param string $engine
+     *
+     * @return View
+     */
+    public static function body($path, $engine = 'PhpTemplate')
+    {
+        return new self($path, self::PART_BODY, $engine);
+    }
+
+    /**
+     * Factory creator for body placeholder.
+     *
+     * @return View
+     */
+    public static function bodyPlaceholder()
+    {
+        return new self(null, self::PART_BODY_PLACEHOLDER);
+    }
+
 
     /**
      * Set the data we will provide to the view.
@@ -96,7 +134,7 @@ class View
     }
 
     /**
-     * @return mixed
+     * @return \ReflectionClass
      */
     public function getEngine()
     {
