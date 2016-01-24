@@ -98,7 +98,7 @@ class PDOConnection extends \PDO implements Connection
 
         $idx = 0;
         foreach ($data as $key => $value) {
-            $statement->bindValue(($idx+1), $value);
+            $statement->bindValue(($idx+1), $value, (is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
             $idx++;
         }
 
@@ -120,7 +120,37 @@ class PDOConnection extends \PDO implements Connection
      */
     public function update($table, array $data, array $where)
     {
-        // TODO: Implement update() method.
+        $query = "UPDATE `$table` SET ";
+
+        $bind = array();
+
+        // Add the sets
+        foreach ($data as $column => $value) {
+            $query .= "`$column` = ?, ";
+            $bind[] = $value;
+        }
+        // Remove last ,
+        $query = substr($query, 0, -2);
+
+
+        $query .= " WHERE ";
+
+        // Where
+        foreach ($where as $column => $value) {
+            $query .= "`$column` = ? AND ";
+            $bind[] = $value;
+        }
+
+        // Remove last AND
+        $query = substr($query, 0, -5);
+
+        // Prepare, bind and execute.
+        $statement = $this->prepare($query);
+        foreach ($bind as $idx => $value) {
+            $statement->bindValue(($idx + 1), $value, (is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
+        }
+
+        return $statement->execute();
     }
 
     /**

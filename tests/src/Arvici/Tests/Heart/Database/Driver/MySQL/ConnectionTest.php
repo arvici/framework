@@ -50,4 +50,20 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(7, $all);
         $this->assertEquals("First Post", $all[0]['title']);
     }
+
+    public function testUpdate()
+    {
+        $connection = Database::connection();
+
+        $return = $connection->update('posts', ['title' => 'Mister Post :)', 'author' => 2, 'active' => 0], ['title' => 'Mister Post', 'author' => 1]);
+
+        $this->assertTrue($return);
+
+        // Select it
+        $all = $connection->select("SELECT * FROM posts WHERE active = 0;");
+
+        $this->assertCount(1, $all);
+        $this->assertEquals('Mister Post :)', $all[0]['title']);
+        $this->assertEquals(2, $all[0]['author']);
+    }
 }
