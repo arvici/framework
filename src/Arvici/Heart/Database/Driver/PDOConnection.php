@@ -80,8 +80,6 @@ class PDOConnection extends \PDO implements Connection
         $columnPart = "";
         $valuePart = "";
 
-        $bind = array();
-
         // Loop the data
         foreach ($data as $column => $value) {
             $columnPart .= "`$column`, ";
