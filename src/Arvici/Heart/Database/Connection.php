@@ -119,4 +119,18 @@ interface Connection
      * @return int
      */
     public function lastInsertedId($name = null);
+
+    /**
+     * Execute query. Warning! No escaping!
+     *
+     * @param string $query
+     * @param bool $return Return something back? (Fetch)
+     * @param int $fetchMode Fetch mode when returning something.
+     * @param string $fetchClass Fetch class, only when fetching and fetching class.
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function raw($query, $return = false, $fetchMode = null, $fetchClass = null);
 }

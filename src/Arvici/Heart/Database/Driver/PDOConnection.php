@@ -152,7 +152,7 @@ class PDOConnection extends \PDO implements Connection
      */
     public function truncate($table)
     {
-        // TODO: Implement truncate() method.
+        $this->raw("TRUNCATE TABLE `$table`;");
     }
 
     /**
@@ -167,5 +167,36 @@ class PDOConnection extends \PDO implements Connection
     public function lastInsertedId($name = null)
     {
         // TODO: Implement lastInsertedId() method.
+    }
+
+    /**
+     * Execute query. Warning! No escaping!
+     *
+     * @param string $query
+     * @param bool $return Return something back? (Fetch)
+     * @param int $fetchMode Fetch mode when returning something.
+     * @param string $fetchClass Class to fetch
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function raw($query, $return = false, $fetchMode = null, $fetchClass = null)
+    {
+        if (! $return) {
+            return $this->exec($query);
+        }
+
+        $fetchMode = Database::normalizeFetchType($fetchMode);
+
+        $statement = $this->query($query);
+
+        if ($fetchMode === Database::FETCH_CLASS) {
+            $statement->setFetchMode($fetchMode, $fetchClass);
+        } else {
+            $statement->setFetchMode($fetchMode);
+        }
+
+        return $statement->fetchAll();
     }
 }
