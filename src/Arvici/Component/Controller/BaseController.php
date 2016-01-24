@@ -7,6 +7,8 @@
  */
 
 namespace Arvici\Component\Controller;
+use Arvici\Component\View\Builder;
+use Arvici\Component\View\View;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Http\Request;
 use Arvici\Heart\Http\Response;
@@ -24,6 +26,9 @@ abstract class BaseController
     /** @var Response */
     protected $response;
 
+    /** @var Builder */
+    protected $view;
+
     /**
      * Controller constructor, will prepare the request and response objects.
      */
@@ -31,6 +36,8 @@ abstract class BaseController
     {
         $this->request = Http::getInstance()->request();
         $this->response = Http::getInstance()->response();
+
+        $this->view = View::build();
     }
 
     /**

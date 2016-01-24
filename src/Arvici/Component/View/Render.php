@@ -9,6 +9,7 @@
 namespace Arvici\Component\View;
 use Arvici\Exception\RendererException;
 use Arvici\Heart\Collections\DataCollection;
+use Arvici\Heart\Http\Http;
 use Arvici\Heart\Renderer\RendererInterface;
 
 /**
@@ -158,9 +159,17 @@ class Render
 
     /**
      * Render all views in the stack.
+     *
+     * @param bool $return Return the rendered output?
+     *
+     * @return mixed|void
+     *
+     * @throws RendererException
      */
-    public function run()
+    public function run($return = false)
     {
+        $output = "";
+
         foreach ($this->stack as $view) { /** @var View $view */
             $data = $view->getData();
 
@@ -177,7 +186,15 @@ class Render
             }
 
             // Render it!
-            $engine->render($view, $data, false);
+            $output .= $engine->render($view, $data);
         }
+
+        // If we need to return. Then just return it.
+        if ($return) {
+            return $output;
+        }
+
+        // Instead, push it into the response object and send.
+        Http::getInstance()->response()->body($output)->status(200)->send();
     }
 }

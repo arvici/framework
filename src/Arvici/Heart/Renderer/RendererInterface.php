@@ -31,8 +31,7 @@ interface RendererInterface
      *
      * @param View                  $template   Template view instance.
      * @param array|DataCollection  $data       Data.
-     * @param bool                  $return     Return result, false will output with echo.
      * @return string|void
      */
-    public function render(View $template, array $data = array(), $return = false);
+    public function render(View $template, array $data = array());
 }

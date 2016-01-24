@@ -148,11 +148,15 @@ class Builder
     }
 
     /**
+     * Render now. Should be used by the response object.
+     * @param array $data Set additional data for all views.
+     * @param bool $return Return the output instead of writing.
      *
+     * @return mixed|void
      */
-    public function render($data = array())
+    public function render($data = array(), $return = false)
     {
         $this->render->setGlobalData(array_merge($this->globalData, $data));
-        $this->render->run();
+        return $this->render->run($return);
     }
 }

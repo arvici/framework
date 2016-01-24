@@ -84,13 +84,12 @@ class MustacheTemplate implements RendererInterface
      *
      * @param View $template Template view instance.
      * @param array|DataCollection $data Data.
-     * @param bool $return Return result, false will output with echo.
      *
      * @return string|void
      *
      * @throws RendererException
      */
-    public function render(View $template, array $data = array(), $return = false)
+    public function render(View $template, array $data = array())
     {
         if ($template->getType() === View::PART_BODY_PLACEHOLDER) {
             throw new RendererException("The body placeholder isn't replaced!");
