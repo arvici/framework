@@ -8,9 +8,6 @@
 
 namespace Arvici\Heart\Database\Driver\MySQL;
 
-
-use Arvici\Heart\Database\Connection;
-
 /**
  * MySQL Driver
  *
@@ -27,7 +24,7 @@ class Driver implements \Arvici\Heart\Database\Driver
      * @param string|null $password Password to connect, could be optional. Driver specific.
      * @param array $options Driver options apply to the connection and driver itself.
      *
-     * @return Connection
+     * @return \Arvici\Heart\Database\Connection
      */
     public function connect(array $config, $username = null, $password = null, array $options = array())
     {
