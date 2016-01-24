@@ -14,6 +14,17 @@ class Welcome extends BaseController
 {
     public function index()
     {
-        $this->response->body("<h1>Welcome</h1>")->send();
+        $this->view->body('welcome')->render();
+    }
+
+    public function json()
+    {
+        $this->response->json(array(
+            'first' => true,
+            'second' => true,
+            'multi' => array(
+                'Hello!'
+            )
+        ))->send();
     }
 }

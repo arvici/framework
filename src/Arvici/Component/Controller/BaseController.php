@@ -37,7 +37,7 @@ abstract class BaseController
         $this->request = Http::getInstance()->request();
         $this->response = Http::getInstance()->response();
 
-        $this->view = View::build();
+        $this->view = View::build()->defaultStack();
     }
 
     /**
