@@ -66,4 +66,39 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Mister Post :)', $all[0]['title']);
         $this->assertEquals(2, $all[0]['author']);
     }
+
+    public function testInsert()
+    {
+        $connection = Database::connection();
+
+        $return = $connection->insert('posts', ['title' => 'sample', 'author' => 2, 'active' => 1, 'publishdate' => date('c')]);
+        $this->assertTrue($return);
+
+        $id = $connection->lastInsertedId();
+        $this->assertEquals(8, $id);
+    }
+
+    public function testDelete()
+    {
+        $connection = Database::connection();
+
+        $return = $connection->insert('posts', ['title' => 'sample', 'author' => 2, 'active' => 1, 'publishdate' => date('c')]);
+        $this->assertTrue($return);
+
+        $id = $connection->lastInsertedId();
+
+        // Remove
+        $result = $connection->delete('posts', ['id' => $id]);
+        $this->assertTrue($result);
+    }
+
+    public function testRawFetch()
+    {
+        $connection = Database::connection();
+
+        $all = $connection->raw("SELECT * FROM posts", true, Database::FETCH_OBJECT);
+        $this->assertCount(7, $all);
+
+        $this->assertObjectHasAttribute('id', $all[0]);
+    }
 }

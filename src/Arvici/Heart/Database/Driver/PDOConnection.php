@@ -165,7 +165,23 @@ class PDOConnection extends \PDO implements Connection
      */
     public function delete($table, array $where)
     {
-        // TODO: Implement delete() method.
+        $query = "DELETE FROM `$table` WHERE ";
+
+        $bind = array();
+        foreach ($where as $column => $value) {
+            $query .= "`$column` = ? AND ";
+            $bind[] = $value;
+        }
+
+        $query = substr($query, 0, -5);
+
+        // Prepare, bind and execute
+        $statement = $this->prepare($query);
+        foreach ($bind as $idx => $value) {
+            $statement->bindValue(($idx + 1), $value, (is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
+        }
+
+        return $statement->execute();
     }
 
     /**
@@ -194,7 +210,7 @@ class PDOConnection extends \PDO implements Connection
      */
     public function lastInsertedId($name = null)
     {
-        // TODO: Implement lastInsertedId() method.
+        return $this->lastInsertId($name);
     }
 
     /**
