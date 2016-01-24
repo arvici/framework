@@ -12,8 +12,8 @@ matrix:
   allow_failures:
     - php: 'nightly'
 
-#before_script:
-#  - mysql < scripts/test_mysql.sql
+before_script:
+  - mysql < tests/scripts/mysql_test.sql
 
 install:
   - composer self-update

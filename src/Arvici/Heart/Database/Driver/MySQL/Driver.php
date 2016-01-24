@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Heart\Database\Driver\MySQL;
+use Arvici\Exception\DatabaseDriverException;
 
 /**
  * MySQL Driver
@@ -25,10 +26,26 @@ class Driver implements \Arvici\Heart\Database\Driver
      * @param array $options Driver options apply to the connection and driver itself.
      *
      * @return \Arvici\Heart\Database\Connection
+     *
+     * @throws DatabaseDriverException
      */
     public function connect(array $config, $username = null, $password = null, array $options = array())
     {
-        // TODO: Implement connect() method.
+        // Validate config
+        if (! isset($config['host'], $config['database'])) {
+            throw new DatabaseDriverException("No 'host' or 'database' given in the configuration of the connection!");
+        }
+
+        $port = isset($config['port']) ? $config['port'] : 3306;
+        $charset = isset($config['charset']) ? $config['charset'] : 'utf8';
+
+        // Prepare dsn.
+        $dsn = "mysql:host={$config['host']};port=$port;dbname={$config['database']};charset=$charset";
+
+        // Connect
+        $connection = new Connection($dsn, $username, $password, $options);
+
+        return $connection;
     }
 
     /**
@@ -39,16 +56,6 @@ class Driver implements \Arvici\Heart\Database\Driver
     public function getName()
     {
         return "MySQL PDO Driver";
-    }
-
-    /**
-     * Get database currently connected to. Could be null if driver doesn't support this.
-     *
-     * @return string|null
-     */
-    public function getDatabase()
-    {
-        // TODO: Implement getDatabase() method.
     }
 
     /**

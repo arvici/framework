@@ -9,6 +9,7 @@
 namespace App;
 
 
+use Arvici\Heart\Database\Database;
 use Arvici\Heart\Http\Http;
 use Arvici\Component\Router;
 
@@ -23,6 +24,11 @@ class TestUtils
     public static function clearRoutes()
     {
         Router::getInstance()->clearRoutes();
+    }
+
+    public static function clearDatabase()
+    {
+        Database::clear();
     }
 
     public static function clearHttp()

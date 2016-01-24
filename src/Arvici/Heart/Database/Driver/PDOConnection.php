@@ -1,6 +1,7 @@
 <?php
 /**
  * Connection encapsulation for every pdo connection.
+ * With the standard SQL syntax, will be override if it uses specific query language by the drivers connection.
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -14,10 +15,11 @@ use Arvici\Heart\Database\Statement;
 
 /**
  * Connection encapsulation for every pdo connection.
+ * With the standard SQL syntax, will be override if it uses specific query language by the drivers connection.
  *
  * @package Arvici\Heart\Database\Driver
  */
-class PDOConnection implements Connection
+class PDOConnection extends \PDO implements Connection
 {
     /**
      * Select and return results of executed $query.

@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Heart\Database;
+use Arvici\Exception\DatabaseDriverException;
 
 /**
  * Driver API (Interface)
@@ -22,6 +23,9 @@ interface Driver
      * @param string|null $password Password to connect, could be optional. Driver specific.
      * @param array $options Driver options apply to the connection and driver itself.
      *
+     * @throws DatabaseDriverException
+     * @throws \Exception
+     *
      * @return \Arvici\Heart\Database\Connection
      */
     public function connect(array $config, $username = null, $password = null, array $options = array());
@@ -32,13 +36,6 @@ interface Driver
      * @return string
      */
     public function getName();
-
-    /**
-     * Get database currently connected to. Could be null if driver doesn't support this.
-     *
-     * @return string|null
-     */
-    public function getDatabase();
 
     /**
      * Get the driver code. Will be a unique string for every driver.

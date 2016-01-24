@@ -14,6 +14,7 @@ $configDir = __DIR__ . '/App/Config/';
 require_once $configDir . 'App.php';
 require_once $configDir . 'Router.php';
 require_once $configDir . 'Template.php';
+require_once $configDir . 'Database.php';
 
 // Prepare any logging
 // TODO: Implement logger here.
