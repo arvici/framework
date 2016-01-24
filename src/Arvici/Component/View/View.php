@@ -8,6 +8,7 @@
 
 namespace Arvici\Component\View;
 use Arvici\Heart\Collections\DataCollection;
+use Arvici\Heart\Config\Configuration;
 
 /**
  * View (Files rendering group and manager)
@@ -54,10 +55,15 @@ class View
      * @param int $type
      * @param string $engine The engine we will use, must be the class name of the engine.
      */
-    public function __construct($path, $type = self::PART_BODY, $engine = 'PhpTemplate')
+    public function __construct($path, $type = self::PART_BODY, $engine = null)
     {
         $this->path = $path;
         $this->type = $type;
+
+        if ($engine === null) {
+            $engine = Configuration::get('template.defaultEngine', 'PhpTemplate');
+        }
+
         $this->engine = new \ReflectionClass("\\Arvici\\Heart\\Renderer\\" . $engine);
         $this->data = new DataCollection();
     }
@@ -70,7 +76,7 @@ class View
      *
      * @return View
      */
-    public static function template($path, $engine = 'PhpTemplate')
+    public static function template($path, $engine = null)
     {
         return new self($path, self::PART_TEMPLATE, $engine);
     }
@@ -83,7 +89,7 @@ class View
      *
      * @return View
      */
-    public static function body($path, $engine = 'PhpTemplate')
+    public static function body($path, $engine = null)
     {
         return new self($path, self::PART_BODY, $engine);
     }

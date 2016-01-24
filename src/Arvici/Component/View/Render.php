@@ -9,6 +9,7 @@
 namespace Arvici\Component\View;
 use Arvici\Exception\RendererException;
 use Arvici\Heart\Collections\DataCollection;
+use Arvici\Heart\Renderer\RendererInterface;
 
 /**
  * Render holds view instances in order to render to the screen.
@@ -34,15 +35,19 @@ class Render
     }
 
 
-    /** @var DataCollection $stack Holds view instances. */
+    /** @var DataCollection<View>|array<View> $stack Holds view instances. */
     private $stack;
 
     /** @var int $bodyKey Cache the body key here. */
     private $bodyKey;
 
+    /** @var array $globalData Global Data, will be merged into the current data of the views. */
+    private $globalData;
+
     private function __construct()
     {
         $this->stack = new DataCollection();
+        $this->globalData = array();
     }
 
     /**
@@ -55,6 +60,10 @@ class Render
     {
         // Append to the stack.
         $this->stack[] = $view;
+
+        if ($view->getType() === View::PART_BODY_PLACEHOLDER) {
+            $this->bodyKey = (count($this->stack) - 1);
+        }
 
         return count($this->stack);
     }
@@ -93,6 +102,36 @@ class Render
         $this->stack[$this->bodyKey] = $view;
     }
 
+
+    /**
+     * Set global data, will be merged and added on all the views.
+     *
+     * @param array $data
+     */
+    public function setGlobalData($data)
+    {
+        $this->globalData = $data;
+    }
+
+    /**
+     * Check if we have a body placeholder still empty.
+     *
+     * @return bool
+     */
+    public function hasBodyPlaceholderEmpty()
+    {
+        if ($this->bodyKey !== null) {
+            if (isset($this->stack[$this->bodyKey])) {
+                if ($this->stack[$this->bodyKey]->getType() === View::PART_BODY_PLACEHOLDER) {
+                    return false;
+                }
+                return false; // Still return false, but something weird is going on.
+            }
+            return true; // Yes, its not defined in the stack!
+        }
+        return false;
+    }
+
     /**
      * Get raw collection (the stack itself).
      *
@@ -104,10 +143,41 @@ class Render
     }
 
     /**
+     * Replace all stack items for the array given
+     *
+     * @param array|DataCollection $stack
+     */
+    public function replaceAll($stack)
+    {
+        if (! $stack instanceof DataCollection) {
+            $stack = new DataCollection($stack);
+        }
+
+        $this->stack = $stack;
+    }
+
+    /**
      * Render all views in the stack.
      */
     public function run()
     {
-        // TODO: Make the rendering start here.
+        foreach ($this->stack as $view) { /** @var View $view */
+            $data = $view->getData();
+
+            if (! empty($this->globalData)) {
+                $data = array_merge($data, $this->globalData);
+            }
+
+            $engineClass = $view->getEngine();
+            /** @var RendererInterface $engine */
+            $engine = $engineClass->newInstance();
+
+            if (! $engine instanceof RendererInterface) {
+                throw new RendererException("Engine is not instance of the RendererInterface.");
+            }
+
+            // Render it!
+            $engine->render($view, $data, false);
+        }
     }
 }
