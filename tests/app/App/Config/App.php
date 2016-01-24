@@ -16,7 +16,7 @@ Configure::define('app', function ($config) {
          *      - production      => No errors, exceptions are shown, all logged to log files.
          *      - development     => All errors, exceptions etc are thrown and showed in pages.
          */
-        'env' => 'production',
+        'env' => 'development',
 
 
         /**

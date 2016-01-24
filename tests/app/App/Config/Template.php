@@ -34,6 +34,15 @@ Configuration::define('template', function() {
 
 
         /**
+         * The default template engine.
+         * Could be:    PhpTemplate
+         *              MustacheTemplate
+         *
+         */
+        'defaultEngine' => 'PhpTemplate',
+
+
+        /**
          * Define custom prepared stacks here.
          */
         'stacks' => [
