@@ -1,23 +1,37 @@
 <?php
 /**
- * Arvici App Bootstrap
+ * Arvici App Bootstrap.
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
  */
 
-// Set the base path
-define('BASEPATH', __DIR__ . DS);
+/**
+ * Define the base directory containing the 'App' folder.
+ */
+defined('BASEPATH') || define('BASEPATH', __DIR__ . DS);
 
-$configDir = __DIR__ . '/App/Config/';
+/**
+ * Define all the paths in the base.
+ */
+defined('APPPATH') || define('APPPATH', BASEPATH . 'App' . DS);
 
-require_once $configDir . 'App.php';
-require_once $configDir . 'Router.php';
-require_once $configDir . 'Template.php';
-require_once $configDir . 'Database.php';
 
-// Prepare any logging
+
+/**
+ * Load all configuration files.
+ */
+$configDir = APPPATH . '/Config/';
+foreach (glob($configDir . '*.php') as $fileName) {
+    require_once $fileName;
+}
+
+/**
+ * Start the logger.
+ */
 // TODO: Implement logger here.
 
-// Run the router.
+/**
+ * Start the router.
+ */
 \Arvici\Component\Router::getInstance()->run();
