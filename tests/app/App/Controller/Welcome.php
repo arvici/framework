@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use Arvici\Component\Controller\BaseController;
+use Arvici\Exception\ControllerNotFoundException;
 
 class Welcome extends BaseController
 {
@@ -26,5 +27,10 @@ class Welcome extends BaseController
                 'Hello!'
             )
         ))->send();
+    }
+
+    public function exception()
+    {
+        throw new ControllerNotFoundException("Controller provided should give an exception on this route call!");
     }
 }
