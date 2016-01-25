@@ -218,7 +218,7 @@ class Render
         }
 
         // Instead, push it into the response object and send.
-        Http::getInstance()->response()->body($output)->status(200)->send(); // @codeCoverageIgnore
+        Http::getInstance()->response()->body($output)->send(200); // @codeCoverageIgnore
         return; // @codeCoverageIgnore
     }
 }
