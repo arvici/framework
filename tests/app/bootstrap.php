@@ -5,6 +5,7 @@
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
  */
+use Arvici\Heart\Config\Configuration;
 
 /**
  * Define the base directory containing the 'App' folder.
@@ -24,6 +25,12 @@ $configDir = APPPATH . '/Config/';
 foreach (glob($configDir . '*.php') as $fileName) {
     require_once $fileName;
 }
+
+
+/**
+ * Set default timezone
+ */
+date_default_timezone_set(Configuration::get('app.timezone', 'UTC'));
 
 /**
  * Start the logger.
