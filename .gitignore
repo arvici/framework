@@ -2,6 +2,10 @@
 build/logs/*
 
 tests/app/cache
+!tests/app/cache/.gitkeep
+
+tests/app/logs/*
+!tests/app/logs/.gitkeep
 
 ### Composer
 composer.phar

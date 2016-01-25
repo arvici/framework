@@ -18,6 +18,10 @@
     "php": ">=5.6.0",
     "ext-mbstring": "*",
 
+    "psr/log": "~1.0",
+    "monolog/monolog": "~1.17",
+    "filp/whoops": "~2.0",
+
     "mustache/mustache": "~2.9",
 
     "doctrine/annotations": "~1.2",
@@ -35,7 +39,10 @@
   "autoload": {
     "psr-4": {
       "Arvici\\": "src/Arvici"
-    }
+    },
+    "files": [
+      "src/Arvici/Heart/Log/Logger.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
