@@ -4,20 +4,37 @@ if (! defined('PHPUNIT_RUNNING')) { exit(); }
 
 defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 
-// Set the base path
-defined('BASEPATH') || define('BASEPATH', __DIR__ . DS . 'app/');
-
 // Require composer autoload!
 require_once dirname(__DIR__) . DS . 'vendor' . DS .'autoload.php';
 
 
-// Load App configuration.
-$configDir = __DIR__ . DS . 'app/App/Config/';
+/**
+ * Define the base directory containing the 'App' folder.
+ */
+defined('BASEPATH') || define('BASEPATH', __DIR__ . DS . 'app/');
 
-$configFiles = scandir($configDir);
+/**
+ * Define all the paths in the base.
+ */
+defined('APPPATH') || define('APPPATH', BASEPATH . 'App' . DS);
 
-foreach ($configFiles as $fileName) {
-    if (strlen($fileName) > 4 && substr($fileName, -4) === '.php') {
-        require_once $configDir . $fileName;
-    }
+
+/**
+ * Load all configuration files.
+ */
+$configDir = APPPATH . '/Config/';
+foreach (glob($configDir . '*.php') as $fileName) {
+    require_once $fileName;
 }
+
+/**
+ * Start the logger.
+ */
+\Logger::start();
+
+/**
+ * Test logger to console
+ */
+\Logger::clearLog();
+\Logger::getInstance()->addHandler(new \Monolog\Handler\TestHandler());
+\Logger::debug('PHPUnit Tests Started...');

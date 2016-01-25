@@ -17,7 +17,6 @@ defined('BASEPATH') || define('BASEPATH', __DIR__ . DS);
 defined('APPPATH') || define('APPPATH', BASEPATH . 'App' . DS);
 
 
-
 /**
  * Load all configuration files.
  */
@@ -29,7 +28,7 @@ foreach (glob($configDir . '*.php') as $fileName) {
 /**
  * Start the logger.
  */
-// TODO: Implement logger here.
+\Logger::start();
 
 /**
  * Start the router.
