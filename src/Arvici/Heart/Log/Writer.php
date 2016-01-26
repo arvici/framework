@@ -42,6 +42,14 @@ class Writer implements LoggerInterface
     }
 
     /**
+     * Clear all handlers.
+     */
+    public function clearHandlers()
+    {
+        $this->monolog->setHandlers(array());
+    }
+
+    /**
      * System is unusable.
      *
      * @param string $message

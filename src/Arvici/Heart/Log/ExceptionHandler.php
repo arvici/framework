@@ -15,6 +15,8 @@ use Whoops\Run;
 
 /**
  * Exception Handler for logging.
+ *
+ * @codeCoverageIgnore
  */
 class ExceptionHandler implements Registrable
 {
