@@ -140,4 +140,34 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(true);
         }
     }
+
+    /**
+     * @covers ::data()
+     * @covers ::body()
+     * @covers ::template()
+     * @covers ::clear()
+     * @covers \Arvici\Component\View\Render
+     */
+    public function testData()
+    {
+        $this->clearBuilder();
+
+        $this->builder->clear()->addView(new View('testbody1', View::PART_BODY));
+
+        // Invalid data
+        try {
+            $this->builder->data(null);
+            $this->assertTrue(false);
+        } catch (RendererException $e) {
+            $this->assertTrue(true);
+        }
+
+
+        // Global data
+        $this->builder->data(array('test' => 'yep'));
+
+        $html = $this->builder->render(array(), true);
+
+        $this->assertEquals("--=yep=--", $html);
+    }
 }
