@@ -12,6 +12,7 @@ use Arvici\Exception\PermissionDeniedException;
 use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Log\ExceptionHandler;
 use Arvici\Heart\Log\Writer;
+
 use Monolog\Handler\StreamHandler;
 
 /**
@@ -113,9 +114,9 @@ class Logger
      */
     public static function getInstance()
     {
-        if (self::$instance === null) {
-            throw new LogException("Logger is not started!");
-        }
+        if (self::$instance === null) { // @codeCoverageIgnore
+            throw new LogException("Logger is not started!"); // @codeCoverageIgnore
+        } // @codeCoverageIgnore
 
         return self::$instance;
     }
