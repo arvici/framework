@@ -50,6 +50,16 @@ class Writer implements LoggerInterface
     }
 
     /**
+     * Get all handlers.
+     *
+     * @return \Monolog\Handler\HandlerInterface[]
+     */
+    public function getHandlers()
+    {
+        return $this->monolog->getHandlers();
+    }
+
+    /**
      * System is unusable.
      *
      * @param string $message
