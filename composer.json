@@ -28,7 +28,9 @@
     "swiftmailer/swiftmailer": "~5.4",
 
     "fabfuel/prophiler": "~1.0",
-    "symfony/var-dumper": "~3.0"
+    "symfony/var-dumper": "~3.0",
+
+    "tomvlk/sweet-orm": "~0.3"
   },
   "require-dev": {
     "phpunit/phpunit": "5.1.4",
