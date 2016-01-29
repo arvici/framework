@@ -33,7 +33,7 @@
     "tomvlk/sweet-orm": "~0.3"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.1.4",
+    "phpunit/phpunit": "5.1.6",
     "phpunit/php-code-coverage": "^3",
     "satooshi/php-coveralls": "^1.0",
     "codacy/coverage": "^1.0"
