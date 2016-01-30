@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Component;
+use Arvici\Heart\Router\Middleware;
 use Arvici\Heart\Router\Route;
 
 /**
@@ -45,8 +46,6 @@ class Router extends \Arvici\Heart\Router\Router
      * First parameter of closure is an Router instance.
      *
      * @param \Closure $closure
-     *
-     * @codeCoverageIgnore
      */
     public static function define(\Closure $closure)
     {
@@ -58,8 +57,6 @@ class Router extends \Arvici\Heart\Router\Router
      *
      * @param string $group
      * @param \Closure $closure
-     *
-     * @codeCoverageIgnore
      */
     public static function group($group, \Closure $closure)
     {
@@ -119,5 +116,47 @@ class Router extends \Arvici\Heart\Router\Router
     public function delete($match, $callback)
     {
         $this->addRoute(new Route($match, 'DELETE', $callback, self::$group));
+    }
+
+    /**
+     * Add before middleware.
+     *
+     * @param string|callable $callback
+     * @param string $group Optional group. leave empty for global. When in group define it will be filled with the active group name!
+     * @param array $methods Array of methods, leave undefined for all methods, 'GET'/'POST'/'PUT'/'DELETE'.
+     */
+    public function before($callback, $group = null, $methods = array())
+    {
+        $methods = array_map('strtoupper', $methods);
+        if ($group === null) {
+            if (self::$group !== null) {
+                $group = self::$group;
+            } else {
+                $group = 'global';
+            }
+        }
+
+        $this->addMiddleware(new Middleware($callback, 'before', $methods, $group));
+    }
+
+    /**
+     * Add after middleware.
+     *
+     * @param string|callable $callback
+     * @param string $group Optional group. leave empty for global. When in group define it will be filled with the active group name!
+     * @param array $methods Array of methods, leave undefined for all methods, 'GET'/'POST'/'PUT'/'DELETE'.
+     */
+    public function after($callback, $group = null, $methods = array())
+    {
+        $methods = array_map('strtoupper', $methods);
+        if ($group === null) {
+            if (self::$group !== null) {
+                $group = self::$group;
+            } else {
+                $group = 'global';
+            }
+        }
+
+        $this->addMiddleware(new Middleware($callback, 'after', $methods, $group));
     }
 }

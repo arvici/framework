@@ -25,6 +25,12 @@ abstract class Router
     private $compiled;
 
     /**
+     * Middleware registry
+     * @var Middleware[]
+     */
+    private $middleware = array();
+
+    /**
      * Run the router
      *
      * @param string $method
@@ -48,14 +54,14 @@ abstract class Router
         // Try to match
         foreach($this->routes as $route) {
             if ($route->match($this->compiled)) {
-                $this->executeRoute($route);
+                $this->executeRoute($route, $method);
             }
         }
     }
 
 
     /**
-     * Add route to registry
+     * Add route to registry.
      *
      * It's better to use the ->get ->post etc methods, this will create the Route class for you!
      *
@@ -67,21 +73,128 @@ abstract class Router
     }
 
     /**
-     * Clear all routes
+     * Add middleware trigger to registry.
+     *
+     * @param Middleware $middleware
+     */
+    public function addMiddleware(Middleware &$middleware)
+    {
+        $group = $middleware->getGroup();
+        if (! isset($this->middleware[$group])) {
+            $this->middleware[$group] = array(
+                'before' => array(),
+                'after' => array()
+            );
+        }
+
+        $this->middleware[$group][$middleware->getPosition()][] = &$middleware;
+    }
+
+    /**
+     * Clear all routes and middleware.
      */
     public function clearRoutes()
     {
-        $this->routes = array();
+        $this->routes =     array();
+        $this->middleware = array();
     }
 
 
     /**
-     * Will try to match parameters and execute the callback
+     * Will try to match parameters and execute the callback.
+     * Will also trigger middleware.
      *
      * @param Route $route
+     *
+     * @param string $method Method of request.
+     *
+     * @param bool $force true for skipping middleware. Could be bad to do!
+     *
      */
-    private function executeRoute(Route &$route)
+    private function executeRoute(Route &$route, $method, $force = false)
     {
-        $route->execute($this->compiled);
+        $continue = true;
+        if (! $force) {
+            $continue = $this->executeRouteMiddleware($route, 'before', $method);
+        }
+
+        if ($continue === true) {
+            $route->execute($this->compiled);
+        }
+
+        if (! $force) {
+            $this->executeRouteMiddleware($route, 'after', $method);
+        }
+    }
+
+    /**
+     * Execute middleware found for the route.
+     *
+     * @param Route $route
+     *
+     * @param string $position 'before' or 'after'
+     *
+     * @param string $method
+     *
+     * @return bool Continue?
+     */
+    private function executeRouteMiddleware(Route &$route, $position, $method)
+    {
+        $method = strtoupper($method);
+
+        /** @var Middleware[] $middleware */
+        $middleware = array();
+        $continue   = true;
+
+        // Get all global middleware's.
+        if (isset(
+                $this->middleware['global'],
+                $this->middleware['global'][$position])
+            && count($this->middleware['global'][$position]) > 0) {
+
+            $middleware = array_merge($middleware, $this->middleware['global'][$position]);
+        }
+
+        // Group middleware if defined.
+        if ($route->getGroup() !== null
+            &&  isset($this->middleware[$route->getGroup()],
+                $this->middleware[$route->getGroup()][$position])
+            && count($this->middleware[$route->getGroup()][$position]) > 0) {
+            $middleware = array_merge($middleware, $this->middleware[$route->getGroup()][$position]);
+        }
+
+
+        // Will execute all middleware in order..:
+        foreach ($middleware as $trigger)
+        {
+            if (count($trigger->getMethods()) === 0
+            ||  in_array(strtoupper($method), $trigger->getMethods())) {
+
+                if ($this->executeMiddleware($trigger) === false) {
+                    $continue = false;
+                }
+            }
+        }
+
+        return $continue;
+    }
+
+    /**
+     * Execute middleware.
+     *
+     * @param Middleware $middleware
+     *
+     * @return bool
+     *
+     * @throws \Arvici\Exception\RouterException
+     */
+    private function executeMiddleware(Middleware &$middleware)
+    {
+        $continue = $middleware->execute();
+
+        if ($continue === false) {
+            return false;
+        }
+        return true;
     }
 }
