@@ -9,6 +9,7 @@
 namespace Arvici\Heart\Database;
 
 use Arvici\Exception\DatabaseException;
+use Arvici\Heart\Database\Query\QueryBuilder;
 
 /**
  * Connection Interface.
@@ -133,4 +134,12 @@ interface Connection
      * @throws \Exception
      */
     public function raw($query, $return = false, $fetchMode = null, $fetchClass = null);
+
+
+    /**
+     * Get a new Query Builder instance for this connection.
+     *
+     * @return QueryBuilder
+     */
+    public function build();
 }

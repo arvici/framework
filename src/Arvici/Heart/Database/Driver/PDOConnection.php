@@ -12,6 +12,7 @@ namespace Arvici\Heart\Database\Driver;
 use Arvici\Exception\DatabaseException;
 use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Database;
+use Arvici\Heart\Database\Query\QueryBuilder;
 
 /**
  * Connection encapsulation for every pdo connection.
@@ -242,5 +243,15 @@ class PDOConnection extends \PDO implements Connection
         }
 
         return $statement->fetchAll();
+    }
+
+    /**
+     * Get a new Query Builder instance for this connection.
+     *
+     * @return QueryBuilder
+     */
+    public function build()
+    {
+        return new QueryBuilder($this);
     }
 }

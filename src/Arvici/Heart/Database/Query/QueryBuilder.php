@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Heart\Database\Query;
+use Arvici\Heart\Database\Connection;
 
 /**
  * Query Builder
@@ -15,5 +16,15 @@ namespace Arvici\Heart\Database\Query;
  */
 class QueryBuilder
 {
+    /** @var Connection */
+    private $connection;
 
+    /**
+     * QueryBuilder constructor.
+     * @param Connection $connection
+     */
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
 }
