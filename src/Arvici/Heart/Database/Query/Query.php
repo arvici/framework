@@ -32,6 +32,11 @@ class Query
     const STATE_COMPLETE = 1;
 
     /**
+     * @var Parser
+     */
+    private $parser = null;
+
+    /**
      * Query constructor.
      *
      * @param Driver $driver
@@ -79,10 +84,28 @@ class Query
     public $table = array();
 
 
-
-
+    /**
+     * Get SQL query.
+     *
+     * @return string
+     *
+     * @throws QueryBuilderException
+     */
     public function getSQL()
     {
+        return $this->parse()->getSQL();
+    }
+
+    /**
+     * Get SQL Bind array.
+     *
+     * @return array
+     *
+     * @throws QueryBuilderException
+     */
+    public function getBind()
+    {
+        return $this->parse()->getBind();
     }
 
     /**
@@ -97,9 +120,12 @@ class Query
             throw new QueryBuilderException("Query is not yet completed!");
         }
 
-        $parse = new Parser($this);
-        $parse->validate();
+        if ($this->parser === null) {
+            $this->parser = new Parser($this);
+        }
 
-        return $parse;
+        $this->parser->validate();
+
+        return $this->parser;
     }
 }

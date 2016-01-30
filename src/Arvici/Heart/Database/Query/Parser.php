@@ -27,9 +27,15 @@ class Parser
     private $bind;
 
 
+    /**
+     * @var Query
+     */
+    private $query;
+
+
     public function __construct(Query &$query)
     {
-
+        $this->query = $query;
     }
 
     /**
@@ -92,6 +98,26 @@ class Parser
             return;
         }
 
+        $combineOrder = array();
+
+        // Type switch
+        switch($this->query->mode){
+            case Query::MODE_SELECT:
+                $this->parseSelectQuery(); break;
+            case Query::MODE_NONE:
+                throw new QueryBuilderParseException("Query has no mode yet!"); break;
+            default:
+                throw new QueryBuilderParseException("Query mode is invalid!"); break; // @codeCoverageIgnore
+        }
+    }
+
+
+    /**
+     * Select Mode Parser.
+     */
+    private function parseSelectQuery()
+    {
+        // Parse select ?
 
     }
 }

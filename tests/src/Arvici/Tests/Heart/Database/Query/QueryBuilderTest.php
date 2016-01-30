@@ -19,8 +19,12 @@ use Arvici\Heart\Database\Query\QueryBuilder;
  *
  * @covers \Arvici\Heart\Database\Query\Query
  * @covers \Arvici\Heart\Database\Query\QueryBuilder
+ *
  * @covers \Arvici\Heart\Database\Query\Part
  * @covers \Arvici\Heart\Database\Query\Part\Column
+ * @covers \Arvici\Heart\Database\Query\Part\Table
+ *
+ * @covers \Arvici\Heart\Database\Query\Parser
  *
  * @covers \Arvici\Heart\Database\Connection::build
  * @covers \Arvici\Heart\Database\Driver\PDOConnection::build
@@ -94,9 +98,25 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         // Replace
         $query->from("table", true);
         $this->assertCount(1, $queryObject->table);
-
-        // TODO: Add fetch test here too.
     }
+
+
+
+    public function testSelectFetch()
+    {
+        TestUtils::clearDatabase();
+        TestUtils::resetDatabase();
+
+        $connection = Database::connection();
+
+        $qb = $connection->build();
+        $all = $qb->select("*")->from("posts")->fetchAll();
+
+        var_dump($all);
+    }
+
+
+
 
     public function testSelectInvalid()
     {

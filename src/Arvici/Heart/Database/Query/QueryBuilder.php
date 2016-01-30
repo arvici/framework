@@ -7,9 +7,12 @@
  */
 
 namespace Arvici\Heart\Database\Query;
+use Arvici\Exception\DatabaseException;
 use Arvici\Exception\QueryBuilderException;
+use Arvici\Exception\QueryBuilderParseException;
 use Arvici\Exception\QueryException;
 use Arvici\Heart\Database\Connection;
+use Arvici\Heart\Database\Database;
 use Arvici\Heart\Database\Query\Part\Column;
 use Arvici\Heart\Database\Query\Part\Table;
 
@@ -258,4 +261,108 @@ class QueryBuilder
         // Return self.
         return $this;
     }
+
+
+
+
+
+    /**********************************************
+     *  EXECUTORS                                 *
+     **********************************************/
+
+
+    /**
+     * Fetch all records with the building query.
+     *
+     * @param null|int $mode Optional fetch mode.
+     * @param null|string $class Optional fetch class.
+     *
+     * @return array
+     */
+    public function fetchAll($mode = null, $class = null)
+    {
+        return $this->doExecute(true, $mode, $class);
+    }
+
+
+    /**
+     * Fetch single record with the building query.
+     *
+     * @param null|int $mode Optional fetch mode.
+     * @param null|string $class Optional fetch class.
+     *
+     * @return mixed|null
+     */
+    public function fetchSingle($mode = null, $class = null)
+    {
+        $results = $this->doExecute(true, $mode, $class);
+
+        if (count($results) > 0) {
+            return $results[0];
+        }
+        return null;
+    }
+
+
+    /**
+     * Execute build query, Don't return fetched results back.
+     *
+     * @throws QueryBuilderException
+     * @throws QueryException
+     * @throws \Exception
+     *
+     * @return bool success
+     */
+    public function execute()
+    {
+        if ($this->exception !== null) {
+            throw $this->exception;
+        }
+
+        return $this->doExecute(false);
+    }
+
+
+
+
+
+
+
+
+
+    /**********************************************
+     *  PRIVATE METHODS                           *
+     **********************************************/
+
+
+    /**
+     * Execute the query, fetch if provided details to do so.
+     *
+     * @param bool $fetch       Fetch on or off?
+     * @param null $fetchMode   Fetch mode (null for default)
+     * @param null $fetchClass  Fetch class (null for none)
+     *
+     * @throws QueryBuilderParseException
+     * @throws QueryBuilderException
+     * @throws QueryException
+     * @throws DatabaseException
+     *
+     * @throws \Exception
+     *
+     * @return bool Boolean when fetching is off.
+     * @return array|object|null Result when fetching is on.
+     */
+    private function doExecute($fetch = false, $fetchMode = null, $fetchClass = null)
+    {
+        if ($fetch) {
+            $fetchMode = Database::normalizeFetchType($fetchMode);
+        }
+
+        // Parse SQL and Bind
+        $sql = $this->query->getSQL();
+        $bind = $this->query->getBind();
+
+        return null;
+    }
+
 }
