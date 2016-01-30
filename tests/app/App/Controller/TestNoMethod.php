@@ -9,9 +9,9 @@
 namespace App\Controller;
 
 
-use Arvici\Component\Controller\BaseController;
+use Arvici\Component\Controller\Controller;
 
-class TestNoMethod extends BaseController
+class TestNoMethod extends Controller
 {
 
 }

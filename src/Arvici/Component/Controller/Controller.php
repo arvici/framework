@@ -18,16 +18,13 @@ use Arvici\Heart\Http\Response;
  *
  * @package Arvici\Component\Controller
  */
-abstract class BaseController
+abstract class Controller
 {
     /** @var Request */
     protected $request;
 
     /** @var Response */
     protected $response;
-
-    /** @var Builder */
-    protected $view;
 
     /**
      * Controller constructor, will prepare the request and response objects.
@@ -36,8 +33,6 @@ abstract class BaseController
     {
         $this->request = Http::getInstance()->request();
         $this->response = Http::getInstance()->response();
-
-        $this->view = View::build()->defaultStack();
     }
 
     /**

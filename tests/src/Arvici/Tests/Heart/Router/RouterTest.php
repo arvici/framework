@@ -26,6 +26,7 @@ use Arvici\Component\Router;
  * @covers \Arvici\Component\Router
  * @covers \Arvici\Heart\Router\Route
  * @covers \Arvici\Heart\Router\Middleware
+ * @covers \Arvici\Component\Controller\Controller
  */
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -159,7 +160,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Arvici\Heart\Router\Router
      * @covers \Arvici\Heart\Router\Route
-     * @covers \Arvici\Component\Controller\BaseController
      * @covers \Arvici\Heart\Http\Http
      * @covers \Arvici\Heart\Http\Request
      * @covers \Arvici\Heart\Http\Response
@@ -206,7 +206,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Arvici\Heart\Router\Router
      * @covers \Arvici\Heart\Router\Route
-     * @covers \Arvici\Component\Controller\BaseController
      * @covers \Arvici\Heart\Http\Http
      * @covers \Arvici\Heart\Http\Request
      * @covers \Arvici\Heart\Http\Response

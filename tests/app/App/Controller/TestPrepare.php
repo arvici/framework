@@ -9,9 +9,9 @@
 namespace App\Controller;
 
 
-use Arvici\Component\Controller\BaseController;
+use Arvici\Component\Controller\Controller;
 
-class TestPrepare extends BaseController
+class TestPrepare extends Controller
 {
     public function prepare()
     {

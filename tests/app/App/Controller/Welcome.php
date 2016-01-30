@@ -8,10 +8,10 @@
 
 namespace App\Controller;
 
-use Arvici\Component\Controller\BaseController;
+use Arvici\Component\Controller\BasicController;
 use Arvici\Exception\ControllerNotFoundException;
 
-class Welcome extends BaseController
+class Welcome extends BasicController
 {
     public function index()
     {

@@ -7,7 +7,7 @@
  */
 
 namespace Arvici\Heart\Router;
-use Arvici\Component\Controller\BaseController;
+use Arvici\Component\Controller\Controller;
 use Arvici\Exception\ControllerNotFoundException;
 
 /**
@@ -159,8 +159,8 @@ class Route
 
             $controller = new $controllerClass();
 
-            if (! $controller instanceof BaseController) {
-                throw new ControllerNotFoundException("The controller doesn't extend the BaseController: '{$controllerClass}'");
+            if (! $controller instanceof Controller) {
+                throw new ControllerNotFoundException("The controller doesn't extend the abstract framework controller: '{$controllerClass}'");
             }
 
             if (! method_exists($controller, $controllerMethod)) {

@@ -8,9 +8,9 @@
 
 namespace Arvici\Component\Middleware;
 
-use Arvici\Component\Controller\BaseController;
+use Arvici\Component\Controller\Controller;
 
-abstract class BaseMiddleware extends BaseController
+abstract class BaseMiddleware extends Controller
 {
 
 }
