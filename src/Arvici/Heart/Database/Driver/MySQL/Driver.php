@@ -46,6 +46,8 @@ class Driver implements \Arvici\Heart\Database\Driver
         // Connect
         $connection = new Connection($dsn, $username, $password, $options);
 
+        $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
         return $connection;
     }
 
