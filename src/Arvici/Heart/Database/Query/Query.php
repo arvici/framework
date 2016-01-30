@@ -8,6 +8,7 @@
 
 namespace Arvici\Heart\Database\Query;
 
+use Arvici\Exception\QueryBuilderException;
 use Arvici\Heart\Database\Driver;
 use Arvici\Heart\Database\Query\Part\Column;
 use Arvici\Heart\Database\Query\Part\Table;
@@ -18,14 +19,17 @@ use Arvici\Heart\Database\Query\Part\Table;
  */
 class Query
 {
-    const MODE_NONE     = 0;
+    const MODE_NONE      = 0;
 
-    const MODE_SELECT   = 1;
-    const MODE_INSERT   = 2;
-    const MODE_UPDATE   = 3;
-    const MODE_DELETE   = 4;
-    const MODE_TRUNCATE = 5;
-    const MODE_ADVANCED = 99;
+    const MODE_SELECT    = 1;
+    const MODE_INSERT    = 2;
+    const MODE_UPDATE    = 3;
+    const MODE_DELETE    = 4;
+    const MODE_TRUNCATE  = 5;
+    const MODE_ADVANCED  = 99;
+
+    const STATE_NONE     = 0;
+    const STATE_COMPLETE = 1;
 
     /**
      * Query constructor.
@@ -52,6 +56,13 @@ class Query
      */
     public $mode;
 
+    /**
+     * State of the current query.
+     *
+     * @var int Uses one of the constants.
+     */
+    public $state;
+
 
     /**
      * Select part of query. Contains Column parts.
@@ -66,4 +77,29 @@ class Query
      * @var Table[]
      */
     public $table = array();
+
+
+
+
+    public function getSQL()
+    {
+    }
+
+    /**
+     * Parse query
+     * @throws QueryBuilderException
+     *
+     * @return Parser
+     */
+    private function parse()
+    {
+        if (! $this->state = self::STATE_COMPLETE) {
+            throw new QueryBuilderException("Query is not yet completed!");
+        }
+
+        $parse = new Parser($this);
+        $parse->validate();
+
+        return $parse;
+    }
 }
