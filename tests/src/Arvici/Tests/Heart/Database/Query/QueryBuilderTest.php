@@ -112,7 +112,10 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $qb = $connection->build();
         $all = $qb->select("*")->from("posts")->fetchAll();
 
-        var_dump($all);
+        $this->assertCount(7, $all);
+
+        $singleObject = $qb->fetchSingle(Database::FETCH_OBJECT);
+        $this->assertTrue(is_object($singleObject));
     }
 
 

@@ -295,12 +295,7 @@ class QueryBuilder
      */
     public function fetchSingle($mode = null, $class = null)
     {
-        $results = $this->doExecute(true, $mode, $class);
-
-        if (count($results) > 0) {
-            return $results[0];
-        }
-        return null;
+        return $this->doExecute('single', $mode, $class);
     }
 
 
@@ -362,10 +357,39 @@ class QueryBuilder
         $sql = $this->query->getSQL();
         $bind = $this->query->getBind();
 
-        var_dump($sql);
-        var_dump($bind);
+        // Connection and execute
+        $statement = $this->connection->prepare($sql);
 
-        return null;
+        foreach ($bind as $idx => $value) {
+            $statement->bindValue(($idx+1), $value, Database::typeOfValue($value));
+        }
+
+        // Fetch
+        if ($fetch) {
+            if ($fetchMode === Database::FETCH_CLASS) {
+                // Verify class
+                new \ReflectionClass($fetchClass);
+
+                $statement->setFetchMode($fetchMode, $fetchClass);
+            } else {
+                $statement->setFetchMode($fetchMode);
+            }
+        }
+
+        // Execute
+        $success = $statement->execute();
+        if (! $success) {
+            return false;
+        }
+
+        if ($fetch && $fetch === 'single') {
+            return $statement->fetch();
+        }
+        if ($fetch) {
+            return $statement->fetchAll();
+        }
+
+        return true;
     }
 
 }

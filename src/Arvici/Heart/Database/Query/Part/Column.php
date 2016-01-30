@@ -113,7 +113,12 @@ class Column implements Part
 
         foreach ($parts as $part) {
             if ($part instanceof Column) {
-                $return .= "`{$part->getColumnName()}`";
+                if ($part->getColumnName() === '*') {
+                    $return .= "*";
+                } else {
+                    $return .= "`{$part->getColumnName()}`";
+                }
+
                 if ($part->getColumnAs() !== null) {
                     $return .= " " . $part->getColumnAs();
                 }
