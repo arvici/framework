@@ -65,6 +65,11 @@ class Router extends \Arvici\Heart\Router\Router
         self::$group = null;
     }
 
+    public static function api($schemaClass, $apiController, $methods = null)
+    {
+        // TODO: Generate route definitions for api class schema and methods.
+    }
+
 
     /**
      * Add route for GET method.
