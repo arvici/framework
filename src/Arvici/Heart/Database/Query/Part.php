@@ -22,7 +22,7 @@ interface Part
      *
      * @return mixed
      */
-    public function getName();
+    public function getPartName();
 
     /**
      * Append to query.

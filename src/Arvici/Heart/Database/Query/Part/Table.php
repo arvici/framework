@@ -1,6 +1,6 @@
 <?php
 /**
- * Column.php
+ * Table Part
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -14,11 +14,11 @@ use Arvici\Heart\Database\Query\Query;
 use Arvici\Heart\Database\Statement;
 
 /**
- * Column, used for selecting.
+ * Table, used for any mode.
  *
  * @package Arvici\Heart\Database\Query\Part
  */
-class Column implements Part
+class Table implements Part
 {
     /** @var string */
     private $name;
@@ -27,9 +27,9 @@ class Column implements Part
     private $as;
 
     /**
-     * Column constructor.
+     * Table constructor.
      *
-     * @param string $name Name of column to select.
+     * @param string $name Name of table to select/update/delete or anything else.
      */
     public function __construct($name)
     {
@@ -39,7 +39,7 @@ class Column implements Part
     /**
      * @param string $name
      */
-    public function setColumnName($name)
+    public function setTableName($name)
     {
         $this->name = $name;
     }
@@ -47,7 +47,7 @@ class Column implements Part
     /**
      * @param string|null $as
      */
-    public function setColumnAs($as)
+    public function setTableAs($as)
     {
         $this->as = $as;
     }
@@ -55,7 +55,7 @@ class Column implements Part
     /**
      * @return string
      */
-    public function getColumnName()
+    public function getTableName()
     {
         return $this->name;
     }
@@ -63,7 +63,7 @@ class Column implements Part
     /**
      * @return null|string
      */
-    public function getColumnAs()
+    public function getTableAs()
     {
         return $this->as;
     }
@@ -95,7 +95,7 @@ class Column implements Part
      */
     public function appendQuery(Query &$query)
     {
-        $query->select[] = $this;
+        $query->table[] = $this;
     }
 
     /**
@@ -112,10 +112,10 @@ class Column implements Part
         $return = "";
 
         foreach ($parts as $part) {
-            if ($part instanceof Column) {
-                $return .= "`{$part->getColumnName()}`";
-                if ($part->getColumnAs() !== null) {
-                    $return .= " " . $part->getColumnAs();
+            if ($part instanceof Table) {
+                $return .= "`{$part->getTableName()}`";
+                if ($part->getTableAs() !== null) {
+                    $return .= " " . $part->getTableAs();
                 }
 
                 $return .= ",";

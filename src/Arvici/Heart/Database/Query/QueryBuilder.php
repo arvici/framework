@@ -11,6 +11,7 @@ use Arvici\Exception\QueryBuilderException;
 use Arvici\Exception\QueryException;
 use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Query\Part\Column;
+use Arvici\Heart\Database\Query\Part\Table;
 
 /**
  * Query Builder
@@ -140,6 +141,121 @@ class QueryBuilder
 
         // Set mode and return self.
         $this->query->mode = Query::MODE_SELECT;
+        return $this;
+    }
+
+
+    /**
+     * Select from table(s).
+     *
+     * @param string|array $table Give a single table, multiple tables with following syntax:
+     * - Just value => is the actual table name
+     * - Key is table name and Value is alias.
+     *
+     * Could also be a comma separated string.
+     *
+     * @param bool $replace Replace existing tables?
+     *
+     * @throws QueryBuilderException
+     *
+     * @return QueryBuilder
+     */
+    public function from($table, $replace = false)
+    {
+        if (   $this->query->mode !== Query::MODE_NONE
+            && $this->query->mode !== Query::MODE_SELECT
+            && $this->query->mode !== Query::MODE_DELETE) {
+
+            $this->exception = new QueryBuilderException("The query mode is already defined! Or should be SELECT, DELETE for table();");
+            return $this;
+        }
+
+        return $this->table($table, $replace);
+    }
+
+
+
+
+
+
+
+
+    /**********************************************
+     *  GENERAL PART                              *
+     **********************************************/
+
+
+    /**
+     * Adjust table to select/update or do anything with.
+     *
+     * @param string|array $table Give a single table, multiple tables with following syntax:
+     * - Just value => is the actual table name
+     * - Key is table name and Value is alias.
+     *
+     * Could also be a comma separated string.
+     *
+     * @param bool $replace Replace existing tables?
+     *
+     * @throws QueryBuilderException
+     *
+     * @return QueryBuilder
+     */
+    public function table($table, $replace = false)
+    {
+        // Check if mode is defined. Then stop.
+        if (   $this->query->mode !== Query::MODE_NONE
+            && $this->query->mode !== Query::MODE_SELECT
+            && $this->query->mode !== Query::MODE_DELETE
+            && $this->query->mode !== Query::MODE_UPDATE
+            && $this->query->mode !== Query::MODE_TRUNCATE
+            && $this->query->mode !== Query::MODE_INSERT
+            && $this->query->mode !== Query::MODE_ADVANCED) {
+
+            $this->exception = new QueryBuilderException("The query mode is already defined or doesn't complain the table constraints"); // @codeCoverageIgnore
+            return $this; // @codeCoverageIgnore
+        }
+
+        // Parse when string
+        if (is_string($table)) {
+            if (strstr($table, ',')) {
+                // Explode
+                $table = explode(',', $table);
+            } else {
+                $table = array($table);
+            }
+        }
+
+        // Replace
+        if ($replace) {
+            $this->query->table = array();
+        }
+
+        // Invalid type?
+        if (! is_array($table)) {
+            $this->exception = new QueryException("Select table should be string or array!");
+            return $this;
+        }
+
+        // Append to current select.
+        foreach ($table as $key => $value) {
+
+            $tableName = null;
+            $tableAs =   null;
+
+            if (is_string($key)) {
+                $tableName = trim($key);
+                $tableAs = trim($value);
+            }else{
+                $tableName = trim($value);
+            }
+
+            $tablePart = new Table($tableName);
+            $tablePart->setTableAs($tableAs);
+
+            $tablePart->appendQuery($this->query);
+        }
+
+        // Return self.
         return $this;
     }
 }

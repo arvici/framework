@@ -10,6 +10,7 @@ namespace Arvici\Heart\Database\Query;
 
 use Arvici\Heart\Database\Driver;
 use Arvici\Heart\Database\Query\Part\Column;
+use Arvici\Heart\Database\Query\Part\Table;
 
 /**
  * Query Data Class.
@@ -62,7 +63,7 @@ class Query
     /**
      * Select Table part of query. Contains all Table parts.
      *
-     * @var Part[]
+     * @var Table[]
      */
     public $table = array();
 }

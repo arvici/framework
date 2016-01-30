@@ -55,7 +55,7 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $query->select("column3");
         $query->select("column4, column5");
 
-        $queryObject = $query->getRawQuery();
+
         $this->assertEquals(Query::MODE_SELECT, $queryObject->mode);
         $this->assertCount(5, $queryObject->select);
         $this->assertEquals("column", $queryObject->select[0]->getColumnName());
@@ -73,6 +73,28 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("column5", $queryObject->select[4]->getColumnName());
         $this->assertNull($queryObject->select[4]->getColumnAs());
 
+
+        // === From (table selection)
+        $query->from("table1");
+
+        $this->assertCount(1, $queryObject->table);
+
+        $query->from("table2, table3");
+        $this->assertCount(3, $queryObject->table);
+        $this->assertEquals("table1", $queryObject->table[0]->getTableName());
+        $this->assertEquals("table2", $queryObject->table[1]->getTableName());
+        $this->assertEquals("table3", $queryObject->table[2]->getTableName());
+        $this->assertNull($queryObject->table[2]->getTableAs());
+
+        $query->from(array("table4" => "awesometable"));
+        $this->assertCount(4, $queryObject->table);
+        $this->assertEquals("table4", $queryObject->table[3]->getTableName());
+        $this->assertEquals("awesometable", $queryObject->table[3]->getTableAs());
+
+        // Replace
+        $query->from("table", true);
+        $this->assertCount(1, $queryObject->table);
+
         // TODO: Add fetch test here too.
     }
 
@@ -85,6 +107,8 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         $query->select(false);
         // TODO: Add fetch so it will throw the exception on stack!
+
+        $query->from(false);
 
         // TODO: Test invalid mode
     }
