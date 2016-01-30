@@ -16,6 +16,7 @@ use Arvici\Exception\DatabaseDriverException;
  */
 class Driver implements \Arvici\Heart\Database\Driver
 {
+    const NAME = 'MySQL';
 
     /**
      * Create the connection. Will return a connection instance.

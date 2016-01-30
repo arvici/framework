@@ -12,6 +12,7 @@ namespace Arvici\Heart\Database\Driver;
 use Arvici\Exception\DatabaseException;
 use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Database;
+use Arvici\Heart\Database\Driver;
 use Arvici\Heart\Database\Query\QueryBuilder;
 
 /**
@@ -20,7 +21,7 @@ use Arvici\Heart\Database\Query\QueryBuilder;
  *
  * @package Arvici\Heart\Database\Driver
  */
-class PDOConnection extends \PDO implements Connection
+abstract class PDOConnection extends \PDO implements Connection
 {
     /**
      * Select and return results of executed $query.
@@ -254,4 +255,11 @@ class PDOConnection extends \PDO implements Connection
     {
         return new QueryBuilder($this);
     }
+
+    /**
+     * Get driver instance for this connection.
+     *
+     * @return Driver
+     */
+    abstract public function getDriver();
 }

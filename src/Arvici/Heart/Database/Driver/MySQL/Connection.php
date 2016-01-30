@@ -8,6 +8,7 @@
 
 namespace Arvici\Heart\Database\Driver\MySQL;
 
+use Arvici\Heart\Database\Database;
 use Arvici\Heart\Database\Driver\PDOConnection;
 
 /**
@@ -17,4 +18,13 @@ use Arvici\Heart\Database\Driver\PDOConnection;
  */
 class Connection extends PDOConnection
 {
+    /**
+     * Get driver instance for this connection.
+     *
+     * @return \Arvici\Heart\Database\Driver
+     */
+    public function getDriver()
+    {
+        return Database::driver(null, 'MySQL');
+    }
 }

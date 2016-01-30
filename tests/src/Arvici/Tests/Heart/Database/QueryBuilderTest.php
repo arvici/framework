@@ -26,6 +26,10 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers \Arvici\Heart\Database\Connection::build
      * @covers \Arvici\Heart\Database\Driver\PDOConnection::build
+     * @covers \Arvici\Heart\Database\Database::driver
+     * @covers \Arvici\Heart\Database\Connection::getDriver
+     * @covers \Arvici\Heart\Database\Driver\PDOConnection::getDriver
+     * @covers \Arvici\Heart\Database\Driver\MySQL\Connection::getDriver
      */
     public function testSelect()
     {

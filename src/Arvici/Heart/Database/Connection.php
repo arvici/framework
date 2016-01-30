@@ -142,4 +142,11 @@ interface Connection
      * @return QueryBuilder
      */
     public function build();
+
+    /**
+     * Get driver instance for this connection.
+     *
+     * @return Driver
+     */
+    public function getDriver();
 }

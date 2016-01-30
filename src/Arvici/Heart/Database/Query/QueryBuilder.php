@@ -19,6 +19,8 @@ class QueryBuilder
     /** @var Connection */
     private $connection;
 
+    private $query;
+
     /**
      * QueryBuilder constructor.
      * @param Connection $connection
@@ -26,5 +28,7 @@ class QueryBuilder
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
+
+        $this->query = new Query($connection->getDriver());
     }
 }

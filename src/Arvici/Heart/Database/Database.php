@@ -59,16 +59,19 @@ class Database
     }
 
     /**
-     * Get driver instance for connection name.
+     * Get driver instance for connection name or driver name.
      *
      * @param string $name Connection name.
+     * @param string $driverName Driver name.
      *
      * @return Driver
      */
-    public static function driver($name = 'default')
+    public static function driver($name = 'default', $driverName = null)
     {
-        $databaseConfig = self::getConnectionConfiguration($name);
-        $driverName = $databaseConfig['driver'];
+        if ($name !== null && $driverName === null) {
+            $databaseConfig = self::getConnectionConfiguration($name);
+            $driverName = $databaseConfig['driver'];
+        }
 
         // Make the driver if we don't have it already this run.
         if (! isset(self::$drivers[$driverName])) {
