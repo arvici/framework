@@ -22,6 +22,13 @@ class Database
     const FETCH_CLASS   = 8;
     const FETCH_NUMERIC = 3;
 
+    const TYPE_NULL     = 0;
+    const TYPE_INT      = 1;
+    const TYPE_STR      = 2;
+    const TYPE_LOB      = 3;
+    const TYPE_STMT     = 4;
+    const TYPE_BOOL     = 5;
+
     /** @var Driver[] $drivers Indexed by driver name! */
     private static $drivers = array();
 
@@ -144,5 +151,26 @@ class Database
             return self::defaultReturnType();
         }
         return $returnType;
+    }
+
+
+    /**
+     * Get type of value.
+     *
+     * @param mixed $value
+     * @return int
+     */
+    public static function typeOfValue($value)
+    {
+        if (is_null($value)) {
+            return self::TYPE_NULL;
+        }
+        if (is_int($value)) {
+            return self::TYPE_INT;
+        }
+        if (is_bool($value)) {
+            return self::TYPE_BOOL;
+        }
+        return self::TYPE_STR;
     }
 }

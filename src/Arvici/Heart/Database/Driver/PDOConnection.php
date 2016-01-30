@@ -100,7 +100,7 @@ abstract class PDOConnection extends \PDO implements Connection
 
         $idx = 0;
         foreach ($data as $key => $value) {
-            $statement->bindValue(($idx+1), $value, (is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
+            $statement->bindValue(($idx+1), $value, Database::typeOfValue($value));
             $idx++;
         }
 
@@ -149,7 +149,7 @@ abstract class PDOConnection extends \PDO implements Connection
         // Prepare, bind and execute.
         $statement = $this->prepare($query);
         foreach ($bind as $idx => $value) {
-            $statement->bindValue(($idx + 1), $value, (is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
+            $statement->bindValue(($idx + 1), $value, Database::typeOfValue($value));
         }
 
         return $statement->execute();
@@ -180,7 +180,7 @@ abstract class PDOConnection extends \PDO implements Connection
         // Prepare, bind and execute
         $statement = $this->prepare($query);
         foreach ($bind as $idx => $value) {
-            $statement->bindValue(($idx + 1), $value, (is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
+            $statement->bindValue(($idx + 1), $value, Database::typeOfValue($value));
         }
 
         return $statement->execute();
