@@ -129,18 +129,4 @@ class Column implements Part
 
         return ($return !== "" ? substr($return, 0, -1) : "*");
     }
-
-    /**
-     * Apply generated to prepared statement, use for binding values!
-     *
-     * @param Statement $statement
-     *
-     * @return bool
-     *
-     * @throws QueryException
-     */
-    public static function applyQueryToStatement(Statement &$statement)
-    {
-        // TODO: Implement applyQueryToStatement() method.
-    }
 }

@@ -45,15 +45,4 @@ interface Part
      * @throws QueryException
      */
     public static function generateQueryString(array $parts);
-
-    /**
-     * Apply generated to prepared statement, use for binding values!
-     *
-     * @param Statement $statement
-     *
-     * @return bool
-     *
-     * @throws QueryException
-     */
-    public static function applyQueryToStatement(Statement &$statement);
 }

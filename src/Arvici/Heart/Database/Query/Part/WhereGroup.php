@@ -1,6 +1,6 @@
 <?php
 /**
- * Table Part
+ * Where Group Part
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -14,59 +14,29 @@ use Arvici\Heart\Database\Query\Query;
 use Arvici\Heart\Database\Statement;
 
 /**
- * Table, used for any mode.
+ * Where condition.
  *
  * @package Arvici\Heart\Database\Query\Part
  */
-class Table implements Part
+class WhereGroup implements Part
 {
-    /** @var string */
-    private $name;
-
-    /** @var string|null */
-    private $as;
 
     /**
-     * Table constructor.
+     * @var array $where Array with more groups or where parts.
+     */
+    private $where = array();
+
+    /**
+     * Where constructor.
      *
-     * @param string $name Name of table to select/update/delete or anything else.
+     * @param string $type AND or OR.
      */
-    public function __construct($name)
+    public function __construct($type = "AND")
     {
-        $this->name = $name;
+        $this->where = array();
     }
 
-    /**
-     * @param string $name
-     */
-    public function setTableName($name)
-    {
-        $this->name = $name;
-    }
 
-    /**
-     * @param string|null $as
-     */
-    public function setTableAs($as)
-    {
-        $this->as = $as;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTableName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTableAs()
-    {
-        return $this->as;
-    }
 
 
 
@@ -95,7 +65,7 @@ class Table implements Part
      */
     public function appendQuery(Query &$query)
     {
-        $query->table[] = $this;
+        return false;
     }
 
     /**
@@ -124,5 +94,4 @@ class Table implements Part
 
         return ($return !== "" ? substr($return, 0, -1) : "*");
     }
-
 }

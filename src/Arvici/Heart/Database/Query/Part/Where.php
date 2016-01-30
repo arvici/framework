@@ -1,6 +1,6 @@
 <?php
 /**
- * Table Part
+ * Where Part
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -14,59 +14,22 @@ use Arvici\Heart\Database\Query\Query;
 use Arvici\Heart\Database\Statement;
 
 /**
- * Table, used for any mode.
+ * Where condition.
  *
  * @package Arvici\Heart\Database\Query\Part
  */
-class Table implements Part
+class Where implements Part
 {
-    /** @var string */
-    private $name;
-
-    /** @var string|null */
-    private $as;
-
     /**
-     * Table constructor.
+     * Where constructor.
      *
-     * @param string $name Name of table to select/update/delete or anything else.
      */
-    public function __construct($name)
+    public function __construct()
     {
-        $this->name = $name;
+
     }
 
-    /**
-     * @param string $name
-     */
-    public function setTableName($name)
-    {
-        $this->name = $name;
-    }
 
-    /**
-     * @param string|null $as
-     */
-    public function setTableAs($as)
-    {
-        $this->as = $as;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTableName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTableAs()
-    {
-        return $this->as;
-    }
 
 
 
@@ -95,7 +58,7 @@ class Table implements Part
      */
     public function appendQuery(Query &$query)
     {
-        $query->table[] = $this;
+        return false;
     }
 
     /**
@@ -124,5 +87,4 @@ class Table implements Part
 
         return ($return !== "" ? substr($return, 0, -1) : "*");
     }
-
 }
