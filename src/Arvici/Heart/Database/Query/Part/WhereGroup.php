@@ -20,11 +20,15 @@ use Arvici\Heart\Database\Statement;
  */
 class WhereGroup implements Part
 {
+    const TYPE_AND = "AND";
+    const TYPE_OR  = "OR" ;
 
     /**
      * @var array $where Array with more groups or where parts.
      */
     private $where = array();
+
+    private $type;
 
     /**
      * Where constructor.
@@ -34,9 +38,32 @@ class WhereGroup implements Part
     public function __construct($type = "AND")
     {
         $this->where = array();
+        $this->type = $type;
+    }
+
+    /**
+     * Add all where entries.
+     *
+     * @param Where[]|WhereGroup[]|array $entries
+     */
+    public function addAll($entries)
+    {
+        foreach ($entries as $entry)
+        {
+            $this->add($entry);
+        }
     }
 
 
+    public function add($entry)
+    {
+        if ($entry instanceof Where) {
+            $this->where[] = $entry;
+        }
+        if ($entry instanceof WhereGroup) {
+            $this->where[] = $entry;
+        }
+    }
 
 
 

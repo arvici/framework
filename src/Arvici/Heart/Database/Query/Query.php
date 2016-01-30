@@ -12,6 +12,7 @@ use Arvici\Exception\QueryBuilderException;
 use Arvici\Heart\Database\Driver;
 use Arvici\Heart\Database\Query\Part\Column;
 use Arvici\Heart\Database\Query\Part\Table;
+use Arvici\Heart\Database\Query\Part\WhereGroup;
 
 /**
  * Query Data Class.
@@ -69,6 +70,8 @@ class Query
     public $state;
 
 
+
+
     /**
      * Select part of query. Contains Column parts.
      *
@@ -82,6 +85,16 @@ class Query
      * @var Table[]
      */
     public $table = array();
+
+    /**
+     * Where groups containing where and more groups.
+     *
+     * @var WhereGroup[]
+     */
+    public $where = array();
+
+
+
 
 
     /**
