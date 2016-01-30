@@ -8,6 +8,8 @@
 
 namespace Arvici\Heart\Database\Query;
 use Arvici\Exception\QueryBuilderParseException;
+use Arvici\Heart\Database\Query\Part\Column;
+use Arvici\Heart\Database\Query\Part\Table;
 
 /**
  * Class Parser
@@ -24,7 +26,7 @@ class Parser
     private $sql;
 
     /** @var array $bind */
-    private $bind;
+    private $bind = array();
 
 
     /**
@@ -89,7 +91,6 @@ class Parser
      * @throws QueryBuilderParseException
      * @throws \Exception
      *
-     * @internal Uses internal variables.
      */
     private function parse()
     {
@@ -98,17 +99,19 @@ class Parser
             return;
         }
 
-        $combineOrder = array();
-
         // Type switch
         switch($this->query->mode){
             case Query::MODE_SELECT:
                 $this->parseSelectQuery(); break;
             case Query::MODE_NONE:
-                throw new QueryBuilderParseException("Query has no mode yet!"); break;
+                throw new QueryBuilderParseException("Query has no mode yet!"); break; // @codeCoverageIgnore
             default:
                 throw new QueryBuilderParseException("Query mode is invalid!"); break; // @codeCoverageIgnore
         }
+
+
+        // Set parsed to true.
+        $this->parsed = true;
     }
 
 
@@ -118,6 +121,51 @@ class Parser
     private function parseSelectQuery()
     {
         // Parse select ?
+        $selectSql = Column::generateQueryString($this->query->select);
 
+        // Parse table
+        $fromSql = Table::generateQueryString($this->query->table);
+
+        $whereSql = null;
+        $whereBind = array();
+
+
+        $sql = [
+            'select' => $selectSql,
+            'from' => $fromSql,
+            'where' => $whereSql
+            // TODO: Add other parts.
+        ];
+
+        $this->bind = array_merge(
+            $this->bind,
+            $whereBind
+        );
+
+        $this->sql = $this->combineSelectQuery($sql);
+    }
+
+    /**
+     * Combine select query.
+     *
+     * @param array $sqlParts
+     *
+     * @return string
+     */
+    private function combineSelectQuery($sqlParts)
+    {
+        // Add select columns and tables.
+        $output = "SELECT " . $sqlParts['select'] . " FROM " . $sqlParts['from'];
+
+        // Add where when defined.
+        if ($sqlParts['where'] !== null) {
+            // Add where
+            $output .= " WHERE " . $sqlParts['where'];
+        }
+
+        // TODO: Add other parts.
+
+
+        return $output;
     }
 }

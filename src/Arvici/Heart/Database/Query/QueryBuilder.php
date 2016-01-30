@@ -362,6 +362,9 @@ class QueryBuilder
         $sql = $this->query->getSQL();
         $bind = $this->query->getBind();
 
+        var_dump($sql);
+        var_dump($bind);
+
         return null;
     }
 
