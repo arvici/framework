@@ -17,6 +17,8 @@ use Arvici\Heart\Database\Statement;
  * Where condition.
  *
  * @package Arvici\Heart\Database\Query\Part
+ *
+ * @codeCoverageIgnore
  */
 class WhereGroup implements Part
 {

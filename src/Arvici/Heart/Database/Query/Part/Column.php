@@ -38,6 +38,7 @@ class Column implements Part
 
     /**
      * @param string $name
+     * @codeCoverageIgnore
      */
     public function setColumnName($name)
     {
@@ -76,6 +77,7 @@ class Column implements Part
 
     /**
      * Get part name. Used for building and combining together.
+     * @codeCoverageIgnore
      *
      * @return mixed
      */

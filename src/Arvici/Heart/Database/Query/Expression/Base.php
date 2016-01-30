@@ -14,6 +14,8 @@ use Arvici\Exception\ExpressionBuilderException;
  * Class Base Expression
  *
  * @package Arvici\Heart\Database\Query\Expression
+ *
+ * @codeCoverageIgnore
  */
 abstract class Base
 {

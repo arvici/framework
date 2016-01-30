@@ -38,6 +38,7 @@ class Table implements Part
 
     /**
      * @param string $name
+     * @codeCoverageIgnore
      */
     public function setTableName($name)
     {
@@ -76,6 +77,7 @@ class Table implements Part
 
     /**
      * Get part name. Used for building and combining together.
+     * @codeCoverageIgnore
      *
      * @return mixed
      */
