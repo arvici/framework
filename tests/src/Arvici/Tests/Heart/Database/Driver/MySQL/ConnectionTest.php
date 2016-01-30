@@ -20,6 +20,7 @@ use Arvici\Heart\Database\Database;
  * @covers \Arvici\Heart\Database\Driver\PDOConnection
  * @covers \Arvici\Heart\Database\Connection
  * @covers \Arvici\Heart\Database\Statement
+ * @covers \Arvici\Heart\Database\Database
  */
 class ConnectionTest extends \PHPUnit_Framework_TestCase
 {

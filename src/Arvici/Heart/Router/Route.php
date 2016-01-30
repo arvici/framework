@@ -116,6 +116,16 @@ class Route
         return (bool) preg_match($this->getCompiled(), $compiled);
     }
 
+
+    /**
+     * @return null|string
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+
     /**
      * Execute the route callback with given parameters.
      *
