@@ -7,8 +7,10 @@
  */
 
 namespace Arvici\Tests\Heart\Router;
+
 use App\TestUtils;
 use Arvici\Exception\ControllerNotFoundException;
+use Arvici\Exception\RouterException;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Router\Route;
 use Arvici\Component\Router;
@@ -23,6 +25,7 @@ use Arvici\Component\Router;
  * @covers \Arvici\Heart\Router\Router
  * @covers \Arvici\Component\Router
  * @covers \Arvici\Heart\Router\Route
+ * @covers \Arvici\Heart\Router\Middleware
  */
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -229,5 +232,201 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('test' => 'yes'), $request->get()->all());
 
         // More testing on REQUEST is done in a separate case
+    }
+
+
+    /**
+     * Test the define method.
+     */
+    public function testDefine()
+    {
+        TestUtils::clearRoutes();
+
+        $done = 0;
+
+        Router::define(function(Router $router) use (&$done) {
+            $router->get("/test/get/define/1", function() use (&$done) {
+                $done++;
+            });;
+
+            $router->get("/test/get/define/2", function() use (&$done) {
+                $done++;
+            });;
+        });
+
+        $router = Router::getInstance();
+
+        $this->spoof('/test/get/define/1', 'GET');
+        $router->run();
+
+        $this->spoof('/test/get/define/2', 'GET');
+        $router->run();
+
+        $this->assertEquals(2, $done);
+    }
+
+
+    /**
+     * Test group define and middleware for group.
+     */
+    public function testGroup()
+    {
+        TestUtils::clearRoutes();
+
+        // Called?
+        $globalBefore = false;
+        $globalBeforePost = false;
+        $globalAfter = false;
+
+        $groupBefore = false;
+        $groupAfter = false;
+
+        // Done int.
+        $done = 0;
+
+        // Hold if we already called.
+        $called = false;
+
+
+        // Set global middleware, before.
+        Router::getInstance()->before(function() use (&$globalBefore) {
+            $globalBefore = true;
+        });
+
+        Router::getInstance()->before(function() use (&$globalBeforePost) {
+            $globalBeforePost = true;
+        }, null, ['POST']);
+
+        Router::getInstance()->after(function() use (&$globalAfter) {
+            $globalAfter = true;
+        });
+
+        // Define group.
+        Router::group('group1', function(Router $router) use (&$done, &$called, &$groupBefore, &$groupAfter) {
+            // Add before that will only pass 1 time (the first time)
+            $router->before(function() use (&$called, &$groupBefore) {
+                $groupBefore = true;
+
+                if ($called) {
+                    return false;
+                }
+                $called = true;
+                return true;
+            });
+
+            // Add test get
+            $router->get('/middleware/1', function() use (&$done) {
+                $done++;
+            });
+
+            // Add test after
+            $router->after(function() use (&$groupAfter) {
+                $groupAfter = true;
+            });
+        });
+
+        Router::getInstance()->post("/middleware/2", function() use (&$done) {
+            $done++;
+        });
+
+
+        // Ok, lets spoof.
+        $router = Router::getInstance();
+
+        $this->spoof('/middleware/1', 'GET');
+        $router->run();
+
+        $this->assertEquals(1, $done);
+        $this->assertTrue($globalBefore);
+        $this->assertTrue($globalAfter);
+        $this->assertTrue($groupBefore);
+        $this->assertTrue($groupAfter);
+        $this->assertFalse($globalBeforePost);
+
+
+        // Second time should not call the $done one again!
+        $this->spoof('/middleware/1', 'GET');
+        $router->run();
+
+        $this->assertEquals(1, $done);
+        $this->assertTrue($globalBefore);
+        $this->assertTrue($globalAfter);
+        $this->assertTrue($groupBefore);
+        $this->assertTrue($groupAfter);
+        $this->assertFalse($globalBeforePost);
+
+
+        // Call the post one!
+        $this->spoof('/middleware/2', 'POST');
+        $router->run();
+
+        $this->assertEquals(2, $done);
+        $this->assertTrue($globalBefore);
+        $this->assertTrue($globalAfter);
+        $this->assertTrue($groupBefore);
+        $this->assertTrue($groupAfter);
+        $this->assertTrue($globalBeforePost);
+    }
+
+
+
+
+    public function testClassMiddleware()
+    {
+        TestUtils::clearRoutes();
+
+        $done = 0;
+        Router::define(function(Router $router) use (&$done) {
+            $router->get("/middleware/1", function() use (&$done) {
+                $done++;
+            });
+            $router->post("/middleware/2", function() use (&$done) {
+                $done++;
+            });
+            $router->put("/middleware/3", function() use (&$done) {
+                $done++;
+            });
+        });
+
+        // Middleware in class (controller)
+        // Invalid, non existing class
+        Router::getInstance()->after('App\Middleware\TestMiddlewareNotExisting::go', null, ['POST']);
+
+        // Invalid, non existing method
+        Router::getInstance()->before('App\Middleware\TestMiddleware::nonexisting', null, ['GET']);
+
+        // Valid
+        Router::getInstance()->before('App\Middleware\TestMiddleware::testThrow', null, ['PUT']);
+
+        // Spoof
+        $this->spoof('/middleware/2', 'POST');
+
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        } catch (RouterException $re) {
+            $this->assertTrue(true);
+        }
+
+        // Spoof
+        $this->spoof('/middleware/1', 'GET');
+
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        } catch (RouterException $re) {
+            $this->assertTrue(true);
+        }
+
+        // Spoof
+        $this->spoof('/middleware/3', 'PUT');
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        } catch (\Exception $e) {
+            $this->assertEquals("TEST", $e->getMessage());
+        }
+
+        $this->assertEquals(1, $done);
     }
 }

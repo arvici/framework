@@ -118,11 +118,11 @@ class Column implements Part
                 if ($part->getColumnName() === '*') {
                     $return .= "*";
                 } else {
-                    $return .= "`{$part->getColumnName()}`";
+                    $return .= "`{$part->getColumnName()}`"; // @codeCoverageIgnore
                 }
 
                 if ($part->getColumnAs() !== null) {
-                    $return .= " " . $part->getColumnAs();
+                    $return .= " " . $part->getColumnAs(); // @codeCoverageIgnore
                 }
 
                 $return .= ",";

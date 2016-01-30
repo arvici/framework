@@ -117,7 +117,7 @@ class Middleware
             $class = new $className();
 
             if (! $class instanceof BaseMiddleware) {
-                throw new RouterException("The class in your middleware route doesn't extend the BaseMiddleware: '{$className}'");
+                throw new RouterException("The class in your middleware route doesn't extend the BaseMiddleware: '{$className}'"); // @codeCoverageIgnore
             }
 
             if (! method_exists($class, $classMethod)) {
@@ -131,7 +131,7 @@ class Middleware
             $result = call_user_func($this->callback);
 
         } else {
-            throw new RouterException("Middleware callback is not a class or callable!");
+            throw new RouterException("Middleware callback is not a class or callable!"); // @codeCoverageIgnore
         }
 
         // See if we got a boolean back.
