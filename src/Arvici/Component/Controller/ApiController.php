@@ -7,6 +7,8 @@
  */
 
 namespace Arvici\Component\Controller;
+
+use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Database;
 
 /**
@@ -15,18 +17,21 @@ use Arvici\Heart\Database\Database;
  */
 abstract class ApiController extends Controller
 {
-    /**
-     * Database connection.
-     *
-     * @var \Arvici\Heart\Database\Connection
-     */
-    protected $database;
-
     public function __construct()
     {
         parent::__construct();
+    }
 
-        $this->database = Database::connection();
+    /**
+     * Get connection.
+     *
+     * @param string $connectionName
+     *
+     * @return Connection
+     */
+    protected function database($connectionName = 'default')
+    {
+        return Database::connection($connectionName);
     }
 
 

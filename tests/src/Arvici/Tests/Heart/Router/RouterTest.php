@@ -27,6 +27,7 @@ use Arvici\Component\Router;
  * @covers \Arvici\Heart\Router\Route
  * @covers \Arvici\Heart\Router\Middleware
  * @covers \Arvici\Component\Controller\Controller
+ * @covers \Arvici\Component\Controller\ApiController
  */
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -368,8 +369,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     }
 
 
-
-
     public function testClassMiddleware()
     {
         TestUtils::clearRoutes();
@@ -427,5 +426,64 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(1, $done);
+    }
+
+
+    public function testApiRoutes()
+    {
+        TestUtils::clearRoutes();
+
+        Router::api('api', 'test', 'App\Controller\Api\TestObject');
+
+        $this->spoof('/api/test/1', 'GET');
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        }catch(\Exception $e) {
+            $this->assertEquals("TEST-GET", $e->getMessage());
+        }
+
+        $this->spoof('/api/test', 'POST');
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        }catch(\Exception $e) {
+            $this->assertEquals("TEST-POST", $e->getMessage());
+        }
+
+        $this->spoof('/api/test/1', 'PUT');
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        }catch(\Exception $e) {
+            $this->assertEquals("TEST-PUT", $e->getMessage());
+        }
+
+        $this->spoof('/api/test/1', 'DELETE');
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        }catch(\Exception $e) {
+            $this->assertEquals("TEST-DELETE", $e->getMessage());
+        }
+
+
+
+        TestUtils::clearRoutes();
+
+        Router::api('api', 'test', 'App\Controller\Api\TestObject', 'GET');
+
+        $this->spoof('/api/test/1', 'GET');
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        }catch(\Exception $e) {
+            $this->assertEquals("TEST-GET", $e->getMessage());
+        }
+
+        $this->spoof('/api/test', 'POST');
+        Router::getInstance()->run();
+
+        $this->assertTrue(true);
     }
 }

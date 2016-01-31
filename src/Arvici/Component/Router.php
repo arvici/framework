@@ -86,11 +86,15 @@ class Router extends \Arvici\Heart\Router\Router
         $resource = strtolower($resource);
 
         if ($path === '') {
-            $path = '/';
+            $path = '/'; // @codeCoverageIgnore
         }
         if (substr($path, -1, 1) !== '/') {
             $path .= '/';
         }
+        if (substr($path, 0, 1) !== '/') {
+            $path = '/' . $path;
+        }
+
 
         $router = self::getInstance();
 
@@ -98,16 +102,16 @@ class Router extends \Arvici\Heart\Router\Router
             switch ($method)
             {
                 case 'GET':
-                    $router->get($path . $resource . '/(:any)', $apiController . '::get');
+                    $router->get($path . $resource . '/(!?)', $apiController . '::get');
                     break;
                 case 'POST':
                     $router->post($path . $resource, $apiController . '::post');
                     break;
                 case 'PUT':
-                    $router->put($path . $resource . '/(:any)', $apiController . '::put');
+                    $router->put($path . $resource . '/(!?)', $apiController . '::put');
                     break;
                 case 'DELETE':
-                    $router->delete($path . $resource . '/(:any)', $apiController . '::delete');
+                    $router->delete($path . $resource . '/(!?)', $apiController . '::delete');
                     break;
             }
         }
