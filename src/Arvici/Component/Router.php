@@ -65,9 +65,52 @@ class Router extends \Arvici\Heart\Router\Router
         self::$group = null;
     }
 
-    public static function api($schemaClass, $apiController, $methods = null)
+    /**
+     * Generate API routes for resource name.
+     *
+     * @param string $path Root path for generation. Leave empty or / for root.
+     * @param string $resource Resource name, use no slashes here. Could be post.
+     * @param string $apiController Api Controller class name, with full namespace notation.
+     * @param array|null $methods Methods to generate. Null for all.
+     */
+    public static function api($path, $resource, $apiController, $methods = null)
     {
-        // TODO: Generate route definitions for api class schema and methods.
+        if (is_string($methods)) {
+            $methods = array($methods);
+        }
+        if ($methods === null) {
+            $methods = ['GET', 'POST', 'PUT', 'DELETE'];
+        }
+
+        $methods = array_map("strtoupper", $methods);
+        $resource = strtolower($resource);
+
+        if ($path === '') {
+            $path = '/';
+        }
+        if (substr($path, -1, 1) !== '/') {
+            $path .= '/';
+        }
+
+        $router = self::getInstance();
+
+        foreach ($methods as $method) {
+            switch ($method)
+            {
+                case 'GET':
+                    $router->get($path . $resource . '/(:any)', $apiController . '::get');
+                    break;
+                case 'POST':
+                    $router->post($path . $resource, $apiController . '::post');
+                    break;
+                case 'PUT':
+                    $router->put($path . $resource . '/(:any)', $apiController . '::put');
+                    break;
+                case 'DELETE':
+                    $router->delete($path . $resource . '/(:any)', $apiController . '::delete');
+                    break;
+            }
+        }
     }
 
 
