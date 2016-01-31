@@ -10,6 +10,7 @@ namespace Arvici\Tests\Heart\Database\Query;
 
 use App\TestUtils;
 use Arvici\Heart\Database\Database;
+use Arvici\Heart\Database\Query\ExpressionBuilder;
 use Arvici\Heart\Database\Query\Query;
 use Arvici\Heart\Database\Query\QueryBuilder;
 
@@ -134,5 +135,15 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
         $query->from(false);
 
         // TODO: Test invalid mode
+    }
+
+    public function testExpressionBuilderInstance()
+    {
+        $conn = Database::connection();
+        $build = $conn->build();
+        $expr = $build->expr();
+
+        $this->assertInstanceOf(QueryBuilder::class, $build);
+        $this->assertInstanceOf(ExpressionBuilder::class, $expr);
     }
 }

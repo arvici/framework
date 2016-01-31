@@ -26,6 +26,8 @@ class ServerCollection extends DataCollection
      * Get headers (raw array)
      *
      * @return array
+     *
+     * @codeCoverageIgnore
      */
     public function getHeaders()
     {

@@ -28,6 +28,8 @@ abstract class ApiController extends Controller
      * @param string $connectionName
      *
      * @return Connection
+     *
+     * @codeCoverageIgnore
      */
     protected function database($connectionName = 'default')
     {

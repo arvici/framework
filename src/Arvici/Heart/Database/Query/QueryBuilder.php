@@ -60,6 +60,15 @@ class QueryBuilder
         return $this->query;
     }
 
+    /**
+     * Build an expression for the Query.
+     *
+     * @return ExpressionBuilder
+     */
+    public function expr()
+    {
+        return new ExpressionBuilder();
+    }
 
 
     /**********************************************
