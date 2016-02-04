@@ -103,6 +103,16 @@ class Parser
         switch($this->query->mode){
             case Query::MODE_SELECT:
                 $this->parseSelectQuery(); break;
+            case Query::MODE_INSERT:
+                $this->parseInsertQuery(); break;
+            case Query::MODE_UPDATE:
+                $this->parseUpdateQuery(); break;
+            case Query::MODE_DELETE:
+                $this->parseDeleteQuery(); break;
+            case Query::MODE_TRUNCATE:
+                $this->parseTruncateQuery(); break;
+            case Query::MODE_ADVANCED:
+                throw new QueryBuilderParseException("Query mode not yet implemented!"); break; // @codeCoverageIgnore
             case Query::MODE_NONE:
                 throw new QueryBuilderParseException("Query has no mode yet!"); break; // @codeCoverageIgnore
             default:
@@ -167,5 +177,24 @@ class Parser
 
 
         return $output;
+    }
+
+
+    // TODO: Implement parsers for mode.
+
+    private function parseInsertQuery()
+    {
+    }
+
+    private function parseUpdateQuery()
+    {
+    }
+
+    private function parseDeleteQuery()
+    {
+    }
+
+    private function parseTruncateQuery()
+    {
     }
 }
