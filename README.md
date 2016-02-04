@@ -15,7 +15,7 @@ Arvici Framework
 
 # Introduction
 
-This package contains the core funcitonality of the Arvici Framework. Currently being in development!
+This package contains the core functionality of the Arvici Framework. Currently being in development!
 
 
 # Getting started
