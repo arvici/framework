@@ -1,6 +1,6 @@
 <?php
 /**
- * Assert Interface
+ * Assert Abstract Class
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -12,29 +12,44 @@ namespace Arvici\Heart\Input\Validation;
 use Arvici\Exception\ValidationException;
 
 /**
- * Assert interface. All asserts should implement this.
+ * Assert Abstract Class. All asserts should extend this.
  *
  * @package Arvici\Heart\Input\Validation
  */
-interface Assert
+abstract class Assert
 {
+
+    private $options;
+
     /**
-     * Execute assert.
+     * Construct assert with options.
+     * @param array $options Options.
+     */
+    public function __construct($options = array())
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * Execute assert on the field, in the data provided.
      *
-     * @param mixed $value Value to test.
      * @param array $data Full data array.
+     * @param string $field Field Name.
      * @param array $options Optional options given at runtime.
      * @return bool
      *
      * @throws ValidationException
      */
-    public function execute(&$value, &$data, $options = array());
+    public abstract function execute(&$data, $field, $options = array());
 
     /**
      * Get name of assert.
      *
      * @return string
      */
-    public function assertName();
+    public function assertName()
+    {
+        return static::class;
+    }
 
 }
