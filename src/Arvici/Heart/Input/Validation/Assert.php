@@ -19,7 +19,7 @@ use Arvici\Exception\ValidationException;
 abstract class Assert
 {
 
-    private $options;
+    protected $options;
 
     /**
      * Construct assert with options.
@@ -49,7 +49,7 @@ abstract class Assert
      */
     public function assertName()
     {
-        return static::class;
+        return join('', array_slice(explode('\\', static::class), -1));
     }
 
 }

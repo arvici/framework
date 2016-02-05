@@ -13,6 +13,7 @@ use Arvici\Heart\Input\Validation\Assert;
 
 /**
  * Assert Required - Required to set, and not empty!
+ * --> not set, "" (empty string) and NULL will be invalid!
  *
  * @package Arvici\Heart\Input\Validation\Assert
  */
@@ -31,7 +32,7 @@ class Required extends Assert
      */
     public function execute(&$data, $field, $options = array())
     {
-        return (isset($data[$field]) && !empty($data[$field]));
+        return (isset($data[$field]) && $data[$field] !== "" && $data[$field] !== null);
     }
 
 }

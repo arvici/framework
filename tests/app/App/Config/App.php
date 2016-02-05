@@ -39,7 +39,7 @@ Configure::define('app', function ($config) {
         /**
          * Logs directory.
          */
-        'logPath' => BASEPATH . 'logs/',
+        'logPath' => BASEPATH . 'logs' . DS,
 
 
         /**

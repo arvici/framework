@@ -133,7 +133,7 @@ class Logger
                 $fileName = self::$path . $fileName;
 
                 if (file_exists($fileName)) {
-                    unlink($fileName);
+                    @unlink($fileName);
                 }
                 continue;
             }
