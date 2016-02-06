@@ -37,14 +37,21 @@ class Length extends Assert
 
         if (! isset($data[$field])) return false;
 
+        if (! is_numeric($data[$field])) {
+            $length = strlen($data[$field]);
+        }else{
+            $length = $data[$field];
+        }
+
+
         if (isset($this->conditions['min'], $this->conditions['max'])) {
-            return ($data[$field] >= $this->conditions['min'] && $data[$field] <= $this->conditions['max']);
+            return ($length >= $this->conditions['min'] && $length <= $this->conditions['max']);
         }
         if (isset($this->conditions['min'])) {
-            return ($data[$field] >= $this->conditions['min']);
+            return ($length >= $this->conditions['min']);
         }
         if (isset($this->conditions['max'])) {
-            return ($data[$field] <= $this->conditions['max']);
+            return ($length <= $this->conditions['max']);
         }
         return false;
     }
