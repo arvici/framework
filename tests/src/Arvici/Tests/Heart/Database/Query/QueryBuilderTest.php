@@ -136,14 +136,4 @@ class QueryBuilderTest extends \PHPUnit_Framework_TestCase
 
         // TODO: Test invalid mode
     }
-
-    public function testExpressionBuilderInstance()
-    {
-        $conn = Database::connection();
-        $build = $conn->build();
-        $expr = $build->expr();
-
-        $this->assertInstanceOf(QueryBuilder::class, $build);
-        $this->assertInstanceOf(ExpressionBuilder::class, $expr);
-    }
 }
