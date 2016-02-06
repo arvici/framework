@@ -24,6 +24,8 @@
 
     "mustache/mustache": "~2.9",
 
+    "doctrine/dbal": "~2.5",
+
     "doctrine/annotations": "~1.2",
     "swiftmailer/swiftmailer": "~5.4",
 

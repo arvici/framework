@@ -21,6 +21,7 @@
             <directory suffix=".php">../src</directory>
             <exclude>
                 <directory suffix=".php">../src/Arvici/Exception</directory>
+                <directory suffix=".php">../src/Arvici/Heart/Database/Query</directory>
             </exclude>
         </whitelist>
     </filter>

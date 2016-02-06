@@ -13,7 +13,7 @@ use Arvici\Exception\DatabaseException;
 use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Database;
 use Arvici\Heart\Database\Driver;
-use Arvici\Heart\Database\Query\QueryBuilder;
+use Doctrine\DBAL\DriverManager;
 
 /**
  * Connection encapsulation for every pdo connection.
@@ -249,11 +249,25 @@ abstract class PDOConnection extends \PDO implements Connection
     /**
      * Get a new Query Builder instance for this connection.
      *
-     * @return QueryBuilder
+     * @return \Doctrine\DBAL\Query\QueryBuilder
      */
     public function build()
     {
-        return new QueryBuilder($this);
+        $dbalDriver = '';
+        $driverCode = $this->getDriver()->getCode();
+
+        if ($driverCode === 'MySQL') $dbalDriver = 'pdo_mysql';
+
+
+        if ($dbalDriver == '') return null;
+
+
+        $dbalConnection = DriverManager::getConnection([
+            'driver' => $dbalDriver,
+            'pdo' => $this
+        ]);
+
+        return $dbalConnection->createQueryBuilder();
     }
 
     /**

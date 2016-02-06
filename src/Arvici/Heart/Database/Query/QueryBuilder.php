@@ -20,6 +20,7 @@ use Arvici\Heart\Database\Query\Part\Table;
  * Query Builder
  *
  * @package Arvici\Heart\Database\Query
+ * @deprecated
  */
 class QueryBuilder
 {
@@ -262,6 +263,11 @@ class QueryBuilder
     }
 
 
+
+    public function where($conditions)
+    {
+
+    }
 
 
 
