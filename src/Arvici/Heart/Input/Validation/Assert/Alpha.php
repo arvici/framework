@@ -1,6 +1,6 @@
 <?php
 /**
- * Alphanumeric Assert
+ * Alpha Assert
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -12,21 +12,20 @@ use Arvici\Exception\ValidationException;
 use Arvici\Heart\Input\Validation\Assert;
 
 /**
- * Class Alphanumeric Assert.
+ * Class Alpha Assert.
  *
  * @package Arvici\Heart\Input\Validation\Assert
  */
-class Alphanumeric extends Regex
+class Alpha extends Regex
 {
-
     /**
-     * Alpha Numeric Assert.
+     * Alpha Assert.
      * @param bool $dash Dash allowed? Default false.
      * @param bool $underscore Underscore allowed? Default false.
      */
     public function __construct($dash = false, $underscore = false)
     {
-        $regex = '/^[a-zA-Z0-9' . ($dash ? '-' : '') . ($underscore ? '_' : '') . ']+$/';
+        $regex = '/^[a-zA-Z' . ($dash ? '-' : '') . ($underscore ? '_' : '') . ']+$/';
         parent::__construct($regex);
     }
 }

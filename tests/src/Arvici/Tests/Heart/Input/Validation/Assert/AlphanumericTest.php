@@ -11,9 +11,10 @@ namespace Arvici\Tests\Heart\Input\Validation\Assert;
 use Arvici\Heart\Input\Validation\Assert\Alphanumeric;
 
 /**
- * Class ContainTest
+ * Alphanumeric Test Class
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\Alphanumeric
+ * @covers \Arvici\Heart\Input\Validation\Assert\Regex
  */
 class AlphanumericTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,5 +35,21 @@ class AlphanumericTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($alpha->execute($data, 2));
         $this->assertFalse($alpha->execute($data, 3));
         $this->assertFalse($alpha->execute($data, 4));
+
+
+        // Test dash+underscore
+        $alpha = new Alphanumeric(true, true);
+
+        $data = [
+            '1_valid',
+            '1valid',
+            '1-valid',
+            '1 invalid'
+        ];
+
+        $this->assertTrue($alpha->execute($data, 0));
+        $this->assertTrue($alpha->execute($data, 1));
+        $this->assertTrue($alpha->execute($data, 2));
+        $this->assertFalse($alpha->execute($data, 3));
     }
 }
