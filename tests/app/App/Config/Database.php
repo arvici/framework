@@ -34,6 +34,10 @@ Configuration::define('database', function() {
 
             'incomplete' => [
                 'driver'        => 'MySQL',
+            ],
+
+            'nodriver' => [
+
             ]
         ],
     ];

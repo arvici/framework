@@ -65,5 +65,29 @@ class DatabaseTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(true);
         }
 
+
+        // No driver defined.
+        TestUtils::clearDatabase();
+
+        try {
+            Database::connection('nodriver');
+            $this->assertTrue(false);
+        } catch (ConfigurationException $ce) {
+            $this->assertTrue(true);
+        }
+
+    }
+
+    public function testTypeDetection()
+    {
+        $null = null;
+        $int = 0;
+        $bool = true;
+        $string = 'string';
+
+        $this->assertEquals(Database::TYPE_NULL, Database::typeOfValue($null));
+        $this->assertEquals(Database::TYPE_INT, Database::typeOfValue($int));
+        $this->assertEquals(Database::TYPE_BOOL, Database::typeOfValue($bool));
+        $this->assertEquals(Database::TYPE_STR, Database::typeOfValue($string));
     }
 }

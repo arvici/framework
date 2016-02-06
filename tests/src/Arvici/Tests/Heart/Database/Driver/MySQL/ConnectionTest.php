@@ -8,6 +8,7 @@
 
 namespace Arvici\Tests\Heart\Database\Drivers\MySQL;
 
+use App\Model\FetchTestPosts;
 use App\TestUtils;
 use Arvici\Heart\Database\Database;
 
@@ -101,5 +102,26 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(7, $all);
 
         $this->assertObjectHasAttribute('id', $all[0]);
+    }
+
+    public function testFetchClass()
+    {
+        $connection = Database::connection();
+
+        $all = $connection->select("SELECT * FROM posts", array(), Database::FETCH_CLASS, FetchTestPosts::class);
+
+        foreach ($all as $post)
+        {
+            $this->assertInstanceOf(FetchTestPosts::class, $post);
+            $this->assertNotNull($post->id);
+        }
+
+        $all = $connection->raw("SELECT * FROM posts", true, Database::FETCH_CLASS, FetchTestPosts::class);
+
+        foreach ($all as $post)
+        {
+            $this->assertInstanceOf(FetchTestPosts::class, $post);
+            $this->assertNotNull($post->id);
+        }
     }
 }

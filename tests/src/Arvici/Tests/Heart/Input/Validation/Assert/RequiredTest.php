@@ -15,6 +15,7 @@ use Arvici\Heart\Input\Validation\Assert\Required;
  * @package Arvici\Tests\Heart\Validation\Input\Assert
  *
  * @covers \Arvici\Heart\Input\Validation\Assert\Required
+ * @covers \Arvici\Heart\Input\Validation\Assert
  */
 class RequiredTest extends \PHPUnit_Framework_TestCase
 {
