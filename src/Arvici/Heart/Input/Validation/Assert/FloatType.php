@@ -1,6 +1,6 @@
 <?php
 /**
- * Integer Assert
+ * Float Assert
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2016 Tom Valk
@@ -12,13 +12,12 @@ use Arvici\Exception\ValidationException;
 use Arvici\Heart\Input\Validation\Assert;
 
 /**
- * Class Integer Assert.
+ * Class Float Assert.
  *
  * @package Arvici\Heart\Input\Validation\Assert
  */
-class Integer extends Assert
+class FloatType extends Assert
 {
-
     /**
      * Execute assert on the field, in the data provided.
      *
@@ -32,6 +31,6 @@ class Integer extends Assert
     public function execute(&$data, $field, $options = array())
     {
         if (! isset($data[$field])) return false;
-        return filter_var($data[$field], FILTER_VALIDATE_INT) !== false;
+        return filter_var($data[$field], FILTER_VALIDATE_FLOAT) !== false;
     }
 }

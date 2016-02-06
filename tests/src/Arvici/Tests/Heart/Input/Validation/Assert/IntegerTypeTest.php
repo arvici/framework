@@ -8,19 +8,18 @@
 
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
-use Arvici\Heart\Input\Validation\Assert\Alpha;
-use Arvici\Heart\Input\Validation\Assert\Integer;
+use Arvici\Heart\Input\Validation\Assert\IntegerType;
 
 /**
  * Class IntegerTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
- * @covers \Arvici\Heart\Input\Validation\Assert\Integer
+ * @covers \Arvici\Heart\Input\Validation\Assert\IntegerType
  */
-class IntegerTest extends \PHPUnit_Framework_TestCase
+class IntegerTypeTest extends \PHPUnit_Framework_TestCase
 {
     public function testInteger()
     {
-        $integer = new Integer();
+        $integer = new IntegerType();
 
         $data = [
             -1,
@@ -31,7 +30,8 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
             0.1,
             0.00001,
             false,
-            true
+            true,
+            '1'
         ];
 
         $this->assertTrue($integer->execute($data, 0));
@@ -43,5 +43,6 @@ class IntegerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($integer->execute($data, 6));
         $this->assertFalse($integer->execute($data, 7));
         $this->assertTrue($integer->execute($data, 8));
+        $this->assertTrue($integer->execute($data, 9));
     }
 }
