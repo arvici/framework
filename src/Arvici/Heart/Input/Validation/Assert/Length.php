@@ -31,20 +31,20 @@ class Length extends Assert
      */
     public function execute(&$data, $field, $options = array())
     {
-        if (! is_array($this->options) && is_numeric($this->options)) {
-            $this->options = array('min' => $this->options);
+        if (! is_array($this->conditions) && is_numeric($this->conditions)) {
+            $this->conditions = array('min' => $this->conditions);
         }
 
         if (! isset($data[$field])) return false;
 
-        if (isset($this->options['min'], $this->options['max'])) {
-            return ($data[$field] >= $this->options['min'] && $data[$field] <= $this->options['max']);
+        if (isset($this->conditions['min'], $this->conditions['max'])) {
+            return ($data[$field] >= $this->conditions['min'] && $data[$field] <= $this->conditions['max']);
         }
-        if (isset($this->options['min'])) {
-            return ($data[$field] >= $this->options['min']);
+        if (isset($this->conditions['min'])) {
+            return ($data[$field] >= $this->conditions['min']);
         }
-        if (isset($this->options['max'])) {
-            return ($data[$field] <= $this->options['max']);
+        if (isset($this->conditions['max'])) {
+            return ($data[$field] <= $this->conditions['max']);
         }
         return false;
     }

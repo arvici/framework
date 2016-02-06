@@ -18,16 +18,21 @@ use Arvici\Exception\ValidationException;
  */
 abstract class Assert
 {
+    /** @var array */
+    protected $conditions;
 
-    protected $options;
+    /** @var array */
+    protected $preferences;
 
     /**
      * Construct assert with options.
-     * @param array $options Options.
+     * @param array $conditions Options.
+     * @param array $preferences Preferences for testing.
      */
-    public function __construct($options = array())
+    public function __construct($conditions = array(), $preferences = array())
     {
-        $this->options = $options;
+        $this->conditions = $conditions;
+        $this->preferences = $preferences;
     }
 
     /**
