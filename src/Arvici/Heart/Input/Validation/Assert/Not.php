@@ -55,6 +55,11 @@ class Not extends Assert
     }
 
 
+    /**
+     * @return string
+     *
+     * @codeCoverageIgnore
+     */
     public function __toString()
     {
         $return = array("Value in field '{$this->friendlyName}' must not comply to the following statements:");

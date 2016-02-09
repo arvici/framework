@@ -22,9 +22,23 @@ class Collection extends DataCollection
     /** @var array */
     private $errors = array();
 
+    /** @var string|null */
+    private $friendlyName;
+
     public function __construct($content = array())
     {
         parent::__construct($content);
+    }
+
+    /**
+     * Set friendly field name.
+     * @param $name
+     * @return Collection
+     */
+    public function setFriendlyName($name)
+    {
+        $this->friendlyName = $name;
+        return $this;
     }
 
     /**
@@ -41,6 +55,8 @@ class Collection extends DataCollection
 
         foreach ($this->contents as $assert) {
             if ($assert instanceof Assert) {
+                $assert->setName($this->friendlyName !== null ? $this->friendlyName : $field);
+
                 // Execute
                 if (! $assert->execute($data, $field, $options)) {
                     $valid = false;
@@ -57,8 +73,10 @@ class Collection extends DataCollection
      * Get string of errors.
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
-    public function getError()
+    public function getError($field)
     {
         return implode("\n", $this->errors);
     }

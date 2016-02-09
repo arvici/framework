@@ -63,6 +63,7 @@ abstract class Assert
     /**
      * Set field friendly name.
      *
+     * @codeCoverageIgnore
      * @param $name
      */
     public function setName($name)
@@ -76,10 +77,12 @@ abstract class Assert
      * @param string $name Field name, will be used if no friendly name is defined.
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function getError($name = '')
     {
-        if ($this->friendlyName !== null) {
+        if ($this->friendlyName === null) {
             $this->friendlyName = $name;
         }
         return (string)$this;
@@ -89,6 +92,7 @@ abstract class Assert
     /**
      * Get error string.
      * @return string
+     * @codeCoverageIgnore
      */
     public abstract function __toString();
 }

@@ -88,12 +88,9 @@ class Validation
 
         $errors = array();
 
-        foreach ($this->set as $field => $constraint)
+        foreach ($constraints as $field => $constraint)
         {
             $result = false;
-
-            // TODO: Make errors save to the class.
-
             if ($constraint instanceof Assert || $constraint instanceof Collection) {
                 $result = $constraint->execute($input, $field);
                 if (! $result) {
@@ -105,7 +102,7 @@ class Validation
 
         $this->errors = $errors;
 
-        if (count($errors) === 0) return $input;
+        if (count($this->errors) === 0) return $input;
         return false;
     }
 
@@ -135,7 +132,7 @@ class Validation
         if ($this->getErrors() === false) {
             return "";
         }
-        $delimiter = ($nl2br ? "<br>" : "\n");
+        $delimiter = ($br ? "<br>" : "\n");
         return implode($delimiter, $this->errors);
     }
 

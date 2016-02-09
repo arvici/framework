@@ -35,6 +35,8 @@ class Alphanumeric extends Regex
      * Get string with error information.
      *
      * @return string
+     *
+     * @codeCoverageIgnore
      */
     public function __toString()
     {
