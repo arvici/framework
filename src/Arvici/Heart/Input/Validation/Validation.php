@@ -8,6 +8,7 @@
 
 namespace Arvici\Heart\Input\Validation;
 
+use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Input\Validation\Assert\Collection;
 
@@ -22,6 +23,9 @@ class Validation
 
     /** @var array|Assert[]|Collection[] */
     private $set;
+
+    /** @var array */
+    private $errors = array();
 
     /**
      * Create validation class with input.
@@ -41,15 +45,31 @@ class Validation
      * Load defined constraint set from Configuration.
      *
      * @param string $setName
+     *
+     * @return Validation
      */
     public function loadSet($setName)
     {
-        // TODO: Implement set loading from configuration.
+        $sets = Configuration::get('input.validationSets', array());
+
+        if (isset($sets[$setName])) {
+            $this->set = $sets[$setName];
+        }
+
+        return $this;
     }
 
+    /**
+     * Set array with constraints
+     *
+     * @param array|Assert[]|Collection[] $constraints
+     *
+     * @return Validation
+     */
     public function setConstraints(array $constraints)
     {
         $this->set = $constraints;
+        return $this;
     }
 
     /**
@@ -74,30 +94,49 @@ class Validation
 
             // TODO: Make errors save to the class.
 
-            if ($constraint instanceof Assert) { // Execute
+            if ($constraint instanceof Assert || $constraint instanceof Collection) {
                 $result = $constraint->execute($input, $field);
                 if (! $result) {
-                    // $errors[$field] = $constraint->getError();
-                }
-            }
-
-            if ($constraint instanceof Collection) { // Execute
-                $result = $constraint->executeAll($input, $field);
-                if (! $result) {
-                    //$errors[$field] = $constraint->getAllErrors();
+                    $errors[$field] = $constraint->getError($field);
                 }
             }
 
         }
+
+        $this->errors = $errors;
 
         if (count($errors) === 0) return $input;
         return false;
     }
 
 
+    /**
+     * Get errors, array with field and textual presentation of error.
+     *
+     * @return array|bool
+     */
     public function getErrors()
     {
-        // TODO: Implement getErrors method.
+        if (count($this->errors)) {
+            return $this->errors;
+        }
+        return false;
+    }
+
+    /**
+     * Get full textual error message, empty when there are no errors.
+     *
+     * @param bool $br use <br> tags? Default true.
+     *
+     * @return string
+     */
+    public function getErrorMessage($br = true)
+    {
+        if ($this->getErrors() === false) {
+            return "";
+        }
+        $delimiter = ($nl2br ? "<br>" : "\n");
+        return implode($delimiter, $this->errors);
     }
 
 }

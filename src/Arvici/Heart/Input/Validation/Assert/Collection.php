@@ -18,6 +18,10 @@ use Arvici\Heart\Input\Validation\Assert;
  */
 class Collection extends DataCollection
 {
+
+    /** @var array */
+    private $errors = array();
+
     public function __construct($content = array())
     {
         parent::__construct($content);
@@ -31,10 +35,31 @@ class Collection extends DataCollection
      * @param array $options
      * @return bool Success?
      */
-    public function executeAll(&$data, $field, $options = array())
+    public function execute(&$data, $field, $options = array())
     {
-        // TODO: Implement execute all method.
+        $valid = true;
 
-        return true;
+        foreach ($this->contents as $assert) {
+            if ($assert instanceof Assert) {
+                // Execute
+                if (! $assert->execute($data, $field, $options)) {
+                    $valid = false;
+                    $this->errors[] = (string)$assert;
+                }
+            }
+        }
+
+        return $valid;
+    }
+
+
+    /**
+     * Get string of errors.
+     *
+     * @return string
+     */
+    public function getError()
+    {
+        return implode("\n", $this->errors);
     }
 }
