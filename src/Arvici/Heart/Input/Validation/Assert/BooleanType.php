@@ -33,4 +33,16 @@ class BooleanType extends Assert
         if (! isset($data[$field])) return false;
         return ($data[$field] === true || $data[$field] === false);
     }
+
+
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' may only be true or false";
+    }
 }

@@ -55,4 +55,16 @@ class Date extends Assert
 
         return $time !== false;
     }
+
+
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' may only contain a valid date in specific format";
+    }
 }

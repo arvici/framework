@@ -34,4 +34,16 @@ class IntegerType extends Assert
         if (! isset($data[$field])) return false;
         return filter_var($data[$field], FILTER_VALIDATE_INT) !== false;
     }
+
+
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' may only contain a valid numeric value";
+    }
 }

@@ -53,4 +53,14 @@ class Not extends Assert
 
         return $comply === 0;
     }
+
+
+    public function __toString()
+    {
+        $return = array("Value in field '{$this->friendlyName}' must not comply to the following statements:");
+        foreach ($this->conditions as $condition) {
+            $return[] = " - " . (string)$condition;
+        }
+        return implode("\n", $return);
+    }
 }

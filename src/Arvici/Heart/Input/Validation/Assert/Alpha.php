@@ -28,4 +28,14 @@ class Alpha extends Regex
         $regex = '/^[a-zA-Z' . ($dash ? '-' : '') . ($underscore ? '_' : '') . ']+$/';
         parent::__construct($regex);
     }
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' may only contain alpha characters (a-z)";
+    }
 }

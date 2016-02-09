@@ -56,4 +56,30 @@ class Length extends Assert
         return false;
     }
 
+
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if (is_array($this->conditions)) {
+            if (isset ($this->conditions['min'])) {
+                if (isset($this->conditions['max'])) {
+                    return "Value in field '{$this->friendlyName}' or length of it may only be between {$this->conditions['min']} and {$this->conditions['max']}";
+                }
+                return "Value in field '{$this->friendlyName}' or length of it may only be minimum of {$this->conditions['min']}";
+            }
+            if (isset ($this->conditions['max'])) {
+                return "Value in field '{$this->friendlyName}' or length of it may only less then {$this->conditions['max']}";
+            }
+        }
+        if (is_numeric($this->conditions)) {
+            return "Value in field '{$this->friendlyName}' or length of it must be min. {$this->conditions}";
+        }
+        return "Value in field '{$this->friendlyName}' must comply with conditions";
+    }
+
 }

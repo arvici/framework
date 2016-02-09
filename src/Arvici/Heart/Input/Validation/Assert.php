@@ -24,6 +24,9 @@ abstract class Assert
     /** @var array */
     protected $preferences;
 
+    /** @var string */
+    protected $friendlyName;
+
     /**
      * Construct assert with options.
      * @param array $conditions Options.
@@ -57,4 +60,35 @@ abstract class Assert
         return join('', array_slice(explode('\\', static::class), -1));
     }
 
+    /**
+     * Set field friendly name.
+     *
+     * @param $name
+     */
+    public function setName($name)
+    {
+        $this->friendlyName = $name;
+    }
+
+    /**
+     * Get string with error information.
+     *
+     * @param string $name Field name, will be used if no friendly name is defined.
+     *
+     * @return string
+     */
+    public function getError($name = '')
+    {
+        if ($this->friendlyName !== null) {
+            $this->friendlyName = $name;
+        }
+        return (string)$this;
+    }
+
+
+    /**
+     * Get error string.
+     * @return string
+     */
+    public abstract function __toString();
 }

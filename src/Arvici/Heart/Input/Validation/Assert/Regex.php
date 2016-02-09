@@ -46,4 +46,15 @@ class Regex extends Assert
         if (! isset($data[$field])) return false;
         return preg_match($this->regex, $data[$field]) != 0;
     }
+
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' may only comply to the given statments, please look at the help text for information about the field";
+    }
 }

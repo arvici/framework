@@ -29,4 +29,15 @@ class Alphanumeric extends Regex
         $regex = '/^[a-zA-Z0-9' . ($dash ? '-' : '') . ($underscore ? '_' : '') . ']+$/';
         parent::__construct($regex);
     }
+
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' may only contain alpha-numeric characters (a-z and 0-9)";
+    }
 }

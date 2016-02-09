@@ -48,4 +48,15 @@ class Custom extends Assert
         if (! isset($data[$field])) return false;
         return call_user_func_array($this->callback, [$data[$field], $options]);
     }
+
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' may only contain validated data, please referrer to the help text for the field";
+    }
 }

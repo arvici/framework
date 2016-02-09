@@ -72,4 +72,15 @@ class Contain extends Assert
         return stristr($haystack, $search) !== false;
     }
 
+
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' may only contain specific content, please look at the help text";
+    }
 }

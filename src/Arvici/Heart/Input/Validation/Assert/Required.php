@@ -35,4 +35,14 @@ class Required extends Assert
         return (isset($data[$field]) && $data[$field] !== "" && $data[$field] !== null);
     }
 
+
+    /**
+     * Get string with error information.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return "Value in field '{$this->friendlyName}' must be filled in";
+    }
 }
