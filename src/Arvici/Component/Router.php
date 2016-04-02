@@ -102,7 +102,7 @@ class Router extends \Arvici\Heart\Router\Router
             switch ($method)
             {
                 case 'GET':
-                    $router->get($path . $resource . '/', $apiController . '::findAll');
+                    $router->get($path . $resource, $apiController . '::findAll');
                     $router->get($path . $resource . '/(!?)', $apiController . '::find');
                     break;
                 case 'POST':
