@@ -9,9 +9,9 @@
 namespace App\Controller\Api;
 
 
-use Arvici\Component\Controller\ApiController;
+use Arvici\Component\Controller\RestApiController;
 
-class TestObject extends ApiController
+class TestObject extends RestApiController
 {
 
     /**
@@ -20,7 +20,7 @@ class TestObject extends ApiController
      * @param mixed $identifier
      * @throws \Exception
      */
-    public function get($identifier)
+    public function find($identifier)
     {
         if ($identifier == 1) {
             throw new \Exception("TEST-GET");
@@ -30,7 +30,7 @@ class TestObject extends ApiController
     /**
      * Create new Schema Object with posted vars.
      */
-    public function post()
+    public function create()
     {
         throw new \Exception("TEST-POST");
     }
@@ -41,7 +41,7 @@ class TestObject extends ApiController
      * @param mixed $identifier
      * @throws \Exception
      */
-    public function put($identifier)
+    public function replace($identifier)
     {
         if ($identifier == 1) {
             throw new \Exception("TEST-PUT");
@@ -58,6 +58,28 @@ class TestObject extends ApiController
     {
         if ($identifier == 1) {
             throw new \Exception("TEST-DELETE");
+        }
+    }
+
+    /**
+     * Get API Schemas objects.
+     * HTTP GET.
+     */
+    public function findAll()
+    {
+        throw new \Exception("TEST-FINDALL");
+    }
+
+    /**
+     * Update (update) (HTTP PATCH)
+     *
+     * @param mixed $identifier
+     * @throws \Exception
+     */
+    public function update($identifier)
+    {
+        if ($identifier == 1) {
+            throw new \Exception("TEST-UPDATE");
         }
     }
 }

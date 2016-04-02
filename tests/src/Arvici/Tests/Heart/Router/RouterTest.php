@@ -27,7 +27,7 @@ use Arvici\Component\Router;
  * @covers \Arvici\Heart\Router\Route
  * @covers \Arvici\Heart\Router\Middleware
  * @covers \Arvici\Component\Controller\Controller
- * @covers \Arvici\Component\Controller\ApiController
+ * @covers \Arvici\Component\Controller\RestApiController
  */
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -465,6 +465,14 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue(false);
         }catch(\Exception $e) {
             $this->assertEquals("TEST-DELETE", $e->getMessage());
+        }
+
+        $this->spoof('/api/test/1', 'PATCH');
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        }catch(\Exception $e) {
+            $this->assertEquals("TEST-UPDATE", $e->getMessage());
         }
 
 
