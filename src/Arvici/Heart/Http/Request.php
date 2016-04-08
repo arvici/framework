@@ -274,4 +274,17 @@ class Request
         $url = $this->url();
         return strstr($url, '?', true) ? : $url; // Strip query and return
     }
+
+    /**
+     * Get Body contents (raw).
+     *
+     * @return mixed
+     */
+    public function body()
+    {
+        if ($this->body == null) {
+            $this->body = file_get_contents('php://input');
+        }
+        return $this->body;
+    }
 }

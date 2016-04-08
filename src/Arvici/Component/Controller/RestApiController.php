@@ -15,7 +15,7 @@ use Arvici\Heart\Database\Database;
  * Api Controller
  * @package Arvici\Component\Controller
  */
-abstract class ApiController extends Controller
+abstract class RestApiController extends Controller
 {
     public function __construct()
     {
@@ -39,25 +39,41 @@ abstract class ApiController extends Controller
 
     /**
      * Get API Schema object with identifier.
+     * HTTP GET.
      *
      * @param mixed $identifier
      */
-    abstract public function get($identifier);
+    abstract public function find($identifier);
 
     /**
-     * Create new Schema Object with posted vars.
+     * Get API Schemas objects.
+     * HTTP GET.
      */
-    abstract public function post();
+    abstract public function findAll();
 
     /**
-     * Update current object with putted vars.
+     * Create new object.
+     * HTTP POST.
+     */
+    abstract public function create();
+
+    /**
+     * Update (replace) (HTTP PUT)
      *
      * @param mixed $identifier
      */
-    abstract public function put($identifier);
+    abstract public function replace($identifier);
+
+    /**
+     * Update (update) (HTTP PATCH)
+     *
+     * @param mixed $identifier
+     */
+    abstract public function update($identifier);
 
     /**
      * Delete schema object with identifier.
+     * HTTP DELETE.
      *
      * @param mixed $identifier
      */

@@ -79,7 +79,7 @@ class Router extends \Arvici\Heart\Router\Router
             $methods = array($methods);
         }
         if ($methods === null) {
-            $methods = ['GET', 'POST', 'PUT', 'DELETE'];
+            $methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
         }
 
         $methods = array_map("strtoupper", $methods);
@@ -102,13 +102,17 @@ class Router extends \Arvici\Heart\Router\Router
             switch ($method)
             {
                 case 'GET':
-                    $router->get($path . $resource . '/(!?)', $apiController . '::get');
+                    $router->get($path . $resource, $apiController . '::findAll');
+                    $router->get($path . $resource . '/(!?)', $apiController . '::find');
                     break;
                 case 'POST':
-                    $router->post($path . $resource, $apiController . '::post');
+                    $router->post($path . $resource, $apiController . '::create');
                     break;
                 case 'PUT':
-                    $router->put($path . $resource . '/(!?)', $apiController . '::put');
+                    $router->put($path . $resource . '/(!?)', $apiController . '::replace');
+                    break;
+                case 'PATCH':
+                    $router->patch($path . $resource . '/(!?)', $apiController . '::update');
                     break;
                 case 'DELETE':
                     $router->delete($path . $resource . '/(!?)', $apiController . '::delete');
@@ -168,6 +172,19 @@ class Router extends \Arvici\Heart\Router\Router
     public function delete($match, $callback)
     {
         $this->addRoute(new Route($match, 'DELETE', $callback, self::$group));
+    }
+
+    /**
+     * Add route for DELETE method.
+     *
+     * @param string $match
+     * @param string|callable $callback
+     *
+     * @codeCoverageIgnore
+     */
+    public function patch($match, $callback)
+    {
+        $this->addRoute(new Route($match, 'PATCH', $callback, self::$group));
     }
 
     /**
