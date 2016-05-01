@@ -19,10 +19,10 @@
     "ext-mbstring": "*",
 
     "psr/log": "~1.0",
-    "monolog/monolog": "~1.17",
-    "filp/whoops": "~2.0",
+    "monolog/monolog": "~1.18",
+    "filp/whoops": "~2.1",
 
-    "mustache/mustache": "~2.9",
+    "mustache/mustache": "~2.10",
 
     "doctrine/dbal": "~2.5",
 
@@ -32,10 +32,10 @@
     "fabfuel/prophiler": "~1.0",
     "symfony/var-dumper": "~3.0",
 
-    "tomvlk/sweet-orm": "~0.3"
+    "tomvlk/sweet-orm": "~0.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "~5.2",
+    "phpunit/phpunit": "~5.3",
     "phpunit/php-code-coverage": "^3",
     "satooshi/php-coveralls": "^1.0",
     "codacy/coverage": "^1.0"

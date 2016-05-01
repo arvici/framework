@@ -136,6 +136,19 @@ class Router extends \Arvici\Heart\Router\Router
     }
 
     /**
+     * Add route for OPTIONS method.
+     *
+     * @param string $match
+     * @param string|callable $callback
+     *
+     * @codeCoverageIgnore
+     */
+    public function options($match, $callback)
+    {
+        $this->addRoute(new Route($match, 'OPTIONS', $callback, self::$group));
+    }
+
+    /**
      * Add route for POST method.
      *
      * @param string $match
