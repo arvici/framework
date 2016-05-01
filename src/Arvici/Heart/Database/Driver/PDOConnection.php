@@ -47,7 +47,10 @@ abstract class PDOConnection extends \PDO implements Connection
      */
     public function select($query, $bind = array(), $returnType = null, $returnClass = null)
     {
-        $statement = $this->prepare($query, $bind);
+        $statement = $this->prepare($query);
+        foreach ($bind as $key => $value) {
+            $statement->bindValue($key, $value);
+        }
 
         $returnType = Database::normalizeFetchType($returnType);
 
