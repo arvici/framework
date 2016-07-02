@@ -36,7 +36,6 @@ abstract class RestApiController extends Controller
         return Database::connection($connectionName);
     }
 
-
     /**
      * Get API Schema object with identifier.
      * HTTP GET.
@@ -48,14 +47,18 @@ abstract class RestApiController extends Controller
     /**
      * Get API Schemas objects.
      * HTTP GET.
+     *
+     * @param array $identifiers
      */
-    abstract public function findAll();
+    abstract public function findAll($identifiers = array());
 
     /**
      * Create new object.
      * HTTP POST.
+     *
+     * @param array $identifiers
      */
-    abstract public function create();
+    abstract public function create($identifiers = array());
 
     /**
      * Update (replace) (HTTP PUT)
