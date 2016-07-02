@@ -67,7 +67,7 @@ abstract class Router
      *
      * @param Route $route
      */
-    public function addRoute(Route &$route)
+    public function addRoute(Route $route)
     {
         $this->routes[] = $route;
     }
@@ -77,7 +77,7 @@ abstract class Router
      *
      * @param Middleware $middleware
      */
-    public function addMiddleware(Middleware &$middleware)
+    public function addMiddleware(Middleware $middleware)
     {
         $group = $middleware->getGroup();
         if (! isset($this->middleware[$group])) {
