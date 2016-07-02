@@ -19,7 +19,7 @@
     "ext-mbstring": "*",
 
     "psr/log": "~1.0",
-    "monolog/monolog": "~1.19",
+    "monolog/monolog": "~1.20",
     "filp/whoops": "~2.1",
 
     "mustache/mustache": "~2.10",
