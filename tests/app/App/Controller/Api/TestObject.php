@@ -29,8 +29,10 @@ class TestObject extends RestApiController
 
     /**
      * Create new Schema Object with posted vars.
+     * @param array $identifiers
+     * @throws \Exception
      */
-    public function create()
+    public function create($identifiers = array())
     {
         throw new \Exception("TEST-POST");
     }
@@ -64,8 +66,10 @@ class TestObject extends RestApiController
     /**
      * Get API Schemas objects.
      * HTTP GET.
+     * @param array $identifiers
+     * @throws \Exception
      */
-    public function findAll()
+    public function findAll($identifiers = array())
     {
         throw new \Exception("TEST-FINDALL");
     }
