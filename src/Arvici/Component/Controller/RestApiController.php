@@ -41,9 +41,9 @@ abstract class RestApiController extends Controller
      * Get API Schema object with identifier.
      * HTTP GET.
      *
-     * @param mixed $identifier
+     * @param array $identifiers
      */
-    abstract public function find($identifier);
+    abstract public function find($identifiers);
 
     /**
      * Get API Schemas objects.
@@ -60,22 +60,22 @@ abstract class RestApiController extends Controller
     /**
      * Update (replace) (HTTP PUT)
      *
-     * @param mixed $identifier
+     * @param array $identifiers
      */
-    abstract public function replace($identifier);
+    abstract public function replace($identifiers);
 
     /**
      * Update (update) (HTTP PATCH)
      *
-     * @param mixed $identifier
+     * @param array $identifiers
      */
-    abstract public function update($identifier);
+    abstract public function update($identifiers);
 
     /**
      * Delete schema object with identifier.
      * HTTP DELETE.
      *
-     * @param mixed $identifier
+     * @param array $identifiers
      */
-    abstract public function delete($identifier);
+    abstract public function delete($identifiers);
 }
