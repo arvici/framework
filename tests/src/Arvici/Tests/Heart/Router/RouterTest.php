@@ -66,10 +66,9 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $router = Router::getInstance();
 
         $done1 = false;
-        $router->addRoute(new Route('/test/get/(!int)/(!int)', 'GET', function($num1, $num2) use (&$done1) {
-            if ($num1 == 555 && $num2 == 111) {
+        $router->addRoute(new Route('/test/get/(!int)/(!int)', 'GET', function($params) use (&$done1) {
+            if ($params[0] == 555 && $params[1] == 111)
                 $done1 = true;
-            }
         }));
 
         $this->spoof('/test/get/555/111', 'GET');

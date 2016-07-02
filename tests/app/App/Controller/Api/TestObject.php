@@ -17,12 +17,12 @@ class TestObject extends RestApiController
     /**
      * Get API Schema object with identifier.
      *
-     * @param mixed $identifier
+     * @param mixed $identifiers
      * @throws \Exception
      */
-    public function find($identifier)
+    public function find($identifiers)
     {
-        if ($identifier == 1) {
+        if ($identifiers[0] == 1) {
             throw new \Exception("TEST-GET");
         }
     }
@@ -38,12 +38,12 @@ class TestObject extends RestApiController
     /**
      * Update current object with putted vars.
      *
-     * @param mixed $identifier
+     * @param mixed $identifiers
      * @throws \Exception
      */
-    public function replace($identifier)
+    public function replace($identifiers)
     {
-        if ($identifier == 1) {
+        if ($identifiers[0] == 1) {
             throw new \Exception("TEST-PUT");
         }
     }
@@ -51,12 +51,12 @@ class TestObject extends RestApiController
     /**
      * Delete schema object with identifier.
      *
-     * @param mixed $identifier
+     * @param mixed $identifiers
      * @throws \Exception
      */
-    public function delete($identifier)
+    public function delete($identifiers)
     {
-        if ($identifier == 1) {
+        if ($identifiers[0] == 1) {
             throw new \Exception("TEST-DELETE");
         }
     }
@@ -73,12 +73,12 @@ class TestObject extends RestApiController
     /**
      * Update (update) (HTTP PATCH)
      *
-     * @param mixed $identifier
+     * @param mixed $identifiers
      * @throws \Exception
      */
-    public function update($identifier)
+    public function update($identifiers)
     {
-        if ($identifier == 1) {
+        if ($identifiers[0] == 1) {
             throw new \Exception("TEST-UPDATE");
         }
     }
