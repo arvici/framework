@@ -62,6 +62,7 @@ abstract class Router
         foreach($this->routes as $route) {
             if ($route->match($this->compiled)) {
                 $this->executeRoute($route, $method);
+                break;
             }
         }
     }
