@@ -15,6 +15,8 @@ class Http
     private $request;
     /** @var Response */
     private $response;
+    /** @var Session */
+    private $session;
 
     /** @var Http */
     private static $instance;
@@ -45,7 +47,8 @@ class Http
      */
     private function __construct()
     {
-        $this->request = Request::detect();
+        $this->session = new Session();
+        $this->request = Request::detect($this->session);
         $this->response = new Response();
     }
 
@@ -67,5 +70,15 @@ class Http
     public function request()
     {
         return $this->request;
+    }
+
+    /**
+     * Get session instance
+     *
+     * @return Session
+     */
+    public function session()
+    {
+        return $this->session;
     }
 }

@@ -8,6 +8,9 @@
 
 namespace Arvici\Heart\Router;
 
+use Arvici\Heart\Config\Configuration;
+use Arvici\Heart\Http\Http;
+
 /**
  * Router
  *
@@ -38,6 +41,10 @@ abstract class Router
      */
     public function run($method = null, $url = null)
     {
+        // Prepare the session loading.
+        Http::getInstance()->session()->init();
+
+        // Begin parsing request.
         if ($method === null) $method = $_SERVER['REQUEST_METHOD'];
         if ($url === null) {
             $url = $_SERVER['REQUEST_URI'];

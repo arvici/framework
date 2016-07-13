@@ -6,4 +6,8 @@
     <p class="lead">
         This are just some demo pages. For testing out the functionality of the Framework.
     </p>
+
+    <a href="/session" class="btn btn-info">
+        Session Demo
+    </a>
 </div>

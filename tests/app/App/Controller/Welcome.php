@@ -18,6 +18,17 @@ class Welcome extends BasicController
         $this->view->body('welcome')->render();
     }
 
+    public function session()
+    {
+        $this->request->session()->set('test', ['ok' => true]);
+        $this->request->session()->set('test2', true);
+
+        $this->view
+            ->body('session')
+            ->data(['session' => $this->request->session()->all()])
+            ->render();
+    }
+
     public function json()
     {
         $this->response->json(array(

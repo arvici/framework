@@ -40,6 +40,9 @@ class Request
     /** @var DataCollection $files Files */
     protected $files;
 
+    /** @var Session $session */
+    protected $session;
+
     /**
      * Request constructor.
      *
@@ -50,6 +53,7 @@ class Request
      * @param array $files
      * @param string $body
      * @param null $base
+     * @param null|Session $session
      */
     public function __construct(
         array $get = array(),
@@ -58,7 +62,8 @@ class Request
         array $server = array(),
         array $files = array(),
         $body = null,
-        $base = null
+        $base = null,
+        $session = null
     )
     {
         $this->getParams = new ParameterCollection($get);
@@ -69,15 +74,17 @@ class Request
         $this->files = new DataCollection($files);
         $this->body = is_string($body) ? $body : null;
         $this->base = $base;
+        $this->session = $session;
     }
 
     /**
      * Detect from globals
+     * @param Session $session
      * @return Request
      */
-    public static function detect()
+    public static function detect($session)
     {
-        return new self ($_GET, $_POST, $_COOKIE, $_SERVER, $_FILES, null);
+        return new self ($_GET, $_POST, $_COOKIE, $_SERVER, $_FILES, null, null, $session);
     }
 
     /**
@@ -286,5 +293,15 @@ class Request
             $this->body = file_get_contents('php://input');
         }
         return $this->body;
+    }
+
+    /**
+     * Get session instance.
+     *
+     * @return Session
+     */
+    public function session()
+    {
+        return  $this->session;
     }
 }

@@ -86,6 +86,19 @@ Configure::define('app', function ($config) {
 
         ],
 
+        /**
+         * Session Configuration, set value to false to disable session.
+         */
+        'session' => [
+            'name' => 'arvici_test_session', // Cookie name
+            'expire' => 1*60*60, // 1 hour default
+            'path' => '/', // / default
+            'domain' => null, // null default
+            'secure' => false, // secure flag (false default)
+            'http' => true, // http only flag (true default)
+            'prefix' => 'arvici_' // session key prefix (arvici_ default)
+        ],
+
 
         /**
          * Path to the cache folder. Will be used for caching several framework components.
