@@ -26,6 +26,12 @@ class StoreTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('http://localhost:8080/assets/img/pizza.png', $store->getUrl('img/pizza.png'));
         $this->assertEquals('http://www.example.com/pizza.png', $store->getUrl('http://www.example.com/pizza.png'));
-        $this->assertEquals(APPPATH . 'Template'.DS.'Default'.DS.'img'.DS.'pizza.png', $store->getPath('img/pizza.png'));
+
+        $storePath = $store->getPath('img/pizza.png');
+        $realPath = APPPATH . 'Template'.DS.'Default'.DS.'img'.DS.'pizza.png';
+
+        $storePath = str_replace('\\', '/', $storePath);
+        $realPath = str_replace('\\', '/', $realPath);
+        $this->assertEquals($realPath, $storePath);
     }
 }

@@ -49,8 +49,7 @@ class Session
      */
     public function init ()
     {
-        if ($this->init)
-            throw new AlreadyInitiatedException('Session is already initiated and started!');
+        if ($this->init) return;
         $this->init = true;
 
         // Get configuration for session.
@@ -70,6 +69,8 @@ class Session
 
         if (session_status() === PHP_SESSION_ACTIVE)
             throw new AlreadyInitiatedException('Session is already started before Arvici is started!');
+
+        if (defined('PHPUNIT_RUNNING')) return;
 
         $this->start();
     }
