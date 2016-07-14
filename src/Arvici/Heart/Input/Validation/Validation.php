@@ -73,6 +73,33 @@ class Validation
     }
 
     /**
+     * Append constraints.
+     *
+     * @param array $constraints
+     *
+     * @return Validation
+     */
+    public function addConstraints (array $constraints)
+    {
+        $this->set = array_merge($this->set, $constraints);
+        return $this;
+    }
+
+    /**
+     * Add single constraint.
+     *
+     * @param $key
+     * @param Assert $constraint
+     *
+     * @return Validation
+     */
+    public function addConstraint ($key, Assert $constraint)
+    {
+        $this->set[$key] = $constraint;
+        return $this;
+    }
+
+    /**
      * Run the validators, Validate all input.
      *
      * @param array $input Optional (additional) input.

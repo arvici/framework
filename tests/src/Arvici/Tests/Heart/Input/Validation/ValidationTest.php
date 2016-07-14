@@ -9,6 +9,7 @@
 namespace Arvici\Tests\Heart\Input\Validation;
 
 
+use Arvici\Heart\Input\Validation\Assert\FloatType;
 use Arvici\Heart\Input\Validation\Assert\IntegerType;
 use Arvici\Heart\Input\Validation\Validation;
 
@@ -25,7 +26,7 @@ class ValidationTest extends \PHPUnit_Framework_TestCase
 
     public function testValidationBasics()
     {
-        $input = array('first' => 5, 'second' => false, 'fourth' => 'Invalid90(*&');
+        $input = array('first' => 5, 'second' => false, 'third' => 3, 'fourth' => 'Invalid90(*&');
 
         // Load set
         $validator = new Validation($input);
@@ -55,5 +56,23 @@ class ValidationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($input, $result);
         $this->assertFalse($validator->getErrors());
         $this->assertEquals("", $validator->getErrorMessage());
+
+
+        // Invalid test with more function testing on validator
+        $validator = new Validation($input);
+        $validator->setConstraints([
+            'first' => new IntegerType()
+        ]);
+
+        $validator->addConstraint('second', new FloatType());
+
+        $validator->addConstraints([
+            'fourth' => new IntegerType(),
+            'third' => new IntegerType()
+        ]);
+
+        $result = $validator->run();
+
+        $this->assertFalse($result);
     }
 }
