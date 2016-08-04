@@ -49,6 +49,17 @@ class ExceptionHandler implements Registrable
             $pretty = new PrettyPageHandler();
             $pretty->setPageTitle("Arvici - Exception is thrown!");
 
+            if (Configuration::get('app.ide', 'none') === 'idea') {
+                $pretty->setEditor(
+                    function ($file, $line) {
+                        return array(
+                            'url' => "http://localhost:63342/api/file/?file=$file&line=$line",
+                            'ajax' => true
+                        );
+                    }
+                );
+            }
+
             $this->whoops->pushHandler($pretty);
         }
     }
@@ -119,7 +130,7 @@ class ExceptionHandler implements Registrable
         if (! $exception instanceof \Exception) {
             $exception = new \Exception("Can't handle exception thrown!");
         }
-        
+
 
         // Log
         \Logger::error((string) $exception);
