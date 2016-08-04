@@ -8,6 +8,7 @@
 
 namespace Arvici\Heart\Input\Validation;
 
+use Arvici\Heart\Collections\DataCollection;
 use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Input\Validation\Assert\Collection;
@@ -109,14 +110,16 @@ class Validation
      */
     public function run($input = array(), $constraints = array())
     {
+        // Convert any collection to plain array
+        if ($input instanceof DataCollection) $input = $input->all();
+
         // Merge extra provided params.
         $input =        array_merge($this->input, $input);
         $constraints =  array_merge($this->set, $constraints);
 
         $errors = array();
 
-        foreach ($constraints as $field => $constraint)
-        {
+        foreach ($constraints as $field => $constraint) {
             $result = false;
             if ($constraint instanceof Assert || $constraint instanceof Collection) {
                 $result = $constraint->execute($input, $field);
@@ -124,7 +127,6 @@ class Validation
                     $errors[$field] = $constraint->getError($field);
                 }
             }
-
         }
 
         $this->errors = $errors;
