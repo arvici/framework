@@ -170,6 +170,16 @@ class Request
     }
 
     /**
+     * Returns the FILES collection (raw).
+     *
+     * @return DataCollection
+     */
+    public function files()
+    {
+        return $this->files;
+    }
+
+    /**
      * Return SERVER collection
      *
      * @return ServerCollection
