@@ -23,7 +23,7 @@ Configuration::define('database', function() {
             'default' => [
                 'driver'        => 'MySQL',
 
-                'host'          =>   'localhost',
+                'host'          => 'localhost',
                 'username'      => 'root',
                 'password'      => '',
                 'port'          => 3306,
