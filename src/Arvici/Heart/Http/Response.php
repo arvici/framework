@@ -3,7 +3,7 @@
  * Response
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
- * @copyright  2016 Tom Valk
+ * @copyright  2017 Tom Valk
  */
 
 namespace Arvici\Heart\Http;
@@ -95,6 +95,8 @@ class Response
      * @return Response|int
      *
      * @throws ResponseAlreadySendException
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function status($code = null)
     {
@@ -116,6 +118,8 @@ class Response
      * @return Response|int
      *
      * @throws ResponseAlreadySendException
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function code($code = null)
     {
@@ -136,6 +140,8 @@ class Response
     /**
      * Get headers
      * @return DataCollection
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function headers()
     {
@@ -150,6 +156,8 @@ class Response
      * @return Response
      *
      * @throws ResponseAlreadySendException
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function append($data)
     {
@@ -168,6 +176,8 @@ class Response
      * @return Response
      *
      * @throws ResponseAlreadySendException
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function prepend($data)
     {
@@ -184,6 +194,8 @@ class Response
      * @param mixed $object
      * @param bool $pretty Pretty Print , default false.
      * @return Response
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function json($object, $pretty = false)
     {
@@ -201,6 +213,8 @@ class Response
      * @return Response
      *
      * @throws ResponseAlreadySendException
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function redirect($url, $stop = false, $code = 302)
     {
@@ -221,6 +235,8 @@ class Response
      * Is response already sent
      *
      * @return bool
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function isSent()
     {
@@ -233,6 +249,8 @@ class Response
      * @param string $key
      * @param mixed $value
      * @return Response
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function header($key, $value)
     {
@@ -272,6 +290,8 @@ class Response
      * @param bool $enabled default true.
      *
      * @return Response
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function cache($enabled = true)
     {
@@ -296,6 +316,8 @@ class Response
      * @return Response
      *
      * @throws ResponseAlreadySendException
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function send($code = null, $force = false)
     {
@@ -321,6 +343,8 @@ class Response
 
     /**
      * Send Headers and Cookies
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     protected function sendHeaders()
     {

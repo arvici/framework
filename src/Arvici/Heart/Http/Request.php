@@ -3,7 +3,7 @@
  * Request
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
- * @copyright  2016 Tom Valk
+ * @copyright  2017 Tom Valk
  */
 
 namespace Arvici\Heart\Http;
@@ -173,6 +173,8 @@ class Request
      * Returns the FILES collection (raw).
      *
      * @return DataCollection
+     *
+     * @codeCoverageIgnore Currently not in test scope
      */
     public function files()
     {
