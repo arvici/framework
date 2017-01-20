@@ -3,7 +3,7 @@
  * Configuration Description
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
- * @copyright  2016 Tom Valk
+ * @copyright  2017 Tom Valk
  */
 
 namespace Arvici\Heart\Config;
@@ -88,22 +88,60 @@ class Configuration implements \ArrayAccess
         return true;
     }
 
-
+    /**
+     * Get a configuration by key. Use dot notation. Use * to get all section configurations.
+     *
+     * @param string $name name of key, use dot notation. Use * as a wildcard after the section notation to get
+     *                     the whole section
+     * @param mixed $default default if value doesn't exists, default null.
+     *
+     * @return mixed
+     */
     public static function get($name, $default = null)
     {
         if (! strstr($name, '.')) {
             return $default;
         }
 
+        // Extract information from key.
         $parts = explode('.', $name, 2);
         $section = $parts[0];
         $key = $parts[1];
 
-        $data = self::getInstance()->doGetSection($section);
+        // Get section.
+        $data = self::getInstance()->getSection($section);
+
+        // Check if we want all the section variables.
+        if ($key === '*') {
+            return $data;
+        }
 
         return isset($data[$key]) ? $data[$key] : $default;
     }
 
+    /**
+     * Get the whole set of the configuration section.
+     *
+     * @param string $section section name.
+     * @param mixed $default default value when undefined. Leave undefined to use the build-in defined defaults for the
+     *                       section.
+     *
+     * @return mixed
+     */
+    public function getSection($section, $default = -1)
+    {
+        // Return if section is defined.
+        if (isset($this->config[$section])) {
+            return $this->config[$section];
+        }
+        if ($default !== -1) {
+            return $default;
+        }
+        // Find the default value (in default configuration definitions).
+        $defaultClass = new \ReflectionClass(DefaultConfiguration::class);
+        return $defaultClass->getStaticPropertyValue($section, null);
+
+    }
 
     /**
      * Add section data to the configuration.
@@ -120,12 +158,10 @@ class Configuration implements \ArrayAccess
         $this->config[$section] = array_merge($this->config[$section], $config);
     }
 
-
-
-
-
     /**
      * Get section configuration data.
+     *
+     * @deprecated Since 1.2.0. Will be removed in 2.0.0.
      *
      * @param string $section
      * @return array|null
@@ -134,10 +170,6 @@ class Configuration implements \ArrayAccess
     {
         return isset($this->config[$section]) ? $this->config[$section] : null;
     }
-
-
-
-
 
     /**
      * Whether a offset exists
@@ -155,8 +187,7 @@ class Configuration implements \ArrayAccess
      */
     public function offsetExists($offset)
     {
-
-        // TODO: Implement offsetExists() method.
+        return isset($this->config[$offset]);
     }
 
     /**
@@ -172,7 +203,7 @@ class Configuration implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        // TODO: Implement offsetGet() method.
+        return $this->config[$offset];
     }
 
     /**
@@ -191,7 +222,7 @@ class Configuration implements \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        // TODO: Implement offsetSet() method.
+        $this->config[$offset] = $value;
     }
 
     /**
@@ -207,6 +238,6 @@ class Configuration implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        // TODO: Implement offsetUnset() method.
+        unset($this->config[$offset]);
     }
 }

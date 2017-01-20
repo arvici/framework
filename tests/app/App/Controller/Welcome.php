@@ -3,13 +3,14 @@
  * Welcome Controller
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
- * @copyright  2016 Tom Valk
+ * @copyright  2017 Tom Valk
  */
 
 namespace App\Controller;
 
 use Arvici\Component\Controller\BasicController;
 use Arvici\Exception\ControllerNotFoundException;
+
 
 class Welcome extends BasicController
 {
