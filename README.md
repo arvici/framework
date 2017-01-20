@@ -74,6 +74,50 @@ Configuration::define('database', function() {
 ## Models/ORM
 When using the ORM, check the separate documentation: https://github.com/tomvlk/sweet-orm#defining-entities
 
+## Caching
+To use the Caching system, you have to define the Caching configuration or use the FileSystem by default.
+
+Configuration file `Cache.php`:
+```php
+
+```
+
+
+### Using the cache pools
+To retrieve a pool (where you can save and get items) you have to use the Manager:
+```php
+$manager = \Arvici\Component\Cache::getInstance();
+```
+
+In the next step you need to get the Pool. The pool is configured in your configuration file.
+```php
+$pool = $manager->getPool(); // pool name = 'default'
+// or with a pool name:
+$pool = $manager->getPool('redis-cache'); // pool name = 'redis-cache'
+```
+
+To retrieve, save or use an item you first have to get the context. 
+With the instance of Item you can read and manipulate the content.
+
+Examples of usage:
+```php
+$item = $pool->get('test/cachingkey');
+$item->set($data);
+
+$expiration = new DateTime('2020-01-21');
+$item->expiresAfter($expiration);
+
+$item->save();
+
+$data = $item->get();
+
+$item->isMiss(); // bool
+
+```
+
+### More information
+The caching library that is used is Stash. For more information on using the pools see: http://www.stashphp.com/Basics.html
+
 # License
 
 MIT License, see LICENSE file.
