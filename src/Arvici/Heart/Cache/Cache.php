@@ -60,6 +60,23 @@ class Cache
     }
 
     /**
+     * Get pool instance.
+     *
+     * @param string $name
+     * @return Pool
+     *
+     * @throws NotFoundException
+     */
+    public function getPool ($name = 'default')
+    {
+        if (isset($this->pools[$name])) {
+            return $this->pools[$name];
+        }
+        throw new NotFoundException('Caching Pool not found with given name \''.$name.'\'');
+    }
+
+
+    /**
      * Initiate Pools.
      */
     protected function initiatePools ()
@@ -74,6 +91,9 @@ class Cache
             $driverInstance = new $poolConfiguration['driver']($options);
 
             $poolInstance = new Pool($driverInstance);
+
+            // Register in the local instance holding variable.
+            $this->pools[$name] = $poolInstance;
         }
     }
 }

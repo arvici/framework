@@ -40,7 +40,7 @@ class DefaultConfiguration
             'default' => [
                 'driver' => '\Stash\Driver\FileSystem',
                 'options' => [
-                    'path' => BASEPATH . 'tmp' . DS . 'cache' . DS,
+                    'path' => BASEPATH . 'cache' . DS,
                 ]
             ],
         ],

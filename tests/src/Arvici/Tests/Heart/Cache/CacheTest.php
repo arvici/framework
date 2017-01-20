@@ -8,7 +8,9 @@
 
 namespace Arvici\Tests\Heart\Config;
 
+use Arvici\Exception\NotFoundException;
 use Arvici\Heart\Cache\Cache;
+use Stash\Interfaces\ItemInterface;
 
 
 /**
@@ -30,5 +32,36 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotNull($cacheManager);
         $this->assertInstanceOf(Cache::class, $cacheManager);
+    }
+
+    public function testInvalidPool ()
+    {
+        try {
+            Cache::getInstance()->getPool('non-existing-pool');
+            $this->assertTrue(false);
+        } catch (NotFoundException $nfe) {
+            $this->assertTrue(true);
+        }
+    }
+
+    public function testWriting ()
+    {
+        $cache = Cache::getInstance()->getPool();
+        $cache->clear();
+
+
+        $item = $cache->getItem('test-1');
+        $this->assertInstanceOf(ItemInterface::class, $item);
+        $this->assertTrue($item->isMiss());
+
+        $item->set(true)->save();
+
+        //
+
+        $item = $cache->getItem('test-1');
+        $this->assertInstanceOf(ItemInterface::class, $item);
+
+        $this->assertFalse($item->isMiss());
+        $this->assertTrue($item->get());
     }
 }
