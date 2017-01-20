@@ -3,7 +3,7 @@
  * Use for PHP build in server, route file.
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
- * @copyright  2016 Tom Valk
+ * @copyright  2017 Tom Valk
  */
 // From root:
 // php -S localhost:80 -t tests/public/ tests/server.php

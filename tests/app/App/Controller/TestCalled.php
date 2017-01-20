@@ -3,7 +3,7 @@
  * TestCalled
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
- * @copyright  2016 Tom Valk
+ * @copyright  2017 Tom Valk
  */
 
 namespace App\Controller;
@@ -32,7 +32,7 @@ class TestCalled extends Controller
     {
         $param1 = $params[0];
         $param2 = $params[1];
-        
+
         if ($param1 === 'test' && $param2 == 555) {
             throw new \Exception("Get is called!", 999);
         }
