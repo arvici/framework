@@ -79,7 +79,33 @@ To use the Caching system, you have to define the Caching configuration or use t
 
 Configuration file `Cache.php`:
 ```php
+Configure::define('cache', function () {
+    return [
 
+        /**
+         * Enable cache.
+         */
+        'enabled' => true,
+
+        /**
+         * Set to true to enable cache even in non-production mode.
+         */
+        'forceEnabled' => true,
+
+        /**
+         * Cache Pool Configuration.
+         */
+        'pools' => [
+            'default' => [
+                'driver' => '\Stash\Driver\FileSystem',
+                'options' => [
+                    'path' => BASEPATH . 'cache' . DS,
+                ]
+            ],
+        ],
+
+    ];
+});
 ```
 
 
