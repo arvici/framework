@@ -27,11 +27,52 @@ Using this package is for experts only, please follow the link bellow to get ins
 # Components
 
 ## Router
+You can define your routes in the Router.php configuration. Define your routes with
+the Router::define method.
+
+Example:
+```php
+Router::define(function(Router $router) {
+    $router->get('/',           '\App\Controller\Welcome::index');
+    $router->get('/session',    '\App\Controller\Welcome::session');
+    $router->get('/json',       '\App\Controller\Welcome::json');
+    $router->get('/exception',  '\App\Controller\Welcome::exception');
+});
+```
 
 ## Database
+Configuration of your database is located in the Database.php.
+
+Example:
+```php
+Configuration::define('database', function() {
+    return [
+        /**
+         * The default fetch type to use.
+         */
+        'fetchType' => \Arvici\Heart\Database\Database::FETCH_ASSOC,
+        
+        /**
+         * Database Connection names and configuration values.
+         *
+         * 'default' is used when no connection name is provided, or using SweetORM.
+         */
+        'connections' => [
+            'default' => [
+                'driver'        => 'MySQL',
+                'host'          => 'localhost',
+                'username'      => 'root',
+                'password'      => '',
+                'port'          => 3306,
+                'database'      => 'arvici_test'
+            ],
+        ]
+    ];
+});
+```
 
 ## Models/ORM
-
+When using the ORM, check the separate documentation: https://github.com/tomvlk/sweet-orm#defining-entities
 
 # License
 
