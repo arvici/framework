@@ -20,6 +20,8 @@ namespace Arvici\Heart\Config;
  */
 class DefaultConfiguration
 {
+    public static $test = [];
+
     public static $cache = [
         /**
          * Enable cache.

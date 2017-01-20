@@ -73,7 +73,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $connection = Database::connection();
 
-        $return = $connection->insert('posts', ['title' => 'sample', 'author' => 2, 'active' => 1, 'publishdate' => date('c')]);
+        $return = $connection->insert('posts', ['title' => 'sample', 'author' => 2, 'active' => 1, 'publishdate' => date('Y-m-d'), 'Content' => '']);
         $this->assertTrue($return);
 
         $id = $connection->lastInsertedId();
@@ -84,7 +84,7 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     {
         $connection = Database::connection();
 
-        $return = $connection->insert('posts', ['title' => 'sample', 'author' => 2, 'active' => 1, 'publishdate' => date('c')]);
+        $return = $connection->insert('posts', ['title' => 'sample', 'author' => 2, 'active' => 1, 'publishdate' => date('Y-m-d'), 'Content' => '']);
         $this->assertTrue($return);
 
         $id = $connection->lastInsertedId();

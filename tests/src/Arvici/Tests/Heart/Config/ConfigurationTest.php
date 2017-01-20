@@ -20,7 +20,6 @@ use Arvici\Heart\Config\Configuration;
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
 
-
     public function testDefineConfiguration()
     {
         Configuration::define('test', function() {
@@ -39,7 +38,22 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     public function testSet()
     {
         Configuration::set('test.test', false);
+        Configuration::set('test.test2', true);
+
         $this->assertFalse(Configuration::get('test.test'));
+        $this->assertTrue(Configuration::get('test.test2'));
+
+        $this->assertArraySubset([
+            'test' => false,
+            'test2' => true
+        ], Configuration::get('test.*'));
+
+    }
+
+    public function testGetDefaultSection()
+    {
+        $this->assertTrue(Configuration::get('cache.enabled'));
+        $this->assertNotNull(Configuration::get('test.*'));
     }
 
     public function testInvalidNames()

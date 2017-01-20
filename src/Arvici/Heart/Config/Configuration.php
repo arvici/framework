@@ -127,6 +127,8 @@ class Configuration implements \ArrayAccess
      *                       section.
      *
      * @return mixed
+     *
+     * @codeCoverageIgnore ignore due to a coverage bug.
      */
     public function getSection($section, $default = -1)
     {
@@ -137,6 +139,7 @@ class Configuration implements \ArrayAccess
         if ($default !== -1) {
             return $default;
         }
+
         // Find the default value (in default configuration definitions).
         $defaultClass = new \ReflectionClass(DefaultConfiguration::class);
         return $defaultClass->getStaticPropertyValue($section, null);
@@ -165,6 +168,8 @@ class Configuration implements \ArrayAccess
      *
      * @param string $section
      * @return array|null
+     *
+     * @codeCoverageIgnore
      */
     private function doGetSection($section)
     {

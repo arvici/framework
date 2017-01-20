@@ -50,7 +50,7 @@ class TestUtils
             ['id' => 4, 'title' => 'Mister Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
             ['id' => 5, 'title' => 'Test Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
             ['id' => 6, 'title' => 'Is Post', 'author' => 1, 'content' => 'Content', 'publishdate' => null],
-            ['id' => 7, 'title' => 'Here Post', 'author' => 1, 'content' => 'Content', 'publishdate' => date('c', time() - 5000)],
+            ['id' => 7, 'title' => 'Here Post', 'author' => 1, 'content' => 'Content', 'publishdate' => date('Y-m-d', time() - 5000)],
         ];
         foreach ($posts as $post) {
             $connection->insert('posts', $post);
