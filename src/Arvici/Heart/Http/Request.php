@@ -43,6 +43,9 @@ class Request
     /** @var Session $session */
     protected $session;
 
+    /** @var Context $context */
+    protected $context;
+
     /**
      * Request constructor.
      *
@@ -75,6 +78,9 @@ class Request
         $this->body = is_string($body) ? $body : null;
         $this->base = $base;
         $this->session = $session;
+
+        // Create the request context.
+        $this->context = new Context();
     }
 
     /**
@@ -314,6 +320,17 @@ class Request
      */
     public function session()
     {
-        return  $this->session;
+        return $this->session;
+    }
+
+    /**
+     * Get Request Context. You can store data that will be reachable for all middleware and controllers executing
+     * or using the request.
+     *
+     * @return Context
+     */
+    public function context()
+    {
+        return $this->context;
     }
 }
