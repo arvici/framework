@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+// Bootstrap Arvici.
+defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+
+// Detect root and vendor paths.
+$detectLocations = [
+    dirname(__DIR__),
+    __DIR__,
+];
+$baseDir = null;
+
+foreach ($detectLocations as $location) {
+    if (file_exists($detectLocations . DS . 'composer.json')) {
+        if (! file_exists($detectLocations . DS . 'vendor' . DS . 'autoload.php')) {
+            echo "Run composer install/update first!";
+            exit();
+        }
+        $baseDir = $location;
+    }
+}
+
+// Define locations.
+defined('BASEPATH') || define('BASEPATH', $baseDir . DS);
+defined('APPPATH') || define('APPPATH', BASEPATH . 'App' . DS);
+
+// Require composer autoload!
+require_once BASEPATH . 'vendor' . DS .'autoload.php';
+
+unset($baseDir);
+unset($detectLocations);
+
+// Load configuration
+$configDir = APPPATH . '/Config/';
+foreach (glob($configDir . '*.php') as $fileName) {
+    require_once $fileName;
+}
+unset($configDir);
+
+// Call the application bootstrap.
+use Arvici\Heart\Console\Application;
+
+$application = new Application();
+$application->prepare();
+$application->run();

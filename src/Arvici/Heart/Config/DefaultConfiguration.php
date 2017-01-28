@@ -17,6 +17,7 @@ namespace Arvici\Heart\Config;
  * 'Missing' configuration files will be logged if in debug mode!
  *
  * @package Arvici\Heart\Config
+ * @codeCoverageIgnore
  */
 class DefaultConfiguration
 {

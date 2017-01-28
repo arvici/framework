@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+// Bootstrap Arvici.
+defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+
+// Define locations.
+$baseDir = __DIR__;
+defined('BASEPATH') || define('BASEPATH', $baseDir . DS);
+defined('APPPATH') || define('APPPATH', BASEPATH . 'App' . DS);
+unset($baseDir);
+
+// Require composer autoload!
+require_once dirname(BASEPATH) . DS . 'vendor' . DS .'autoload.php';
+
+// Load configuration
+$configDir = APPPATH . '/Config/';
+foreach (glob($configDir . '*.php') as $fileName) {
+    require_once $fileName;
+}
+unset($configDir);
+
+// Call the application bootstrap.
+use Arvici\Heart\Console\Application;
+
+$application = new Application();
+$application->prepare();
+$application->run();
