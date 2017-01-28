@@ -21,9 +21,19 @@ use Stash\Pool as BasePool;
  */
 class Pool extends BasePool
 {
-    public function __construct(DriverInterface $driver = null)
+    /** @var string|null */
+    protected $name;
+
+    /**
+     * Pool constructor.
+     *
+     * @param DriverInterface|null $driver
+     * @param string|null $name
+     */
+    public function __construct(DriverInterface $driver = null, $name = null)
     {
         parent::__construct($driver);
+        $this->name = $name;
 
         // Inject the framework logger.
         $this->logger = \Logger::getInstance();
@@ -36,5 +46,14 @@ class Pool extends BasePool
         if (! $isEnabled || ($isEnabled && ! $isProduction && ! $isForceEnabled)) {
             $this->isDisabled = true; // @codeCoverageIgnore
         }
+    }
+
+    /**
+     * Get name of pool.
+     * @return string|null
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

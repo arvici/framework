@@ -55,14 +55,24 @@ class Logger
 
     /**
      * Start function, will be called from the bootstrap file.
+     *
+     * @param bool $skipConfiguration
+     *
+     * @throws ConfigurationException
+     * @throws LogException
+     * @throws PermissionDeniedException
      */
-    public static function start()
+    public static function start($skipConfiguration = false)
     {
         if (self::$instance !== null) {
             throw new LogException("Logger already started!");
         }
 
-        if (Configuration::get('app.log', true)) {
+        // Load the logger.
+        self::$instance = new Writer();
+
+        // Apply configuration.
+        if (! $skipConfiguration && Configuration::get('app.log', true)) {
             // Get configuration
             $logPath = Configuration::get('app.logPath');
             if ($logPath === null) {// @codeCoverageIgnore
@@ -70,17 +80,13 @@ class Logger
             }                       // @codeCoverageIgnore
 
             if (! file_exists($logPath)) {  // @codeCoverageIgnore
-                $make = mkdir($logPath);    // @codeCoverageIgnore
-                if (! $make) {              // @codeCoverageIgnore
-                    throw new PermissionDeniedException("Could not create directory '".$logPath."'!");  // @codeCoverageIgnore
+                if (! mkdir($logPath)) {    // @codeCoverageIgnore
+                    throw new PermissionDeniedException("Could not create directory '" . $logPath . "'!");  // @codeCoverageIgnore
                 }                           // @codeCoverageIgnore
             }                               // @codeCoverageIgnore
 
             // Get all level and log files.
             self::$files = Configuration::get('app.logFile', ['app.log' => self::ERROR]);
-
-            // Load the logger
-            self::$instance = new Writer($logPath);
 
             self::$path = $logPath;
 
@@ -88,13 +94,10 @@ class Logger
             foreach (self::$files as $file => $minimumLevel) {
                 self::$instance->addHandler(new StreamHandler($logPath . $file, $minimumLevel));
             }
-
-            // Write debug message for starting logger
-            self::log(self::DEBUG, 'Arvici Logger Started!');
-
-            // Register exception/error handler
-            ExceptionHandler::register();
         }
+
+        // Register exception/error handler
+        ExceptionHandler::register();
     }
 
     /**

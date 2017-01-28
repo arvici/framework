@@ -9,7 +9,10 @@
 
 namespace Arvici\Heart\Console;
 
+use Arvici\Heart\Cache\Commands\CacheCommand;
+use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Console Application
@@ -31,13 +34,21 @@ class Application extends BaseApplication
 
     public function prepare()
     {
+        // Start Logger
+        \Logger::start(true);
+        \Logger::getInstance()->clearHandlers();
+        \Logger::getInstance()->addHandler(
+            new ConsoleHandler()
+        );
 
+        // Load commands.
+        $this->prepareCore();
     }
 
-    public function dispatch($arguments)
+    private function prepareCore()
     {
-        $this->arguments = $arguments;
-
-
+        $this->addCommands([
+            new CacheCommand()
+        ]);
     }
 }

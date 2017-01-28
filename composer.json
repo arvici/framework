@@ -28,6 +28,7 @@
     "swiftmailer/swiftmailer": "~5.4",
     "symfony/var-dumper": "~3.2",
     "symfony/console": "3.2.2",
+    "symfony/monolog-bridge": "3.2.2",
     "tomvlk/sweet-orm": "~1.1",
     "tedivm/stash": "0.14.1"
   },
