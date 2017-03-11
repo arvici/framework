@@ -34,7 +34,3 @@ cache:
 env:
   matrix:
     secure: I6CTHVZra+4tK4FMKaqISUYUFNtJKztpS36nCruJb8Rxvw+Zqtud/eCo43eD9jVWb2pxHLLnZuus4GpOjsBZn/VSP04th391mQVOX+u+1Nkltx6IBiUisiCr9dzcQAvOEnRCL3RHIYC8iC4kN1iWbglMSDtnKnxBo6QEBODL2UTJJKGxOIpxDxf6kpao01oOVMCKu+gEnAsUcY8d9ndhuglk3FCUvVWzxFpQ7uYLjzTC1bE7SYno+Dz+D0IRX+z6auQf/QJa/zU4MLn2riLHy4jMU0Hjx/jt0cZPo6nikxn6zDpkJfg3g+bRQGIxZfA13d22sPbWnKutwqeMCiKWDrhUOY7qLAGjQCLn/ELqMHYnK34iDlaiQNWFpea1fHMj7TdSdQV5MY6+Faq9cIq1aSHNY/p5H7XmXjmcWwUd/xE+Z+5k5Mr0581Z/BNQfpOkfR8KK/6t/Mf7HHsJwYesA1dkdraHm9xNIS4Sae1+7RKCjWdVNwmC0VHqTYvByhqOFMaLF+wJqR1Vb06Y6SLZePdin3W/ctltE76u3CsJvpwG6w9btQBBRs2zs3btMZiM5jxt6anaOKG6UaGNO/XMhcWkF8vmt7zodx+Aa4/3VlEgO8vGjXfXvUbPomgSh6GzWpLZf4wjHCJzsAfB1akGRQ8DTJA1+wAPBC1d/Wd4U2E=
-
-notifications:
-  webhooks:
-    - https://buildtimetrend.herokuapp.com/travis
