@@ -18,7 +18,7 @@ class TestPrepare extends Controller
         return false;
     }
 
-    public function get()
+    public function get(...$params)
     {
         throw new \Exception("Get is called!");
     }

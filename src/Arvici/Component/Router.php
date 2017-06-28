@@ -71,14 +71,18 @@ class Router extends \Arvici\Heart\Router\Router
      *
      * @param string $match The base match for the list and create routes. The other routes will contain this as prefix.
      * @param string $apiController Api Controller class name, with full namespace notation.
+     * @param array $kwargs Any optional kwargs that will be passed to the controller (via route).
      * @param array|null $methods Methods to generate. Null for all. Example: ['GET'] or ['GET', 'POST'].
      *
      * @throws RouterException
      */
-    public function api($match, $apiController, $methods = null)
+    public function api($match, $apiController, $kwargs = [], $methods = null)
     {
         if (is_string($methods)) {
             $methods = array($methods);
+        }
+        if (! is_array($kwargs)) {
+            $kwargs = [];
         }
         if ($methods === null) {
             $methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
@@ -89,9 +93,9 @@ class Router extends \Arvici\Heart\Router\Router
         if ($match === '') {
             throw new RouterException('Your API route must contain a first match field when registering!');
         }
-        if (substr($match, -1, 1) !== '/') {
-            $match .= '/';
-        }
+//        if (substr($match, -1, 1) !== '/') {
+//            $match .= '/';
+//        }
         if (substr($match, 0, 1) !== '/') {
             $match = '/' . $match;
         }
@@ -100,20 +104,20 @@ class Router extends \Arvici\Heart\Router\Router
             switch ($method)
             {
                 case 'GET':
-                    $this->get($match, $apiController . '::dispatch');
-                    $this->get($match . '/(!?)', $apiController . '::dispatch');
+                    $this->get($match, $apiController, array_merge($kwargs, ['api_method' => 'list']));
+                    $this->get($match . '/(!?)', $apiController, array_merge($kwargs, ['api_method' => 'retrieve']));
                     break;
                 case 'POST':
-                    $this->post($match, $apiController . '::dispatch');
+                    $this->post($match, $apiController, array_merge($kwargs, ['api_method' => 'create']));
                     break;
                 case 'PUT':
-                    $this->put($match . '/(!?)', $apiController . '::dispatch');
+                    $this->put($match . '/(!?)', $apiController, array_merge($kwargs, ['api_method' => 'update']));
                     break;
                 case 'PATCH':
-                    $this->patch($match . '/(!?)', $apiController . '::dispatch');
+                    $this->patch($match . '/(!?)', $apiController, array_merge($kwargs, ['api_method' => 'partialUpdate']));
                     break;
                 case 'DELETE':
-                    $this->delete($match . '/(!?)', $apiController . '::dispatch');
+                    $this->delete($match . '/(!?)', $apiController, array_merge($kwargs, ['api_method' => 'destroy']));
                     break;
             }
         }
@@ -124,12 +128,13 @@ class Router extends \Arvici\Heart\Router\Router
      *
      * @param string $match
      * @param string|callable $callback
+     * @param array $kwargs Any optional kwargs that will be passed to the controller (via route).
      *
      * @codeCoverageIgnore
      */
-    public function get($match, $callback)
+    public function get($match, $callback, $kwargs = [])
     {
-        $this->addRoute(new Route($match, 'GET', $callback, self::$group));
+        $this->addRoute(new Route($match, 'GET', $callback, self::$group, $kwargs));
     }
 
     /**
@@ -137,12 +142,13 @@ class Router extends \Arvici\Heart\Router\Router
      *
      * @param string $match
      * @param string|callable $callback
+     * @param array $kwargs Any optional kwargs that will be passed to the controller (via route).
      *
      * @codeCoverageIgnore
      */
-    public function options($match, $callback)
+    public function options($match, $callback, $kwargs = [])
     {
-        $this->addRoute(new Route($match, 'OPTIONS', $callback, self::$group));
+        $this->addRoute(new Route($match, 'OPTIONS', $callback, self::$group, $kwargs));
     }
 
     /**
@@ -150,12 +156,13 @@ class Router extends \Arvici\Heart\Router\Router
      *
      * @param string $match
      * @param string|callable $callback
+     * @param array $kwargs Any optional kwargs that will be passed to the controller (via route).
      *
      * @codeCoverageIgnore
      */
-    public function post($match, $callback)
+    public function post($match, $callback, $kwargs = [])
     {
-        $this->addRoute(new Route($match, 'POST', $callback, self::$group));
+        $this->addRoute(new Route($match, 'POST', $callback, self::$group, $kwargs));
     }
 
     /**
@@ -163,12 +170,13 @@ class Router extends \Arvici\Heart\Router\Router
      *
      * @param string $match
      * @param string|callable $callback
+     * @param array $kwargs Any optional kwargs that will be passed to the controller (via route).
      *
      * @codeCoverageIgnore
      */
-    public function put($match, $callback)
+    public function put($match, $callback, $kwargs = [])
     {
-        $this->addRoute(new Route($match, 'PUT', $callback, self::$group));
+        $this->addRoute(new Route($match, 'PUT', $callback, self::$group, $kwargs));
     }
 
     /**
@@ -176,12 +184,13 @@ class Router extends \Arvici\Heart\Router\Router
      *
      * @param string $match
      * @param string|callable $callback
+     * @param array $kwargs Any optional kwargs that will be passed to the controller (via route).
      *
      * @codeCoverageIgnore
      */
-    public function delete($match, $callback)
+    public function delete($match, $callback, $kwargs = [])
     {
-        $this->addRoute(new Route($match, 'DELETE', $callback, self::$group));
+        $this->addRoute(new Route($match, 'DELETE', $callback, self::$group, $kwargs));
     }
 
     /**
@@ -189,12 +198,13 @@ class Router extends \Arvici\Heart\Router\Router
      *
      * @param string $match
      * @param string|callable $callback
+     * @param array $kwargs Any optional kwargs that will be passed to the controller (via route).
      *
      * @codeCoverageIgnore
      */
-    public function patch($match, $callback)
+    public function patch($match, $callback, $kwargs = [])
     {
-        $this->addRoute(new Route($match, 'PATCH', $callback, self::$group));
+        $this->addRoute(new Route($match, 'PATCH', $callback, self::$group, $kwargs));
     }
 
     /**

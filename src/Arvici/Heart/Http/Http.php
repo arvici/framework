@@ -9,6 +9,8 @@
 namespace Arvici\Heart\Http;
 
 
+use Arvici\Heart\Router\Route;
+
 class Http
 {
     /** @var Request */
@@ -17,6 +19,8 @@ class Http
     private $response;
     /** @var Session */
     private $session;
+    /** @var Route */
+    private $route;
 
     /** @var Http */
     private static $instance;
@@ -80,5 +84,21 @@ class Http
     public function session()
     {
         return $this->session;
+    }
+
+    /**
+     * Get (or set) the route that matched with the request.
+     *
+     * @param Route|null $route
+     *
+     * @return Route
+     */
+    public function route($route = null)
+    {
+        if ($route !== null && $route instanceof Route) {
+            $this->route = $route;
+        }
+
+        return $this->route;
     }
 }

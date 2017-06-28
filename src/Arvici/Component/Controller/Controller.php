@@ -7,12 +7,12 @@
  */
 
 namespace Arvici\Component\Controller;
-use Arvici\Component\View\Builder;
-use Arvici\Component\View\View;
+
 use Arvici\Exception\NotImplementedException;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Http\Request;
 use Arvici\Heart\Http\Response;
+use Arvici\Heart\Router\Route;
 
 /**
  * Abstract Base Controller
@@ -27,6 +27,9 @@ abstract class Controller
     /** @var Response */
     protected $response;
 
+    /** @var Route */
+    protected $route;
+
     /** @var array|null */
     protected $allowedMethods = null;
 
@@ -37,6 +40,7 @@ abstract class Controller
     {
         $this->request = Http::getInstance()->request();
         $this->response = Http::getInstance()->response();
+        $this->route = Http::getInstance()->route();
     }
 
     /**

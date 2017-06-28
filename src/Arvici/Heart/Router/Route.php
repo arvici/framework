@@ -54,14 +54,20 @@ class Route
     private $group;
 
     /**
+     * @var array
+     */
+    private $kwargs;
+
+    /**
      * Route constructor.
      *
      * @param string $match Match url, can contain regexpressions.
      * @param array|string $methods Single or multiple method names.
      * @param callable $callback Callback to call when it's done.
      * @param null|string $group Group of route.
+     * @param array $kwargs Any optional kwargs that will be passed to the controller (via route).
      */
-    public function __construct($match, $methods, $callback, $group = null)
+    public function __construct($match, $methods, $callback, $group = null, $kwargs = [])
     {
         if (is_string($methods)) {
             $methods = array($methods);
@@ -70,6 +76,7 @@ class Route
         $this->match = str_replace(array_keys(self::$patterns), array_values(self::$patterns), $match);
         $this->callback = $callback;
         $this->group = $group;
+        $this->kwargs = $kwargs;
     }
 
     /**
@@ -127,6 +134,22 @@ class Route
 
 
     /**
+     * Get kwargs value by key, return default if not found.
+     *
+     * @param string $key Key string
+     * @param mixed $default
+     * @return mixed|null
+     */
+    public function getValue($key, $default = null)
+    {
+        if (is_array($this->kwargs) && isset($this->kwargs[$key])) {
+            return $this->kwargs[$key];
+        }
+        return $default;
+    }
+
+
+    /**
      * Execute the route callback with given parameters.
      *
      * @param string $compiled
@@ -147,11 +170,16 @@ class Route
             }, $params);
         }
 
-        if (is_string($this->callback) && stristr($this->callback, '::')) {
+        if (is_string($this->callback)) {
             // Will call the controller here
-            $parts = explode('::', $this->callback);
-            $controllerClass = $parts[0];
-            $controllerMethod = $parts[1];
+            if (stristr($this->callback, '::')) {
+                $parts = explode('::', $this->callback);
+                $controllerClass = $parts[0];
+                $controllerMethod = $parts[1];
+            } else {
+                $controllerClass = $this->callback;
+                $controllerMethod = 'dispatch';
+            }
 
             if (! class_exists($controllerClass)) {
                 throw new ControllerNotFoundException("The controller declared in your route is not found: '{$controllerClass}'");
@@ -180,13 +208,10 @@ class Route
                 }
             }
 
-            dump($params);
-            exit();
-
             // Call the method
-            call_user_func_array(array($controller, $controllerMethod), [$params]);
+            call_user_func_array(array($controller, $controllerMethod), $params);
         }elseif (is_callable($this->callback)) {
-            call_user_func_array($this->callback, [$params]);
+            call_user_func_array($this->callback, $params);
         }
     }
 }

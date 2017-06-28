@@ -13,7 +13,7 @@ use Arvici\Component\Controller\Controller;
 
 class TestCalled extends Controller
 {
-    public function get()
+    public function get(...$params)
     {
         throw new \Exception("Get is called!", 999);
     }

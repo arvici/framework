@@ -61,6 +61,7 @@ abstract class Router
         // Try to match
         foreach($this->routes as $route) {
             if ($route->match($this->compiled)) {
+                Http::getInstance()->route($route);
                 $this->executeRoute($route, $method);
                 break;
             }

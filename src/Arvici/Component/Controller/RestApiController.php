@@ -8,8 +8,10 @@
 
 namespace Arvici\Component\Controller;
 
+use Arvici\Exception\Response\HttpException;
 use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Database;
+use function Couchbase\defaultDecoder;
 
 /**
  * Api Controller
@@ -38,47 +40,91 @@ abstract class RestApiController extends Controller
 
     /**
      * Get API Schema object with identifier.
-     * HTTP GET.
+     * HTTP GET on a single entry/detail, retrieve object.
      *
-     * @param array $identifiers
+     * @param array ...$params Parameters
      */
-    abstract public function find($identifiers);
+    abstract public function retrieve(...$params);
 
     /**
      * Get API Schemas objects.
-     * HTTP GET.
+     * HTTP GET on a list of objects.
      *
-     * @param array $identifiers
+     * @param array ...$params Parameters
      */
-    abstract public function findAll($identifiers = array());
+    abstract public function list(...$params);
 
     /**
      * Create new object.
-     * HTTP POST.
+     * HTTP POST on the root url to create new object.
      *
-     * @param array $identifiers
+     * @param array ...$params Parameters
      */
-    abstract public function create($identifiers = array());
+    abstract public function create(...$params);
 
     /**
-     * Update (replace) (HTTP PUT)
+     * Update (full update) (HTTP PUT)
      *
-     * @param array $identifiers
+     * @param array ...$params Parameters
      */
-    abstract public function replace($identifiers);
+    abstract public function update(...$params);
 
     /**
      * Update (update) (HTTP PATCH)
      *
-     * @param array $identifiers
+     * @param array ...$params Parameters
      */
-    abstract public function update($identifiers);
+    abstract public function partialUpdate(...$params);
 
     /**
      * Delete schema object with identifier.
      * HTTP DELETE.
      *
-     * @param array $identifiers
+     * @param array ...$params Parameters
      */
-    abstract public function delete($identifiers);
+    abstract public function destroy(...$params);
+
+    /**
+     * Dispatch the API routes.
+     *
+     * @param array ...$params
+     * @return mixed
+     * @throws HttpException
+     */
+    public function dispatch(...$params)
+    {
+        // Verify if the method is 'allowed' in our own context.
+        $allowedMethods = $this->getAllowedMethods();
+        if ($allowedMethods !== null && ! in_array($this->request->method(), $allowedMethods)) {
+            // Not allowed. Return to sender.
+        }
+
+        $apiMethod = $this->route->getValue('api_method', 'list');
+        return call_user_func_array(array($this, $apiMethod), $params);
+//        switch ($this->request->method())
+//        {
+//            case 'GET':
+//                // Check if we are asking for the list or detail.
+//                if ($this->route->getValue('api_method', null) === 'list') {
+//                    return $this->list($params);
+//                }
+//                return $this->retrieve($params);
+//
+//            case 'POST':
+//                return $this->create($params);
+//
+//            case 'PUT':
+//                return $this->update($params);
+//
+//            case 'PATCH':
+//                return $this->partialUpdate($params);
+//
+//            case 'DELETE':
+//                return $this->destroy($params);
+//
+//            default:
+//                // TODO: Better handling...
+//                throw new HttpException('Not found', 404);
+//        }
+    }
 }

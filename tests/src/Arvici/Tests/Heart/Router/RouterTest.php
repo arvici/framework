@@ -10,6 +10,7 @@ namespace Arvici\Tests\Heart\Router;
 
 use App\TestUtils;
 use Arvici\Exception\ControllerNotFoundException;
+use Arvici\Exception\NotImplementedException;
 use Arvici\Exception\RouterException;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Router\Route;
@@ -66,8 +67,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $router = Router::getInstance();
 
         $done1 = false;
-        $router->addRoute(new Route('/test/get/(!int)/(!int)', 'GET', function($params) use (&$done1) {
-            if ($params[0] == 555 && $params[1] == 111)
+        $router->addRoute(new Route('/test/get/(!int)/(!int)', 'GET', function($param1, $param2) use (&$done1) {
+            if ($param1 == 555 && $param2 == 111)
                 $done1 = true;
         }));
 
@@ -148,10 +149,9 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         try {
             $router->run();
             $this->assertTrue(false);
-        }catch (ControllerNotFoundException $e) {
+        }catch (NotImplementedException $e) {
             $this->assertTrue(true);
         }
-
 
         $this->spoof('/test/get/prepare/stop', 'GET');
         $router->run();
@@ -432,7 +432,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         TestUtils::clearRoutes();
 
-        Router::api('api', 'test', 'App\Controller\Api\TestObject');
+        Router::getInstance()->api('api/test', 'App\Controller\Api\TestObject');
 
         $this->spoof('/api/test/1', 'GET');
         try {
@@ -478,7 +478,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         TestUtils::clearRoutes();
 
-        Router::api('api', 'test', 'App\Controller\Api\TestObject', 'GET');
+        Router::getInstance()->api('api/test', 'App\Controller\Api\TestObject', [], 'GET');
 
         $this->spoof('/api/test/1', 'GET');
         try {

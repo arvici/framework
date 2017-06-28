@@ -17,22 +17,22 @@ class TestObject extends RestApiController
     /**
      * Get API Schema object with identifier.
      *
-     * @param mixed $identifiers
+     * @param mixed $params
      * @throws \Exception
      */
-    public function find($identifiers)
+    public function retrieve(...$params)
     {
-        if ($identifiers[0] == 1) {
+        if ($params[0] == 1) {
             throw new \Exception("TEST-GET");
         }
     }
 
     /**
      * Create new Schema Object with posted vars.
-     * @param array $identifiers
+     * @param array $params
      * @throws \Exception
      */
-    public function create($identifiers = array())
+    public function create(...$params)
     {
         throw new \Exception("TEST-POST");
     }
@@ -40,12 +40,12 @@ class TestObject extends RestApiController
     /**
      * Update current object with putted vars.
      *
-     * @param mixed $identifiers
+     * @param mixed $params
      * @throws \Exception
      */
-    public function replace($identifiers)
+    public function update(...$params)
     {
-        if ($identifiers[0] == 1) {
+        if ($params[0] == 1) {
             throw new \Exception("TEST-PUT");
         }
     }
@@ -53,12 +53,13 @@ class TestObject extends RestApiController
     /**
      * Delete schema object with identifier.
      *
-     * @param mixed $identifiers
+     * @param mixed $params
+     * @return \Arvici\Heart\Http\Response|void
      * @throws \Exception
      */
-    public function delete($identifiers)
+    public function destroy(...$params)
     {
-        if ($identifiers[0] == 1) {
+        if ($params[0] == 1) {
             throw new \Exception("TEST-DELETE");
         }
     }
@@ -66,10 +67,10 @@ class TestObject extends RestApiController
     /**
      * Get API Schemas objects.
      * HTTP GET.
-     * @param array $identifiers
+     * @param array $params
      * @throws \Exception
      */
-    public function findAll($identifiers = array())
+    public function list(...$params)
     {
         throw new \Exception("TEST-FINDALL");
     }
@@ -77,12 +78,12 @@ class TestObject extends RestApiController
     /**
      * Update (update) (HTTP PATCH)
      *
-     * @param mixed $identifiers
+     * @param mixed $params
      * @throws \Exception
      */
-    public function update($identifiers)
+    public function partialUpdate(...$params)
     {
-        if ($identifiers[0] == 1) {
+        if ($params[0] == 1) {
             throw new \Exception("TEST-UPDATE");
         }
     }
