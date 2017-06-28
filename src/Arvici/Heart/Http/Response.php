@@ -342,6 +342,17 @@ class Response
 
 
     /**
+     * Reset the response headers, body, etc. Useful when catching error.
+     */
+    public function reset()
+    {
+        $this->headers = new DataCollection();
+        $this->body = '';
+        $this->sent = false;
+    }
+
+
+    /**
      * Send Headers and Cookies
      *
      * @codeCoverageIgnore Currently not in test scope

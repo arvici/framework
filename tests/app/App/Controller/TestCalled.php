@@ -18,21 +18,15 @@ class TestCalled extends Controller
         throw new \Exception("Get is called!", 999);
     }
 
-    public function getParameters1($params)
+    public function getParameters1($param1, $param2)
     {
-        $param1 = $params[0];
-        $param2 = $params[1];
-
         if ($param1 == 11 && $param2 == 54) {
             throw new \Exception("Get is called!", 999);
         }
     }
 
-    public function getParameters2($params)
+    public function getParameters2($param1, $param2)
     {
-        $param1 = $params[0];
-        $param2 = $params[1];
-
         if ($param1 === 'test' && $param2 == 555) {
             throw new \Exception("Get is called!", 999);
         }

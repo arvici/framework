@@ -20,7 +20,7 @@ use Arvici\Component\View\View;
 abstract class BasicController extends Controller
 {
     /**
-     * @var Builder $view Viewbuilder
+     * @var Builder $view View builder
      */
     protected $view;
 

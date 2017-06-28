@@ -172,6 +172,17 @@ class Route
                 return;
             }
 
+            // Make sure we only give the first parameters the method allow us to give.
+            $methodMeta = new \ReflectionMethod($controller, $controllerMethod);
+            if (count($params) !== $methodMeta->getNumberOfParameters() && count($params) >= $methodMeta->getNumberOfRequiredParameters()) {
+                if ($methodMeta->getNumberOfParameters() <= count($params)) {
+                    $params = array_splice($params, 0, $methodMeta->getNumberOfParameters());
+                }
+            }
+
+            dump($params);
+            exit();
+
             // Call the method
             call_user_func_array(array($controller, $controllerMethod), [$params]);
         }elseif (is_callable($this->callback)) {

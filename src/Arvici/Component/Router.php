@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Component;
+use Arvici\Exception\RouterException;
 use Arvici\Heart\Router\Middleware;
 use Arvici\Heart\Router\Route;
 
@@ -66,14 +67,15 @@ class Router extends \Arvici\Heart\Router\Router
     }
 
     /**
-     * Generate API routes for resource name.
+     * Register an API entity class with a base match.
      *
-     * @param string $path Root path for generation. Leave empty or / for root.
-     * @param string $resource Resource name, use no slashes here. Could be post.
+     * @param string $match The base match for the list and create routes. The other routes will contain this as prefix.
      * @param string $apiController Api Controller class name, with full namespace notation.
-     * @param array|null $methods Methods to generate. Null for all.
+     * @param array|null $methods Methods to generate. Null for all. Example: ['GET'] or ['GET', 'POST'].
+     *
+     * @throws RouterException
      */
-    public static function api($path, $resource, $apiController, $methods = null)
+    public function api($match, $apiController, $methods = null)
     {
         if (is_string($methods)) {
             $methods = array($methods);
@@ -82,45 +84,40 @@ class Router extends \Arvici\Heart\Router\Router
             $methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
         }
 
-        $methods = array_map("strtoupper", $methods);
-        $resource = strtolower($resource);
+        $methods = array_map('strtoupper', $methods);
 
-        if ($path === '') {
-            $path = '/'; // @codeCoverageIgnore
+        if ($match === '') {
+            throw new RouterException('Your API route must contain a first match field when registering!');
         }
-        if (substr($path, -1, 1) !== '/') {
-            $path .= '/';
+        if (substr($match, -1, 1) !== '/') {
+            $match .= '/';
         }
-        if (substr($path, 0, 1) !== '/') {
-            $path = '/' . $path;
+        if (substr($match, 0, 1) !== '/') {
+            $match = '/' . $match;
         }
-
-
-        $router = self::getInstance();
 
         foreach ($methods as $method) {
             switch ($method)
             {
                 case 'GET':
-                    $router->get($path . $resource, $apiController . '::findAll');
-                    $router->get($path . $resource . '/(!?)', $apiController . '::find');
+                    $this->get($match, $apiController . '::dispatch');
+                    $this->get($match . '/(!?)', $apiController . '::dispatch');
                     break;
                 case 'POST':
-                    $router->post($path . $resource, $apiController . '::create');
+                    $this->post($match, $apiController . '::dispatch');
                     break;
                 case 'PUT':
-                    $router->put($path . $resource . '/(!?)', $apiController . '::replace');
+                    $this->put($match . '/(!?)', $apiController . '::dispatch');
                     break;
                 case 'PATCH':
-                    $router->patch($path . $resource . '/(!?)', $apiController . '::update');
+                    $this->patch($match . '/(!?)', $apiController . '::dispatch');
                     break;
                 case 'DELETE':
-                    $router->delete($path . $resource . '/(!?)', $apiController . '::delete');
+                    $this->delete($match . '/(!?)', $apiController . '::dispatch');
                     break;
             }
         }
     }
-
 
     /**
      * Add route for GET method.
