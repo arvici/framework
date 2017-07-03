@@ -10,6 +10,7 @@ namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 
 use Arvici\Heart\Input\Validation\Assert\Date;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class DateTest
@@ -18,7 +19,7 @@ use Arvici\Heart\Input\Validation\Assert\Date;
  *
  * @covers \Arvici\Heart\Input\Validation\Assert\Date
  */
-class DateTest extends \PHPUnit_Framework_TestCase
+class DateTest extends TestCase
 {
     public function testDate()
     {

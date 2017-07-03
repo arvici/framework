@@ -9,13 +9,14 @@
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 use Arvici\Heart\Input\Validation\Assert\BooleanType;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class BooleanTypeTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\BooleanType
  */
-class BooleanTypeTest extends \PHPUnit_Framework_TestCase
+class BooleanTypeTest extends TestCase
 {
     public function testBoolean()
     {

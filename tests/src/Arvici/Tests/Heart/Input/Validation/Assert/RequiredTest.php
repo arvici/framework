@@ -7,8 +7,9 @@
  */
 
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
-use Arvici\Heart\Input\Validation\Assert\Required;
 
+use Arvici\Heart\Input\Validation\Assert\Required;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class RequiredTest
@@ -17,7 +18,7 @@ use Arvici\Heart\Input\Validation\Assert\Required;
  * @covers \Arvici\Heart\Input\Validation\Assert\Required
  * @covers \Arvici\Heart\Input\Validation\Assert
  */
-class RequiredTest extends \PHPUnit_Framework_TestCase
+class RequiredTest extends TestCase
 {
     public function testRequired()
     {

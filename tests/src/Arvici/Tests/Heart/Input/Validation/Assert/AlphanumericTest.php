@@ -9,6 +9,7 @@
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 use Arvici\Heart\Input\Validation\Assert\Alphanumeric;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Alphanumeric Test Class
@@ -16,7 +17,7 @@ use Arvici\Heart\Input\Validation\Assert\Alphanumeric;
  * @covers \Arvici\Heart\Input\Validation\Assert\Alphanumeric
  * @covers \Arvici\Heart\Input\Validation\Assert\Regex
  */
-class AlphanumericTest extends \PHPUnit_Framework_TestCase
+class AlphanumericTest extends TestCase
 {
     public function testAlphanumeric()
     {

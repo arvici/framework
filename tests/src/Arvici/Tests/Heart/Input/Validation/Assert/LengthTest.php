@@ -9,6 +9,7 @@
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 use Arvici\Heart\Input\Validation\Assert\Length;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Length Test
@@ -16,7 +17,7 @@ use Arvici\Heart\Input\Validation\Assert\Length;
  *
  * @covers \Arvici\Heart\Input\Validation\Assert\Length
  */
-class LengthTest extends \PHPUnit_Framework_TestCase
+class LengthTest extends TestCase
 {
     public function testLength()
     {

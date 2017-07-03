@@ -9,13 +9,14 @@
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 use Arvici\Heart\Input\Validation\Assert\InList;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class InListTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\InList
  */
-class InListTest extends \PHPUnit_Framework_TestCase
+class InListTest extends TestCase
 {
     public function testInList()
     {

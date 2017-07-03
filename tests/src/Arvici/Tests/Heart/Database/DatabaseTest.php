@@ -13,6 +13,7 @@ use App\TestUtils;
 use Arvici\Exception\ConfigurationException;
 use Arvici\Exception\DatabaseDriverException;
 use Arvici\Heart\Database\Database;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class DatabaseTest
@@ -24,7 +25,7 @@ use Arvici\Heart\Database\Database;
  * @covers \Arvici\Heart\Database\Driver\PDOConnection
  * @covers \Arvici\Heart\Database\Database
  */
-class DatabaseTest extends \PHPUnit_Framework_TestCase
+class DatabaseTest extends TestCase
 {
 
     public function testDriverInit()

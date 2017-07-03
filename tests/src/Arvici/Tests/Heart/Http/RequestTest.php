@@ -13,6 +13,7 @@ use Arvici\Heart\Collections\DataCollection;
 use Arvici\Heart\Collections\ParameterCollection;
 use Arvici\Heart\Collections\ServerCollection;
 use Arvici\Heart\Http\Http;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Request Test Case
@@ -21,7 +22,7 @@ use Arvici\Heart\Http\Http;
  * @coversDefaultClass \Arvici\Heart\Http\Request
  * @covers \Arvici\Heart\Http\Request
  */
-class RequestTest extends \PHPUnit_Framework_TestCase
+class RequestTest extends TestCase
 {
     /**
      * Get spoofed request class instance

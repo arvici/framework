@@ -12,6 +12,7 @@ use App\TestUtils;
 use Arvici\Exception\ResponseAlreadySendException;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Http\Response;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Response Test Case
@@ -20,7 +21,7 @@ use Arvici\Heart\Http\Response;
  * @coversDefaultClass \Arvici\Heart\Http\Response
  * @covers \Arvici\Heart\Http\Response
  */
-class ResponseTest extends \PHPUnit_Framework_TestCase
+class ResponseTest extends TestCase
 {
     /**
      * Get fresh clean response class instance.

@@ -8,6 +8,7 @@
 
 namespace Arvici\Tests\Heart\Config;
 use Arvici\Heart\Config\Configuration;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Configuration Test Case
@@ -17,7 +18,7 @@ use Arvici\Heart\Config\Configuration;
  * @coversDefaultClass \Arvici\Heart\Config\Configuration
  * @covers \Arvici\Heart\Config\Configuration
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
 
     public function testDefineConfiguration()

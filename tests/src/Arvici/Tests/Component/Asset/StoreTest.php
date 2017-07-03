@@ -1,6 +1,6 @@
 <?php
 /**
- * StoreTest.php
+ * StoreTest
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2017 Tom Valk
@@ -9,6 +9,7 @@
 namespace Arvici\Tests\Component\Asset;
 
 use Arvici\Component\Asset\Store;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class StoreTest
@@ -16,7 +17,7 @@ use Arvici\Component\Asset\Store;
  *
  * @covers \Arvici\Component\Asset\Store
  */
-class StoreTest extends \PHPUnit_Framework_TestCase
+class StoreTest extends TestCase
 {
     public function testTemplateStore()
     {

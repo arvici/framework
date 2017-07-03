@@ -9,13 +9,14 @@
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 use Arvici\Heart\Input\Validation\Assert\IntegerType;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class IntegerTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\IntegerType
  */
-class IntegerTypeTest extends \PHPUnit_Framework_TestCase
+class IntegerTypeTest extends TestCase
 {
     public function testInteger()
     {

@@ -9,6 +9,7 @@
 namespace Arvici\Tests\Heart\Collections;
 
 use Arvici\Heart\Collections\DataCollection;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Data Collection Test
@@ -17,7 +18,7 @@ use Arvici\Heart\Collections\DataCollection;
  * @coversDefaultClass \Arvici\Heart\Collections\DataCollection
  * @covers \Arvici\Heart\Collections\DataCollection
  */
-class DataCollectionTest extends \PHPUnit_Framework_TestCase
+class DataCollectionTest extends TestCase
 {
 
     /**

@@ -10,6 +10,7 @@ namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 
 use Arvici\Heart\Input\Validation\Assert\Custom;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class CustomTest
@@ -17,7 +18,7 @@ use Arvici\Heart\Input\Validation\Assert\Custom;
  *
  * @covers \Arvici\Heart\Input\Validation\Assert\Custom
  */
-class CustomTest extends \PHPUnit_Framework_TestCase
+class CustomTest extends TestCase
 {
     public function testCustom()
     {

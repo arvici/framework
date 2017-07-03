@@ -10,6 +10,7 @@ namespace Arvici\Tests\Component\View;
 
 use Arvici\Component\View\Builder;
 use Arvici\Component\View\View;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Render test
@@ -22,7 +23,7 @@ use Arvici\Component\View\View;
  * @covers \Arvici\Component\View\View
  * @covers \Arvici\Component\View\Builder
  */
-class RenderTest extends \PHPUnit_Framework_TestCase
+class RenderTest extends TestCase
 {
     /** @var Builder */
     private $builder;

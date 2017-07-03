@@ -1,6 +1,6 @@
 <?php
 /**
- * ValidationTest.php
+ * ValidationTest
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2017 Tom Valk
@@ -8,10 +8,10 @@
 
 namespace Arvici\Tests\Heart\Input\Validation;
 
-
 use Arvici\Heart\Input\Validation\Assert\FloatType;
 use Arvici\Heart\Input\Validation\Assert\IntegerType;
 use Arvici\Heart\Input\Validation\Validation;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ValidationTest
@@ -21,7 +21,7 @@ use Arvici\Heart\Input\Validation\Validation;
  * @covers \Arvici\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\Collection
  */
-class ValidationTest extends \PHPUnit_Framework_TestCase
+class ValidationTest extends TestCase
 {
 
     public function testValidationBasics()

@@ -10,6 +10,7 @@ namespace Arvici\Tests\Heart\Log;
 
 use Arvici\Exception\LogException;
 use Monolog\Handler\TestHandler;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class LoggerTest
@@ -19,7 +20,7 @@ use Monolog\Handler\TestHandler;
  * @covers \Logger
  * @covers \Arvici\Heart\Log\Writer
  */
-class LoggerTest extends \PHPUnit_Framework_TestCase
+class LoggerTest extends TestCase
 {
     /**
      * Test writing to log.

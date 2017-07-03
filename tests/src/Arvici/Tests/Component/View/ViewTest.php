@@ -1,6 +1,6 @@
 <?php
 /**
- * ViewTest.php
+ * ViewTest
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2017 Tom Valk
@@ -9,6 +9,7 @@
 namespace Arvici\Tests\Component\View;
 
 use Arvici\Component\View\View;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ViewTest
@@ -16,7 +17,7 @@ use Arvici\Component\View\View;
  *
  * @covers \Arvici\Component\View\View
  */
-class ViewTest extends \PHPUnit_Framework_TestCase
+class ViewTest extends TestCase
 {
     /**
      * @covers \Arvici\Component\View\View

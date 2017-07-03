@@ -8,15 +8,15 @@
 
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
-
 use Arvici\Heart\Input\Validation\Assert\Url;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class UrlTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\Url
  */
-class UrlTest extends \PHPUnit_Framework_TestCase
+class UrlTest extends TestCase
 {
     public function testUrl()
     {

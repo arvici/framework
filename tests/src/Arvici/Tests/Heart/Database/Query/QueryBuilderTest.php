@@ -11,6 +11,7 @@ namespace Arvici\Tests\Heart\Database\Query;
 use App\TestUtils;
 use Arvici\Heart\Database\Database;
 use Doctrine\DBAL\Query\QueryBuilder;
+use PHPUnit\Framework\TestCase;
 
 /**
  * QueryBuilder Test Case
@@ -23,7 +24,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
  * @covers \Arvici\Heart\Database\Driver\PDOConnection::getDriver
  * @covers \Arvici\Heart\Database\Driver\MySQL\Connection::getDriver
  */
-class QueryBuilderTest extends \PHPUnit_Framework_TestCase
+class QueryBuilderTest extends TestCase
 {
 
     public function testInit()

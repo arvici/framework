@@ -11,6 +11,7 @@ namespace Arvici\Tests\Heart\Input\Validation\Assert;
 use Arvici\Heart\Input\Validation\Assert\Contain;
 use Arvici\Heart\Input\Validation\Assert\Length;
 use Arvici\Heart\Input\Validation\Assert\Not;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class NotTest
@@ -19,7 +20,7 @@ use Arvici\Heart\Input\Validation\Assert\Not;
  * @covers \Arvici\Heart\Input\Validation\Assert\Length
  * @covers \Arvici\Heart\Input\Validation\Assert\Contain
  */
-class NotTest extends \PHPUnit_Framework_TestCase
+class NotTest extends TestCase
 {
     public function testNot()
     {

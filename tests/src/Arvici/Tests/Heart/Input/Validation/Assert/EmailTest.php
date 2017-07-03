@@ -8,15 +8,15 @@
 
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
-use Arvici\Heart\Input\Validation\Assert\Contain;
 use Arvici\Heart\Input\Validation\Assert\Email;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ContainTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\Email
  */
-class EmailTest extends \PHPUnit_Framework_TestCase
+class EmailTest extends TestCase
 {
     public function testEmail()
     {

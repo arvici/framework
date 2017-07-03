@@ -11,6 +11,7 @@ namespace Arvici\Tests\Heart\Database\Drivers\MySQL;
 use App\Model\FetchTestPosts;
 use App\TestUtils;
 use Arvici\Heart\Database\Database;
+use PHPUnit\Framework\TestCase;
 
 /**
  * MySQL Connection Test Case
@@ -23,7 +24,7 @@ use Arvici\Heart\Database\Database;
  * @covers \Arvici\Heart\Database\Statement
  * @covers \Arvici\Heart\Database\Database
  */
-class ConnectionTest extends \PHPUnit_Framework_TestCase
+class ConnectionTest extends TestCase
 {
 
     public function setUp()

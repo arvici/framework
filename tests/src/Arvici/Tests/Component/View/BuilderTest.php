@@ -7,10 +7,12 @@
  */
 
 namespace Arvici\Tests\Component\View;
+
 use Arvici\Component\View\Builder;
 use Arvici\Component\View\Render;
 use Arvici\Component\View\View;
 use Arvici\Exception\RendererException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class BuilderTest
@@ -20,7 +22,7 @@ use Arvici\Exception\RendererException;
  *
  * @covers \Arvici\Component\View\Builder
  */
-class BuilderTest extends \PHPUnit_Framework_TestCase
+class BuilderTest extends TestCase
 {
     /** @var Builder */
     private $builder;

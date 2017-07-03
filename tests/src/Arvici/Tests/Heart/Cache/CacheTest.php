@@ -10,6 +10,7 @@ namespace Arvici\Tests\Heart\Config;
 
 use Arvici\Exception\NotFoundException;
 use Arvici\Heart\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use Stash\Interfaces\ItemInterface;
 
 
@@ -23,7 +24,7 @@ use Stash\Interfaces\ItemInterface;
  * @covers \Arvici\Heart\Cache\Pool
  * @covers \Arvici\Heart\Config\Configuration
  */
-class CacheTest extends \PHPUnit_Framework_TestCase
+class CacheTest extends TestCase
 {
 
     public function testDriverCreation ()

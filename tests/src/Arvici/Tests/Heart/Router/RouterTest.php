@@ -15,6 +15,7 @@ use Arvici\Exception\RouterException;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Router\Route;
 use Arvici\Component\Router;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Router Tests
@@ -30,7 +31,7 @@ use Arvici\Component\Router;
  * @covers \Arvici\Component\Controller\Controller
  * @covers \Arvici\Component\Controller\RestApiController
  */
-class RouterTest extends \PHPUnit_Framework_TestCase
+class RouterTest extends TestCase
 {
 
     private function spoof($url, $method, $get = array(), $post = array())

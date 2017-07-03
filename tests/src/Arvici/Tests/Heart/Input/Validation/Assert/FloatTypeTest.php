@@ -10,13 +10,14 @@ namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 
 use Arvici\Heart\Input\Validation\Assert\FloatType;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class FloatTypeTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\FloatType
  */
-class FloatTypeTest extends \PHPUnit_Framework_TestCase
+class FloatTypeTest extends TestCase
 {
     public function testFloat()
     {

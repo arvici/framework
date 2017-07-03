@@ -10,6 +10,7 @@ namespace Arvici\Tests\Heart\Database\Drivers\MySQL;
 
 use App\TestUtils;
 use Arvici\Heart\Database\Database;
+use PHPUnit\Framework\TestCase;
 
 /**
  * MySQL Driver Test Case
@@ -18,7 +19,7 @@ use Arvici\Heart\Database\Database;
  *
  * @covers \Arvici\Heart\Database\Driver\MySQL\Driver
  */
-class DriverTest extends \PHPUnit_Framework_TestCase
+class DriverTest extends TestCase
 {
     public function testDriver()
     {

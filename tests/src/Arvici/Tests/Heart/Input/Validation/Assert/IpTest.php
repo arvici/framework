@@ -9,13 +9,14 @@
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 use Arvici\Heart\Input\Validation\Assert\Ip;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class IpTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\Ip
  */
-class IpTest extends \PHPUnit_Framework_TestCase
+class IpTest extends TestCase
 {
     public function testIp()
     {

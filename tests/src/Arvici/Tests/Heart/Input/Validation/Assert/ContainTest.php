@@ -9,13 +9,14 @@
 namespace Arvici\Tests\Heart\Input\Validation\Assert;
 
 use Arvici\Heart\Input\Validation\Assert\Contain;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ContainTest
  * @package Arvici\Tests\Heart\Input\Validation\Assert
  * @covers \Arvici\Heart\Input\Validation\Assert\Contain
  */
-class ContainTest extends \PHPUnit_Framework_TestCase
+class ContainTest extends TestCase
 {
     public function testContain()
     {

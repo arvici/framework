@@ -1,14 +1,16 @@
 <?php
 /**
- * MustacheTemplateTest.php
+ * MustacheTemplateTest
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2017 Tom Valk
  */
 
 namespace Arvici\Tests\Heart\Renderer;
+
 use Arvici\Component\View\View;
 use Arvici\Heart\Renderer\MustacheTemplate;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class MustacheTemplateTest
@@ -18,7 +20,7 @@ use Arvici\Heart\Renderer\MustacheTemplate;
  *
  * @covers \Arvici\Heart\Renderer\MustacheTemplate
  */
-class MustacheTemplateTest extends \PHPUnit_Framework_TestCase
+class MustacheTemplateTest extends TestCase
 {
     /**
      * @covers \Arvici\Heart\Renderer\MustacheTemplate
