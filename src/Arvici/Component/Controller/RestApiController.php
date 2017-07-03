@@ -11,7 +11,6 @@ namespace Arvici\Component\Controller;
 use Arvici\Exception\Response\HttpException;
 use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Database;
-use function Couchbase\defaultDecoder;
 
 /**
  * Api Controller
@@ -101,30 +100,5 @@ abstract class RestApiController extends Controller
 
         $apiMethod = $this->route->getValue('api_method', 'list');
         return call_user_func_array(array($this, $apiMethod), $params);
-//        switch ($this->request->method())
-//        {
-//            case 'GET':
-//                // Check if we are asking for the list or detail.
-//                if ($this->route->getValue('api_method', null) === 'list') {
-//                    return $this->list($params);
-//                }
-//                return $this->retrieve($params);
-//
-//            case 'POST':
-//                return $this->create($params);
-//
-//            case 'PUT':
-//                return $this->update($params);
-//
-//            case 'PATCH':
-//                return $this->partialUpdate($params);
-//
-//            case 'DELETE':
-//                return $this->destroy($params);
-//
-//            default:
-//                // TODO: Better handling...
-//                throw new HttpException('Not found', 404);
-//        }
     }
 }
