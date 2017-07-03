@@ -67,8 +67,9 @@ class StaticDeployCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->writeln('<info>Clearing current files...</info>');
         $assetsPublicDirectory = BASEPATH . 'public' . DS . 'assets';
+        $io->writeln('<info>Clearing current files...</info> (' . $assetsPublicDirectory . ')');
+
         $this->emptyDirectory($assetsPublicDirectory);
         @mkdir($assetsPublicDirectory);
 
@@ -87,7 +88,7 @@ class StaticDeployCommand extends Command
 
         $io->writeln('<info>Deploying assets...</info>');
         foreach ($appDirectories as $directory) {
-            $io->write(' |- <info>Deploying</info> ' . $directory);
+            $io->write(' |- <info>Deploying</info> ' . $directory . DS . 'Assets');
             if (is_dir($directory . DS . 'Assets')) {
                 $io->write(' ... ');
                 $this->recurseCopy($directory . DS . 'Assets' . DS, $assetsPublicDirectory);
