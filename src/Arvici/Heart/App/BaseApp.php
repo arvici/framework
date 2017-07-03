@@ -41,4 +41,11 @@ abstract class BaseApp
      * @param Router $router
      */
     abstract public function registerRoutes(Router $router);
+
+    /**
+     * Get the base app directory.
+     *
+     * @return string
+     */
+    abstract public function getAppDirectory();
 }

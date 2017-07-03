@@ -1,21 +1,19 @@
 <?php
 /**
- * App.php
+ * Second App
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2017 Tom Valk
  */
 
-
-namespace App;
+namespace SecondApp;
 
 use Arvici\Component\Router;
 use Arvici\Heart\App\BaseApp;
 
 
-class App extends BaseApp
+class SecondApp extends BaseApp
 {
-
     /**
      * Initiate the App. This can be used to inject configuration items such as routes.
      */
@@ -31,13 +29,7 @@ class App extends BaseApp
      */
     public function registerRoutes(Router $router)
     {
-        $router->get('/',           '\App\Controller\Welcome::index');
-        $router->get('/session',    '\App\Controller\Welcome::session');
-        $router->get('/json',       '\App\Controller\Welcome::json');
-
-        $router->get('/params/double/(!int)/(!int)', '\App\Controller\TestCalled::getParameters1');
-
-        $router->get('/exception',  '\App\Controller\Welcome::exception');
+        $router->get('/test2', '\SecondApp\Controller\Welcome');
     }
 
     /**

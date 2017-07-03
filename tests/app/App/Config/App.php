@@ -76,6 +76,7 @@ Configure::define('app', function ($config) {
          */
         'apps' => [
             '\App\App',
+            '\SecondApp\SecondApp',
         ],
 
         /**

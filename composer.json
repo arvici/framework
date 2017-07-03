@@ -49,6 +49,7 @@
   "autoload-dev": {
     "psr-4": {
       "App\\": "tests/app/App",
+      "SecondApp\\": "tests/app/SecondApp",
       "Arvici\\Tests\\": "tests/src"
     }
   },

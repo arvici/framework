@@ -21,7 +21,7 @@ if (($url !== '/') && file_exists($request)) {
 // Assets rewrite
 if (strlen($url) > 8 && substr($url, 0, 8) === '/assets/') {
     // Unsafe for non-testing!
-    readfile(dirname(__FILE__) . DS . 'app' . DS . 'App' . DS . 'Template' . DS . 'Default' . DS . substr($url, 8));
+    readfile(dirname(__FILE__) . DS . 'app' . DS . 'App' . DS . 'Assets' . DS . substr($url, 8));
     exit();
 }
 

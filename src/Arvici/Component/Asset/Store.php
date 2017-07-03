@@ -9,18 +9,35 @@
 namespace Arvici\Component\Asset;
 
 
+use Arvici\Exception\NotFoundException;
+use Arvici\Heart\App\AppManager;
 use Arvici\Heart\Config\Configuration;
 
 class Store
 {
     private static $templateStore = null;
 
-    public static function template()
+    public static function template($appName = null)
     {
         if (self::$templateStore == null) {
             // Base url + path
             $url = Configuration::get('app.url') . '/assets/';
-            $path = APPPATH . Configuration::get('template.templatePath') . DS;
+            $appPath = null;
+            if ($appName === null) {
+                $appPath = APPPATH;
+            } else {
+                foreach (AppManager::getInstance()->getApps() as $app) {
+                    $clazz = new \ReflectionClass($app);
+                    if ($clazz->getShortName() === $appName) {
+                        $appPath = $app->getAppDirectory();
+                    }
+                }
+            }
+            if (! $appPath) {
+                throw new NotFoundException('App not found: ' . $appName);
+            }
+
+            $path = $appPath . DS . 'assets' . DS;
 
             self::$templateStore = new self($url, $path);
         }

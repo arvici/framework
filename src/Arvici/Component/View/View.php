@@ -8,6 +8,8 @@
 
 namespace Arvici\Component\View;
 use Arvici\Exception\ConfigurationException;
+use Arvici\Exception\NotFoundException;
+use Arvici\Heart\App\AppManager;
 use Arvici\Heart\Collections\DataCollection;
 use Arvici\Heart\Config\Configuration;
 
@@ -169,12 +171,22 @@ class View
             throw new ConfigurationException("The template.templatePath or template.viewPath isn't configured right or doesn't exists!"); // @codeCoverageIgnore
         } // @codeCoverageIgnore
 
-        $path = BASEPATH . 'App' . DS . $path . DS . $this->path;
+        $foundView = false;
+        foreach (AppManager::getInstance()->getApps() as $app) {
+            $testPath = $app->getAppDirectory() . DS . $path . DS . $this->path;
+            $extension = pathinfo($testPath, PATHINFO_EXTENSION);
+            if ($extension === "") {
+                $testPath .= ".php";
+            }
 
-        $extension = pathinfo($path, PATHINFO_EXTENSION);
+            if (is_file($testPath)) {
+                $path = $testPath;
+                $foundView = true;
+            }
+        }
 
-        if ($extension === "") {
-            $path .= ".php";
+        if (! $foundView) {
+            throw new NotFoundException('Template or view file not found in any apps!');
         }
 
         return $path;

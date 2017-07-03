@@ -9,10 +9,10 @@
 
 namespace Arvici\Heart\Console;
 
+use Arvici\Component\Asset\Commands\StaticDeployCommand;
 use Arvici\Heart\Cache\Commands\CacheCommand;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Application as BaseApplication;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Console Application
@@ -48,7 +48,8 @@ class Application extends BaseApplication
     private function prepareCore()
     {
         $this->addCommands([
-            new CacheCommand()
+            new CacheCommand(),
+            new StaticDeployCommand(),
         ]);
     }
 }

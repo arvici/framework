@@ -5,10 +5,13 @@ defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 
 // Detect root and vendor paths.
 $detectLocations = [
+    realpath(getcwd()),
     dirname(__DIR__),
     __DIR__,
 ];
+$composerDir = null;
 $baseDir = null;
+$appDir = null;
 
 foreach ($detectLocations as $location) {
     if (file_exists($location . DS . 'composer.json')) {
@@ -16,16 +19,38 @@ foreach ($detectLocations as $location) {
             echo "Run composer install/update first!";
             exit();
         }
+        $composerDir = $location;
+    }
+    if (is_dir($location . DS . 'public') || is_file(dirname($location) . DS . 'bootstrap.php')) {
         $baseDir = $location;
     }
 }
 
+if (! $composerDir) {
+    echo 'Composer not found!';
+    exit();
+} elseif (! $baseDir) {
+    echo 'Base directory not found!';
+    exit();
+}
+
+// Determinate app dir.
+if (is_dir($baseDir . DS . 'App')) {
+    $appDir = $baseDir . DS . 'App';
+} elseif (is_dir($appDir = $baseDir . DS . 'app' . DS . 'App')) {
+    $appDir = $baseDir . DS . 'app' . DS . 'App';
+}
+if (! $appDir) {
+    echo 'Main App directory not found!';
+    exit();
+}
+
 // Define locations.
 defined('BASEPATH') || define('BASEPATH', $baseDir . DS);
-defined('APPPATH') || define('APPPATH', BASEPATH . 'App' . DS);
+defined('APPPATH') || define('APPPATH', $appDir . DS);
 
 // Require composer autoload!
-require_once BASEPATH . 'vendor' . DS .'autoload.php';
+require_once $composerDir . DS . 'vendor' . DS .'autoload.php';
 
 unset($baseDir);
 unset($detectLocations);

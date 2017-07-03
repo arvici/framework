@@ -1,6 +1,7 @@
 ### Framework
 build/logs/*
 
+tests/public/assets
 tests/app/cache
 !tests/app/cache/.gitkeep
 
