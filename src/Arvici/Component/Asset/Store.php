@@ -37,7 +37,8 @@ class Store
                 throw new NotFoundException('App not found: ' . $appName);
             }
 
-            $path = $appPath . DS . 'assets' . DS;
+            $appPath = rtrim($appPath, '/');
+            $path = $appPath . DS . 'Assets' . DS;
 
             self::$templateStore = new self($url, $path);
         }

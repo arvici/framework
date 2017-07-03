@@ -29,7 +29,7 @@ class StoreTest extends TestCase
         $this->assertEquals('http://www.example.com/pizza.png', $store->getUrl('http://www.example.com/pizza.png'));
 
         $storePath = $store->getPath('img/pizza.png');
-        $realPath = APPPATH . 'Template'.DS.'Default'.DS.'img'.DS.'pizza.png';
+        $realPath = APPPATH . 'Assets'.DS.'img'.DS.'pizza.png';
 
         $storePath = str_replace('\\', '/', $storePath);
         $realPath = str_replace('\\', '/', $realPath);

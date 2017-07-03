@@ -172,6 +172,9 @@ class View
         } // @codeCoverageIgnore
 
         $foundView = false;
+        try {
+            AppManager::getInstance()->initApps();
+        } catch (\Exception $exception) {}
         foreach (AppManager::getInstance()->getApps() as $app) {
             $testPath = $app->getAppDirectory() . DS . $path . DS . $this->path;
             $extension = pathinfo($testPath, PATHINFO_EXTENSION);

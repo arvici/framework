@@ -37,9 +37,16 @@ class AppTest extends TestCase
     public function testAppInitialization ()
     {
         $appManager = AppManager::getInstance();
-        $appManager->initApps();
 
-        $this->assertCount(1, $appManager->getApps());
+        try {
+            $appManager->initApps();
+        } catch (AlreadyInitiatedException $exception) {
+            // ignore
+        } catch (\Exception $exception) {
+            $this->assertTrue(false);
+        }
+
+        $this->assertCount(2, $appManager->getApps());
         $this->assertInstanceOf(BaseApp::class, $appManager->getApps()[0]);
 
         try {
