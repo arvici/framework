@@ -7,6 +7,7 @@
  */
 
 namespace Arvici\Component\View;
+
 use Arvici\Exception\ConfigurationException;
 use Arvici\Exception\NotFoundException;
 use Arvici\Heart\App\AppManager;
@@ -107,7 +108,6 @@ class View
         return new self(null, self::PART_BODY_PLACEHOLDER);
     }
 
-
     /**
      * Set the data we will provide to the view.
      *
@@ -150,13 +150,11 @@ class View
         return $this->engine;
     }
 
-
     /**
      * Get full path of view file.
-     *
      * @return string
-     *
      * @throws ConfigurationException
+     * @throws NotFoundException
      */
     public function getFullPath()
     {

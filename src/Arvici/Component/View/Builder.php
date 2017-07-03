@@ -7,8 +7,10 @@
  */
 
 namespace Arvici\Component\View;
+
 use Arvici\Exception\RendererException;
 use Arvici\Heart\Config\Configuration;
+
 
 /**
  * View Builder

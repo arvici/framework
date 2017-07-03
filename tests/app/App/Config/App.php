@@ -35,6 +35,11 @@ Configure::define('app', function ($config) {
         'visualException' => true,
 
         /**
+         * Enable profiler in development environment.
+         */
+        'profiler' => true,
+
+        /**
          * Logs directory.
          */
         'logPath' => BASEPATH . 'logs' . DS,

@@ -7,10 +7,12 @@
  */
 
 namespace Arvici\Component\View;
+
 use Arvici\Exception\RendererException;
 use Arvici\Heart\Collections\DataCollection;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Renderer\RendererInterface;
+
 
 /**
  * Render holds view instances in order to render to the screen.
