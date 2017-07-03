@@ -20,7 +20,7 @@
     "psr/log": "1.0.2",
     "monolog/monolog": "1.23.0",
     "mustache/mustache": "2.11.1",
-    "doctrine/dbal": "2.5.9",
+    "doctrine/dbal": "2.5.12",
     "doctrine/annotations": "1.4.0",
     "indigophp/hash-compat": "1.1.0",
     "swiftmailer/swiftmailer": "6.0.1",
