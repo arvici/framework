@@ -304,6 +304,8 @@ class Request
      * Get Body contents (raw).
      *
      * @return mixed
+     *
+     * @codeCoverageIgnore
      */
     public function body()
     {
@@ -317,6 +319,8 @@ class Request
      * Get session instance.
      *
      * @return Session
+     *
+     * @codeCoverageIgnore
      */
     public function session()
     {

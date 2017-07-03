@@ -8,6 +8,8 @@
 
 namespace Arvici\Heart\Router;
 
+use Arvici\Exception\AlreadyInitiatedException;
+use Arvici\Heart\App\AppManager;
 use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Http\Http;
 
@@ -41,6 +43,13 @@ abstract class Router
      */
     public function run($method = null, $url = null)
     {
+        // Initiate the apps.
+        try {
+            AppManager::getInstance()->initApps();
+        } catch (AlreadyInitiatedException $exception) {
+            // Ignore, this can happen when in tests for example.
+        }
+
         // Prepare the session loading.
         Http::getInstance()->session()->init();
 

@@ -42,6 +42,26 @@ class RouterTest extends TestCase
     /**
      * @covers \Arvici\Heart\Router\Router
      * @covers \Arvici\Heart\Router\Route
+     * @covers \Arvici\Component\Controller\Controller
+     */
+    public function testBasicDispatch()
+    {
+        $router = Router::getInstance();
+
+        $router->addRoute(new Route('/test/get/controller/get', 'GET', 'App\Controller\TestCalled'));
+
+        $this->spoof('/test/get/controller/get', 'GET');
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch (\Exception $e) {
+            $this->assertEquals(999, $e->getCode());
+        }
+    }
+
+    /**
+     * @covers \Arvici\Heart\Router\Router
+     * @covers \Arvici\Heart\Router\Route
      */
     public function testBasicGet()
     {

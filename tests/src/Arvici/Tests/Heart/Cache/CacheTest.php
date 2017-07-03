@@ -33,6 +33,8 @@ class CacheTest extends TestCase
 
         $this->assertNotNull($cacheManager);
         $this->assertInstanceOf(Cache::class, $cacheManager);
+        $this->assertEquals('default', $cacheManager->getPool()->getName());
+        $this->assertCount(1, $cacheManager->getPools());
     }
 
     public function testInvalidPool ()

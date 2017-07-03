@@ -12,6 +12,7 @@ use App\TestUtils;
 use Arvici\Heart\Collections\DataCollection;
 use Arvici\Heart\Collections\ParameterCollection;
 use Arvici\Heart\Collections\ServerCollection;
+use Arvici\Heart\Http\Context;
 use Arvici\Heart\Http\Http;
 use PHPUnit\Framework\TestCase;
 
@@ -45,6 +46,14 @@ class RequestTest extends TestCase
         return Http::getInstance()->request();
     }
 
+
+    public function testContext()
+    {
+        $request = $this->spoofedRequest('/get/test?param1=1&param2=yes&param3[]=1&param3[]=2&param3[]=3');
+        $context = $request->context();
+
+        $this->assertInstanceOf(Context::class, $context);
+    }
 
 
     public function testGetParameters()

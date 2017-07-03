@@ -7,7 +7,6 @@ use Arvici\Heart\Config\Configuration as Configure;
  */
 Configure::define('app', function ($config) {
     return [
-
         /**
          * Base URL
          * Fill in the base url, in this location the public/ should be mapped.
@@ -25,7 +24,6 @@ Configure::define('app', function ($config) {
          */
         'env' => 'development',
 
-
         /**
          * Enable logging. Recommended to turn logging on!
          */
@@ -41,7 +39,6 @@ Configure::define('app', function ($config) {
          */
         'logPath' => BASEPATH . 'logs' . DS,
 
-
         /**
          * Define log files. Leave default to log all levels to one log file.
          * Syntax is: key = filename, value = minimum log level. Leave null for all levels.
@@ -50,7 +47,6 @@ Configure::define('app', function ($config) {
             'error.log' => \Logger::ERROR,
             'development.log' => \Logger::DEBUG // Delete this one to improve performance when releasing in production!
         ],
-
 
         /**
          * Time Zone
@@ -61,14 +57,12 @@ Configure::define('app', function ($config) {
          */
         'timezone' => 'Europe/Amsterdam',
 
-
         /**
          * Default locale
          * default used by the translation engine or when not using it will only be used
          * in the template html tag, and debugging.
          */
         'locale' => 'en',
-
 
         /**
          * Private Secret Key
@@ -77,13 +71,11 @@ Configure::define('app', function ($config) {
          */
         'private_key' => 'J7a6dhaA&*dhgAfhjkHJv*78gja8gjKg89(*Sf',
 
-
         /**
-         * Services to load
-         * @todo: implementing service loading and interface
+         * Extra components to load from vendor.
          */
-        'services' => [
-
+        'apps' => [
+            '\App\App',
         ],
 
         /**
@@ -98,7 +90,6 @@ Configure::define('app', function ($config) {
             'http' => true, // http only flag (true default)
             'prefix' => 'arvici_' // session key prefix (arvici_ default)
         ],
-
 
         /**
          * Path to the cache folder. Will be used for caching several framework components.

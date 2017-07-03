@@ -16,6 +16,8 @@ use Arvici\Component\View\View;
  * Basic Controller - Use for view's.
  *
  * @package Arvici\Component\Controller
+ *
+ * @codeCoverageIgnore
  */
 abstract class BasicController extends Controller
 {

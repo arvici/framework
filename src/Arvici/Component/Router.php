@@ -81,8 +81,8 @@ class Router extends \Arvici\Heart\Router\Router
         if (is_string($methods)) {
             $methods = array($methods);
         }
-        if (! is_array($kwargs)) {
-            $kwargs = [];
+        if (! is_array($kwargs)) { // @codeCoverageIgnore
+            $kwargs = []; // @codeCoverageIgnore
         }
         if ($methods === null) {
             $methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
@@ -90,12 +90,9 @@ class Router extends \Arvici\Heart\Router\Router
 
         $methods = array_map('strtoupper', $methods);
 
-        if ($match === '') {
-            throw new RouterException('Your API route must contain a first match field when registering!');
+        if ($match === '') { // @codeCoverageIgnore
+            throw new RouterException('Your API route must contain a first match field when registering!'); // @codeCoverageIgnore
         }
-//        if (substr($match, -1, 1) !== '/') {
-//            $match .= '/';
-//        }
         if (substr($match, 0, 1) !== '/') {
             $match = '/' . $match;
         }

@@ -75,8 +75,8 @@ abstract class Controller
         // Check if the controller has the method requested.
         $meta = new \ReflectionClass($this);
         $method = strtolower($this->request->method());
-        if (! $meta->hasMethod($method)) {
-            throw new NotImplementedException('The method ' . $method . ' is not defined', 500);
+        if (! $meta->hasMethod($method)) { // @codeCoverageIgnore
+            throw new NotImplementedException('The method ' . $method . ' is not defined', 500); // @codeCoverageIgnore
         }
 
         // Call the method.
@@ -87,10 +87,10 @@ abstract class Controller
      * Accept the GET request.
      *
      * @param array ...$params Parameters to receive. Can be multiple.
-     *
      * @return Response Should return response object.
-     *
      * @throws \Exception Can throw several exceptions.
+     *
+     * @codeCoverageIgnore
      */
     public function get(...$params)
     {
@@ -101,10 +101,10 @@ abstract class Controller
      * Accept the POST request.
      *
      * @param array ...$params Parameters to receive. Can be multiple.
-     *
      * @return Response Should return response object.
-     *
      * @throws \Exception Can throw several exceptions.
+     *
+     * @codeCoverageIgnore
      */
     public function post(...$params)
     {
@@ -115,10 +115,10 @@ abstract class Controller
      * Accept the PUT request.
      *
      * @param array ...$params Parameters to receive. Can be multiple.
-     *
      * @return Response Should return response object.
-     *
      * @throws \Exception Can throw several exceptions.
+     *
+     * @codeCoverageIgnore
      */
     public function put(...$params)
     {
@@ -129,10 +129,10 @@ abstract class Controller
      * Accept the PATCH request.
      *
      * @param array ...$params Parameters to receive. Can be multiple.
-     *
      * @return Response Should return response object.
-     *
      * @throws \Exception Can throw several exceptions.
+     *
+     * @codeCoverageIgnore
      */
     public function patch(...$params)
     {
@@ -143,10 +143,10 @@ abstract class Controller
      * Accept the DELETE request.
      *
      * @param array ...$params Parameters to receive. Can be multiple.
-     *
      * @return Response Should return response object.
-     *
      * @throws \Exception Can throw several exceptions.
+     *
+     * @codeCoverageIgnore
      */
     public function delete(...$params)
     {
@@ -157,10 +157,10 @@ abstract class Controller
      * Accept the HEAD request.
      *
      * @param array ...$params Parameters to receive. Can be multiple.
-     *
      * @return Response Should return response object.
-     *
      * @throws \Exception Can throw several exceptions.
+     *
+     * @codeCoverageIgnore
      */
     public function head(...$params)
     {

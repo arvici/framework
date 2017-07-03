@@ -1,0 +1,44 @@
+<?php
+/**
+ * Base App class (abstract)
+ *
+ * @author     Tom Valk <tomvalk@lt-box.info>
+ * @copyright  2017 Tom Valk
+ */
+
+
+namespace Arvici\Heart\App;
+
+
+use Arvici\Component\Router;
+use Arvici\Heart\Config\Configuration;
+
+abstract class BaseApp
+{
+    /**
+     * @var AppManager app manager.
+     */
+    protected $manager;
+
+    /**
+     * BaseApp constructor.
+     *
+     * @param AppManager $manager
+     */
+    public function __construct(AppManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
+     * Initiate the App. This can be used to inject configuration items such as routes.
+     */
+    abstract public function load();
+
+    /**
+     * Register the routes of the app.
+     *
+     * @param Router $router
+     */
+    abstract public function registerRoutes(Router $router);
+}

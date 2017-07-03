@@ -77,8 +77,8 @@ class Response
      */
     public function body($body = null)
     {
-        if ($body === null) {
-            return $this->body;
+        if ($body === null) { // @codeCoverageIgnore
+            return $this->body; // @codeCoverageIgnore
         }
 
         $this->requireUnsent();
@@ -343,6 +343,8 @@ class Response
 
     /**
      * Reset the response headers, body, etc. Useful when catching error.
+     *
+     * @codeCoverageIgnore
      */
     public function reset()
     {
@@ -375,14 +377,13 @@ class Response
 
     /**
      * Send Body
+     *
+     * @codeCoverageIgnore
      */
     protected function sendBody()
     {
         echo $this->body;
     }
-
-
-
 
     /**
      * Check for current response, if it's already sent, or any headers are already sent.
@@ -390,8 +391,8 @@ class Response
      */
     protected function requireUnsent()
     {
-        if ($this->sent) {
-            throw new ResponseAlreadySendException("Current response already sent!");
+        if ($this->sent) { // @codeCoverageIgnore
+            throw new ResponseAlreadySendException("Current response already sent!"); // @codeCoverageIgnore
         }
     }
 }

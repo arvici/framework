@@ -8,7 +8,6 @@ use Arvici\Component\View\View;
  */
 Configuration::define('template', function() {
     return [
-
         /**
          * Template Path, relative to the App path.
          * Don't add a trailing slash at the end!
@@ -21,7 +20,6 @@ Configuration::define('template', function() {
          */
         'viewPath' => 'View',
 
-
         /**
          * The default stack for template rendering.
          * Use the body placeholder for defining the body part.
@@ -32,7 +30,6 @@ Configuration::define('template', function() {
             View::template('footer')
         ],
 
-
         /**
          * The default template engine.
          * Could be:    PhpTemplate
@@ -40,7 +37,6 @@ Configuration::define('template', function() {
          *
          */
         'defaultEngine' => 'PhpTemplate',
-
 
         /**
          * Define custom prepared stacks here.
