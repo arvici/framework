@@ -53,6 +53,7 @@
       "Arvici\\Tests\\": "tests/src"
     }
   },
+  "bin": ["bin/arvici"],
   "archive": {
     "exclude": [
       "!vendor",
