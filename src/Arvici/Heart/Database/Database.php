@@ -11,9 +11,11 @@ namespace Arvici\Heart\Database;
 use Arvici\Exception\ConfigurationException;
 use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Log\DoctrineLogBridge;
+use Arvici\Heart\Tools\DebugBarHelper;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Proxy\Autoloader;
+use Doctrine\DBAL\Logging\LoggerChain;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -40,6 +42,9 @@ class Database
 
     /** @var Connection[] $connections Indexed by connection name! */
     private static $connections = array();
+
+    /** @var EntityManager[] $entityManagers Cached entity managers. by connection name. */
+    private static $entityManagers = array();
 
     /**
      * Get connection instance for connection name.
@@ -79,12 +84,15 @@ class Database
      */
     public static function entityManager($name = 'default')
     {
+        if (isset(self::$entityManagers[$name])) {
+            return self::$entityManagers[$name];
+        }
         $databaseConnection = self::connection($name)->getDbalConnection();
 
         if (Configuration::get('app.env') == 'development') {
             $cache = new ArrayCache();
-        } else {
-            $cache = new FilesystemCache(Configuration::get('app.cache'));
+        } else { // @codeCoverageIgnore
+            $cache = new FilesystemCache(Configuration::get('app.cache')); // @codeCoverageIgnore
         }
 
         $config = new \Doctrine\ORM\Configuration();
@@ -101,15 +109,22 @@ class Database
         $config->setProxyNamespace($proxyNamespace);
         Autoloader::register($proxyDir, $proxyNamespace);
 
+        $loggerChain = new LoggerChain();
         if (Configuration::get('app.env') == 'development') {
             $config->setAutoGenerateProxyClasses(true);
-            $logger = new DoctrineLogBridge(\Logger::getInstance()->getMonologInstance());
-            $config->setSQLLogger($logger);
-        } else {
-            $config->setAutoGenerateProxyClasses(false);
-        }
 
-        return EntityManager::create($databaseConnection, $config);
+            $loggerChain->addLogger(new DoctrineLogBridge(\Logger::getInstance()->getMonologInstance()));
+            $loggerChain->addLogger(DebugBarHelper::getInstance()->getDebugStack());
+        } else { // @codeCoverageIgnore
+            $config->setAutoGenerateProxyClasses(false); // @codeCoverageIgnore
+        }
+        $em = EntityManager::create($databaseConnection, $config);
+
+        $em->getConnection()->getConfiguration()->setSQLLogger($loggerChain);
+        $em->getConfiguration()->setSQLLogger($loggerChain);
+
+        self::$entityManagers[$name] = $em;
+        return $em;
     }
 
     /**

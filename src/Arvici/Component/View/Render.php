@@ -12,6 +12,7 @@ use Arvici\Exception\RendererException;
 use Arvici\Heart\Collections\DataCollection;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Renderer\RendererInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -179,7 +180,7 @@ class Render
      *
      * @param bool $return Return the rendered output?
      *
-     * @return mixed|void
+     * @return Response|string
      *
      * @throws RendererException
      */
@@ -219,8 +220,7 @@ class Render
             return $output;
         }
 
-        // Instead, push it into the response object and send.
-        Http::getInstance()->response()->body($output)->send(200); // @codeCoverageIgnore
-        return; // @codeCoverageIgnore
+        // Instead, create response object and return it.
+        return new Response($output, 200); // @codeCoverageIgnore
     }
 }

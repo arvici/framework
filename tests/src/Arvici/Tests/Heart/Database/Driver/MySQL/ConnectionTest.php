@@ -11,6 +11,7 @@ namespace Arvici\Tests\Heart\Database\Drivers\MySQL;
 use App\Model\FetchTestPosts;
 use App\TestUtils;
 use Arvici\Heart\Database\Database;
+use Doctrine\DBAL\Driver\Connection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,6 +43,8 @@ class ConnectionTest extends TestCase
         $this->assertInstanceOf("\\Arvici\\Heart\\Database\\Driver\\MySQL\\Connection", $connection);
         $this->assertInstanceOf("\\Arvici\\Heart\\Database\\Connection", $connection);
         $this->assertInstanceOf("\\PDO", $connection);
+
+        $this->assertInstanceOf(Connection::class, $connection->getDbalConnection());
     }
 
     public function testSelect()

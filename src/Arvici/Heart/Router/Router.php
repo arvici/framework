@@ -9,9 +9,12 @@
 namespace Arvici\Heart\Router;
 
 use Arvici\Exception\AlreadyInitiatedException;
+use Arvici\Exception\NotFoundException;
 use Arvici\Heart\App\AppManager;
 use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Http\Http;
+use Arvici\Heart\Tools\DebugBarHelper;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Router
@@ -40,6 +43,7 @@ abstract class Router
      *
      * @param string $method
      * @param string $url
+     * @throws NotFoundException
      */
     public function run($method = null, $url = null)
     {
@@ -51,10 +55,14 @@ abstract class Router
         }
 
         // Prepare the session loading.
-        Http::getInstance()->session()->init();
+        if (! headers_sent()) {
+            if (Http::getInstance()->getSession() !== null && ! Http::getInstance()->getSession()->isStarted()) {
+                Http::getInstance()->getSession()->start();
+            }
+        }
 
         // Begin parsing request.
-        if ($method === null) $method = $_SERVER['REQUEST_METHOD'];
+        if ($method === null) $method = Http::getInstance()->getRequest()->getMethod();
         if ($url === null) {
             $url = $_SERVER['REQUEST_URI'];
             // Strip query from url
@@ -70,11 +78,26 @@ abstract class Router
         // Try to match
         foreach($this->routes as $route) {
             if ($route->match($this->compiled)) {
-                Http::getInstance()->route($route);
+                Http::getInstance()->setRoute($route);
                 $this->executeRoute($route, $method);
-                break;
+                return;
             }
         }
+
+        // Try to match debug routes.
+        if (Configuration::get('app.env') === 'development' && Configuration::get('app.profiler', false)) {
+            if (strpos(Http::getInstance()->getRequest()->getPathInfo(), '/__debug__') === 0) {
+                $response = DebugBarHelper::getInstance()->processDebugRequest(Http::getInstance()->getRequest());
+                if ($response instanceof Response) {
+                    $response->prepare(Http::getInstance()->getRequest());
+                    $response->send();
+                    return;
+                }
+            }
+        }
+
+        // 404
+        throw new NotFoundException('Route not found!');
     }
 
 

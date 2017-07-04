@@ -11,14 +11,11 @@ use Doctrine\DBAL\Logging\SQLLogger;
 
 
 /**
- * Public Logger Class
- *
- * WILL BE IN THE ROOT NAMESPACE!
- * Use it like this: \Log::debug('message');
- *
- * Alternative you can use the \Log::getInstance(); to get a PSR-3 logger!
+ * Doctrine logging bridge.
  *
  * @package Arvici\Heart\Log
+ *
+ * @codeCoverageIgnore
  */
 class DoctrineLogBridge implements SQLLogger
 {

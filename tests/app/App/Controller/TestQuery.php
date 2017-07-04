@@ -16,7 +16,7 @@ class TestQuery extends Controller
 
     public function basicQuery()
     {
-        if ($this->request->get()->exists('test')) {
+        if ($this->request->get('test', false) !== false) {
             throw new \Exception("Done", 999);
         }
     }

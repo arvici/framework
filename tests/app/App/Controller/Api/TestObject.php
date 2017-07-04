@@ -54,7 +54,7 @@ class TestObject extends RestApiController
      * Delete schema object with identifier.
      *
      * @param mixed $params
-     * @return \Arvici\Heart\Http\Response|void
+     * @return mixed
      * @throws \Exception
      */
     public function destroy(...$params)

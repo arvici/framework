@@ -13,7 +13,10 @@ namespace Arvici\Heart;
 use Arvici\Component\Router;
 use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Http\Http;
+use Arvici\Heart\Tools\DebugBarHelper;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Monolog\Handler\TestHandler;
+use Tracy\Debugger;
 
 /**
  * Bootstrapper class.
@@ -55,6 +58,11 @@ class Bootstrapper
         // Start the base.
         $this->startBase();
 
+        // Start debug profilers etc.
+        if (Configuration::get('app.env') === 'development' && Configuration::get('app.profiler', false)) {
+            DebugBarHelper::getInstance();
+        }
+
         // Start router and start parsing request.
         $this->router->run();
     }
@@ -75,7 +83,7 @@ class Bootstrapper
 
         // Test logger to console.
         \Logger::clearLog();
-        \Logger::getInstance()->addHandler(new \Monolog\Handler\TestHandler());
+        \Logger::getInstance()->addHandler(new TestHandler());
         \Logger::debug('PHPUnit Tests Started...');
     }
 }

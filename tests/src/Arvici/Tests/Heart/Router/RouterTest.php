@@ -10,6 +10,7 @@ namespace Arvici\Tests\Heart\Router;
 
 use App\TestUtils;
 use Arvici\Exception\ControllerNotFoundException;
+use Arvici\Exception\NotFoundException;
 use Arvici\Exception\NotImplementedException;
 use Arvici\Exception\RouterException;
 use Arvici\Heart\Http\Http;
@@ -70,6 +71,7 @@ class RouterTest extends TestCase
         $done = false;
         $router->addRoute(new Route('/test/get', 'GET', function() use (&$done) {
             $done = true;
+            return '';
         }));
 
         $this->spoof('/test/get', 'GET');
@@ -91,6 +93,7 @@ class RouterTest extends TestCase
         $router->addRoute(new Route('/test/get/(!int)/(!int)', 'GET', function($param1, $param2) use (&$done1) {
             if ($param1 == 555 && $param2 == 111)
                 $done1 = true;
+            return 204;
         }));
 
         $this->spoof('/test/get/555/111', 'GET');
@@ -111,6 +114,7 @@ class RouterTest extends TestCase
         $done1 = 0;
         $router->addRoute(new Route('/test/all', array('GET', 'POST'), function() use (&$done1) {
             $done1++;
+            return 204;
         }));
 
         $this->spoof('/test/all', 'GET');
@@ -182,8 +186,6 @@ class RouterTest extends TestCase
      * @covers \Arvici\Heart\Router\Router
      * @covers \Arvici\Heart\Router\Route
      * @covers \Arvici\Heart\Http\Http
-     * @covers \Arvici\Heart\Http\Request
-     * @covers \Arvici\Heart\Http\Response
      */
     public function testController()
     {
@@ -228,8 +230,6 @@ class RouterTest extends TestCase
      * @covers \Arvici\Heart\Router\Router
      * @covers \Arvici\Heart\Router\Route
      * @covers \Arvici\Heart\Http\Http
-     * @covers \Arvici\Heart\Http\Request
-     * @covers \Arvici\Heart\Http\Response
      */
     public function testQueryParameters()
     {
@@ -248,8 +248,8 @@ class RouterTest extends TestCase
         }
 
         // Test via request object (right here)
-        $request = Http::getInstance()->request();
-        $this->assertEquals(array('test' => 'yes'), $request->get()->all());
+        $request = Http::getInstance()->getRequest();
+        $this->assertEquals(array('test' => 'yes'), $request->query->all());
 
         // More testing on REQUEST is done in a separate case
     }
@@ -267,10 +267,12 @@ class RouterTest extends TestCase
         Router::define(function(Router $router) use (&$done) {
             $router->get("/test/get/define/1", function() use (&$done) {
                 $done++;
+                return 204;
             });;
 
             $router->get("/test/get/define/2", function() use (&$done) {
                 $done++;
+                return 204;
             });;
         });
 
@@ -335,8 +337,9 @@ class RouterTest extends TestCase
             });
 
             // Add test get
-            $router->get('/middleware/1', function() use (&$done) {
+            $router->get('/middleware/1', function(...$params) use (&$done) {
                 $done++;
+                return 204;
             });
 
             // Add test after
@@ -345,8 +348,9 @@ class RouterTest extends TestCase
             });
         });
 
-        Router::getInstance()->post("/middleware/2", function() use (&$done) {
+        Router::getInstance()->post("/middleware/2", function(...$params) use (&$done) {
             $done++;
+            return 204;
         });
 
 
@@ -510,8 +514,11 @@ class RouterTest extends TestCase
         }
 
         $this->spoof('/api/test', 'POST');
-        Router::getInstance()->run();
-
-        $this->assertTrue(true);
+        try {
+            Router::getInstance()->run();
+            $this->assertTrue(false);
+        } catch (NotFoundException $exception) {
+            $this->assertTrue(true);
+        }
     }
 }

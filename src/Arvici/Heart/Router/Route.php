@@ -7,8 +7,19 @@
  */
 
 namespace Arvici\Heart\Router;
+
 use Arvici\Component\Controller\Controller;
 use Arvici\Exception\ControllerNotFoundException;
+use Arvici\Exception\RouterException;
+use Arvici\Heart\Config\Configuration;
+use Arvici\Heart\Http\Http;
+use Arvici\Heart\Tools\DebugBarHelper;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+
 
 /**
  * Route Entry
@@ -209,9 +220,41 @@ class Route
             }
 
             // Call the method
-            call_user_func_array(array($controller, $controllerMethod), $params);
-        }elseif (is_callable($this->callback)) {
-            call_user_func_array($this->callback, $params);
+            $callable = [$controller, $controllerMethod];
+        } elseif (is_callable($this->callback)) {
+            $callable = $this->callback;
+        } else {
+            throw new RouterException('Invalid route!');
         }
+
+        // Execute route.
+        $response = call_user_func_array($callable, $params);
+
+        // Convert string to response.
+        if (is_string($response)) {
+            $response = new Response($response);
+        }
+        if (is_int($response) && $response >= 100 && $response <= 599) {
+            $response = new Response('', $response);
+        }
+
+        // Parse response.
+        if ($response instanceof Response) {
+            // ok
+        } elseif ($response instanceof ResponseInterface) {
+            $httpFoundationFactory = new HttpFoundationFactory();
+
+            $response = $httpFoundationFactory->createResponse($response);
+        } else {
+            throw new RouterException('Route should return a valid response!');
+        }
+
+        $response->prepare(Http::getInstance()->getRequest());
+
+        if (Configuration::get('app.env') === 'development' && Configuration::get('app.profiler', false)) {
+            DebugBarHelper::getInstance()->inject($response);
+        }
+
+        $response->send();
     }
 }

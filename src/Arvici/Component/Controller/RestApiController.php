@@ -94,7 +94,7 @@ abstract class RestApiController extends Controller
     {
         // Verify if the method is 'allowed' in our own context.
         $allowedMethods = $this->getAllowedMethods();
-        if ($allowedMethods !== null && ! in_array($this->request->method(), $allowedMethods)) {
+        if ($allowedMethods !== null && ! in_array($this->request->getMethod(), $allowedMethods)) {
             // Not allowed. Return to sender.
         }
 

@@ -8,17 +8,23 @@
 
 namespace Arvici\Heart\Http;
 
-
+use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Router\Route;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 class Http
 {
     /** @var Request */
     private $request;
-    /** @var Response */
-    private $response;
-    /** @var Session */
-    private $session;
+
+    /** @var Context */
+    private $context;
+
     /** @var Route */
     private $route;
 
@@ -51,19 +57,15 @@ class Http
      */
     private function __construct()
     {
-        $this->session = new Session();
-        $this->request = Request::detect($this->session);
-        $this->response = new Response();
-    }
+        $this->request = Request::createFromGlobals();
+        $this->context = new Context();
 
-    /**
-     * Get response instance
-     *
-     * @return Response
-     */
-    public function response()
-    {
-        return $this->response;
+        $sessionConfig = Configuration::get('app.session', []);
+        $sessionKey = isset($sessionConfig['name']) ? $sessionConfig['name'] : 'arvici_session';
+
+        if (! $this->request->hasSession()) {
+            $this->request->setSession(new Session(null, new AttributeBag($sessionKey)));
+        }
     }
 
     /**
@@ -71,34 +73,61 @@ class Http
      *
      * @return Request
      */
-    public function request()
+    public function getRequest()
     {
         return $this->request;
     }
 
     /**
-     * Get session instance
+     * Get PSR request implementation.
      *
-     * @return Session
+     * @return \Psr\Http\Message\ServerRequestInterface
      */
-    public function session()
+    public function getPsrRequest()
     {
-        return $this->session;
+        $psr7Factory = new DiactorosFactory();
+        return $psr7Factory->createRequest($this->request);
     }
 
     /**
-     * Get (or set) the route that matched with the request.
+     * Get session instance
      *
-     * @param Route|null $route
+     * @return SessionInterface
+     */
+    public function getSession()
+    {
+        return $this->request->getSession();
+    }
+
+    /**
+     * Get the route that matched with the request.
      *
      * @return Route
      */
-    public function route($route = null)
+    public function getRoute()
     {
-        if ($route !== null && $route instanceof Route) {
-            $this->route = $route;
-        }
-
         return $this->route;
+    }
+
+    /**
+     * Set the active route.
+     *
+     * @param Route $route
+     * @return $this
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+        return $this;
+    }
+
+    /**
+     * Get the actual request context.
+     *
+     * @return Context
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 }

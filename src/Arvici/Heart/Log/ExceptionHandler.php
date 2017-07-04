@@ -127,7 +127,7 @@ class ExceptionHandler implements Registrable
      */
     public function handleException($exception)
     {
-        if (! $exception instanceof \Exception) {
+        if (! $exception instanceof \Exception && ! $exception instanceof \Error) {
             $exception = new \Exception("Can't handle exception thrown!");
         }
 
@@ -144,6 +144,6 @@ class ExceptionHandler implements Registrable
 
     public function handleShutdown()
     {
-        \Logger::isActive() && \Logger::debug('Arvici shutdown!');
+        // .
     }
 }

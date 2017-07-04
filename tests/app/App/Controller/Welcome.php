@@ -23,31 +23,31 @@ class Welcome extends BasicController
         $em->persist($sample);
         $em->flush();
 
-        $this->view->body('welcome')->data([
+        return $this->view->body('welcome')->data([
             'models' => $em->getRepository('App\Entities\SampleEntity')->findAll()
         ])->render();
     }
 
     public function session()
     {
-        $this->request->session()->set('test', ['ok' => true]);
-        $this->request->session()->set('test2', true);
+        $this->request->getSession()->set('test', ['ok' => true]);
+        $this->request->getSession()->set('test2', true);
 
-        $this->view
+        return $this->view
             ->body('session')
-            ->data(['session' => $this->request->session()->all()])
+            ->data(['session' => $this->request->getSession()->all()])
             ->render();
     }
 
     public function json()
     {
-        $this->response->json(array(
+        return $this->response->setcontent(json_encode([
             'first' => true,
             'second' => true,
-            'multi' => array(
+            'multi' => [
                 'Hello!'
-            )
-        ))->send();
+            ]
+        ]));
     }
 
     public function exception()

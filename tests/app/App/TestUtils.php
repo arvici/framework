@@ -70,10 +70,17 @@ class TestUtils
         $_SERVER['SCRIPT_NAME'] = 'index.php';
         $_SERVER['REQUEST_URI'] = $url;
         $_SERVER['REQUEST_METHOD'] = strtoupper($method);
+        if (in_array(strtoupper($method), ['POST', 'PUT'])) {
+            $_POST = array_merge($post, []);
+        } else {
+            unset($_POST);
+        }
 
         $_GET = $get;
         $_POST = $post;
         $_COOKIE = $cookies;
         $_SERVER = array_merge($_SERVER, $server);
+
+        Http::clearInstance();
     }
 }

@@ -13,6 +13,7 @@ use App\TestUtils;
 use Arvici\Exception\ConfigurationException;
 use Arvici\Exception\DatabaseDriverException;
 use Arvici\Heart\Database\Database;
+use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -39,6 +40,9 @@ class DatabaseTest extends TestCase
         $this->assertInstanceOf("\\PDO", $connection);
 
         $this->assertInstanceOf("\\Arvici\\Heart\\Database\\Driver\\MySQL\\Driver", Database::driver());
+
+        $this->assertInstanceOf(EntityManager::class, Database::entityManager());
+        $this->assertInstanceOf(EntityManager::class, Database::entityManager());
     }
 
     public function testInvalidDriverInit()

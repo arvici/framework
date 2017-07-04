@@ -10,6 +10,7 @@ namespace Arvici\Component\View;
 
 use Arvici\Exception\RendererException;
 use Arvici\Heart\Config\Configuration;
+use Symfony\Bridge\PsrHttpMessage\Tests\Fixtures\Response;
 
 
 /**
@@ -166,7 +167,7 @@ class Builder
      * @param array $data Set additional data for all views.
      * @param bool $return Return the output instead of writing.
      *
-     * @return mixed|void
+     * @return Response|string
      */
     public function render($data = array(), $return = false)
     {

@@ -10,9 +10,9 @@ namespace Arvici\Component\Controller;
 
 use Arvici\Exception\NotImplementedException;
 use Arvici\Heart\Http\Http;
-use Arvici\Heart\Http\Request;
-use Arvici\Heart\Http\Response;
 use Arvici\Heart\Router\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Abstract Base Controller
@@ -38,9 +38,9 @@ abstract class Controller
      */
     public function __construct()
     {
-        $this->request = Http::getInstance()->request();
-        $this->response = Http::getInstance()->response();
-        $this->route = Http::getInstance()->route();
+        $this->request = Http::getInstance()->getRequest();
+        $this->response = new Response();
+        $this->route = Http::getInstance()->getRoute();
     }
 
     /**
@@ -68,13 +68,13 @@ abstract class Controller
     {
         // Verify if the method is 'allowed' in our own context.
         $allowedMethods = $this->getAllowedMethods();
-        if ($allowedMethods !== null && ! in_array($this->request->method(), $allowedMethods)) {
+        if ($allowedMethods !== null && ! in_array($this->request->getMethod(), $allowedMethods)) {
             // Not allowed. Return to sender.
         }
 
         // Check if the controller has the method requested.
         $meta = new \ReflectionClass($this);
-        $method = strtolower($this->request->method());
+        $method = strtolower($this->request->getMethod());
         if (! $meta->hasMethod($method)) { // @codeCoverageIgnore
             throw new NotImplementedException('The method ' . $method . ' is not defined', 500); // @codeCoverageIgnore
         }

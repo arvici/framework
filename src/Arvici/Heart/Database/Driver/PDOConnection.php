@@ -13,7 +13,11 @@ use Arvici\Exception\DatabaseException;
 use Arvici\Heart\Database\Connection;
 use Arvici\Heart\Database\Database;
 use Arvici\Heart\Database\Driver;
+use Arvici\Heart\Log\DoctrineLogBridge;
+use Arvici\Heart\Tools\DebugBarHelper;
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Logging\LoggerChain;
 
 /**
  * Connection encapsulation for every pdo connection.
@@ -48,8 +52,8 @@ abstract class PDOConnection extends \PDO implements Connection
     public function select($query, $bind = array(), $returnType = null, $returnClass = null)
     {
         $statement = $this->prepare($query);
-        foreach ($bind as $key => $value) {
-            $statement->bindValue($key, $value);
+        foreach ($bind as $key => $value) { // @codeCoverageIgnore
+            $statement->bindValue($key, $value); // @codeCoverageIgnore
         }
 
         $returnType = Database::normalizeFetchType($returnType);
@@ -261,7 +265,7 @@ abstract class PDOConnection extends \PDO implements Connection
         if ($dbalConnection) {
             return $dbalConnection->createQueryBuilder();
         }
-        return null;
+        return null; // @codeCoverageIgnore
     }
 
     /**
@@ -275,13 +279,21 @@ abstract class PDOConnection extends \PDO implements Connection
         $driverCode = $this->getDriver()->getCode();
 
         if ($driverCode === 'MySQL') $dbalDriver = 'pdo_mysql';
-
         if ($dbalDriver == '') return null;
+
+        $config = new Configuration();
+        $loggerChain = new LoggerChain();
+
+        if (\Arvici\Heart\Config\Configuration::get('app.env') == 'development') {
+            $loggerChain->addLogger(new DoctrineLogBridge(\Logger::getInstance()->getMonologInstance()));
+            $loggerChain->addLogger(DebugBarHelper::getInstance()->getDebugStack());
+        }
+        $config->setSQLLogger($loggerChain);
 
         return DriverManager::getConnection([
             'driver' => $dbalDriver,
             'pdo' => $this
-        ]);
+        ], $config);
     }
 
     /**

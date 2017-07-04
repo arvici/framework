@@ -49,6 +49,8 @@ class AppManager
 
     /**
      * AppManager constructor.
+     *
+     * @codeCoverageIgnore
      */
     public function __construct()
     {
@@ -58,6 +60,8 @@ class AppManager
 
     /**
      * Load and initiate all apps.
+     *
+     * @codeCoverageIgnore
      */
     public function initApps()
     {

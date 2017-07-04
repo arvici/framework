@@ -34,6 +34,7 @@ class ConfigurationTest extends TestCase
         $this->assertEquals(true, Configuration::get('test.testkey'));
         $this->assertEquals(array(true), Configuration::get('test.testarray'));
         $this->assertEquals(1, Configuration::get('test.test1'));
+        $this->assertCount(7, Configuration::all());
     }
 
     public function testSet()

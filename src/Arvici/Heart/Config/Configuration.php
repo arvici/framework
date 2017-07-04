@@ -162,6 +162,16 @@ class Configuration implements \ArrayAccess
     }
 
     /**
+     * Get all configuration.
+     *
+     * @return array
+     */
+    public static function all()
+    {
+        return self::getInstance()->config;
+    }
+
+    /**
      * Get section configuration data.
      *
      * @deprecated Since 1.2.0. Will be removed in 2.0.0.
