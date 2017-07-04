@@ -66,6 +66,8 @@ class Http
         if (! $this->request->hasSession()) {
             $this->request->setSession(new Session(null, new AttributeBag($sessionKey)));
         }
+        $this->getSession()->setName($sessionKey);
+        $this->getSession()->save();
     }
 
     /**
