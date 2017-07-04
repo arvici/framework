@@ -149,4 +149,11 @@ interface Connection
      * @return Driver
      */
     public function getDriver();
+
+    /**
+     * Get the Doctrine DBAL connection from the current PDO connection.
+     *
+     * @return \Doctrine\DBAL\Connection
+     */
+    public function getDbalConnection();
 }

@@ -178,4 +178,14 @@ class Writer implements LoggerInterface
     {
         return $this->monolog->log($level, $message, $context);
     }
+
+    /**
+     * Get the internal monolog instance.
+     *
+     * @return Logger
+     */
+    public function getMonologInstance()
+    {
+        return $this->monolog;
+    }
 }

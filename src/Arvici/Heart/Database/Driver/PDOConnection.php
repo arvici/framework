@@ -256,21 +256,32 @@ abstract class PDOConnection extends \PDO implements Connection
      */
     public function build()
     {
+        $dbalConnection = $this->getDbalConnection();
+
+        if ($dbalConnection) {
+            return $dbalConnection->createQueryBuilder();
+        }
+        return null;
+    }
+
+    /**
+     * Get DBAL Connection
+     *
+     * @return \Doctrine\DBAL\Connection
+     */
+    public function getDbalConnection()
+    {
         $dbalDriver = '';
         $driverCode = $this->getDriver()->getCode();
 
         if ($driverCode === 'MySQL') $dbalDriver = 'pdo_mysql';
 
-
         if ($dbalDriver == '') return null;
 
-
-        $dbalConnection = DriverManager::getConnection([
+        return DriverManager::getConnection([
             'driver' => $dbalDriver,
             'pdo' => $this
         ]);
-
-        return $dbalConnection->createQueryBuilder();
     }
 
     /**

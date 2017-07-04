@@ -10,9 +10,17 @@
 namespace Arvici\Heart\Console;
 
 use Arvici\Component\Asset\Commands\StaticDeployCommand;
+use Arvici\Heart\App\AppManager;
 use Arvici\Heart\Cache\Commands\CacheCommand;
+use Arvici\Heart\Database\Database;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 /**
  * Console Application
@@ -41,8 +49,35 @@ class Application extends BaseApplication
             new ConsoleHandler()
         );
 
+        // Initiate apps.
+        try {
+            AppManager::getInstance()->initApps();
+        } catch (\Exception $exception) {
+            // ignore
+        }
+
+        // Initiate the Doctrine commands.
+        try {
+            $db = Database::connection();
+            $db = $db->getDbalConnection();
+            $em = Database::entityManager();
+
+            $this->getHelperSet()->set(new ConnectionHelper($db));
+            $this->getHelperSet()->set(new EntityManagerHelper($em));
+            $this->getHelperSet()->set(new EntityManagerHelper($em), 'em');
+            $this->getHelperSet()->set(new QuestionHelper());
+        } catch (\Exception $exception) {
+            echo($exception);
+            // ignore
+        }
+
         // Load commands.
         $this->prepareCore();
+
+        // Load app commands.
+        foreach (AppManager::getInstance()->getApps() as $app) {
+            $app->getCommands($this);
+        }
     }
 
     private function prepareCore()
@@ -50,6 +85,27 @@ class Application extends BaseApplication
         $this->addCommands([
             new CacheCommand(),
             new StaticDeployCommand(),
+
+            // Migrations Commands
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand(),
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand(),
+
+            // ORM Commands
+            new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\GenerateRepositoriesCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\InfoCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\MappingDescribeCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\RunDqlCommand(),
+
+            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand(),
         ]);
     }
 }

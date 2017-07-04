@@ -7,8 +7,14 @@
  */
 
 namespace Arvici\Heart\Database;
+
 use Arvici\Exception\ConfigurationException;
 use Arvici\Heart\Config\Configuration;
+use Arvici\Heart\Log\DoctrineLogBridge;
+use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Proxy\Autoloader;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Database Heart Component
@@ -63,6 +69,47 @@ class Database
         }
 
         return self::$connections[$name];
+    }
+
+    /**
+     * Get entity manager for the connection and apps.
+     *
+     * @param string $name
+     * @return EntityManager
+     */
+    public static function entityManager($name = 'default')
+    {
+        $databaseConnection = self::connection($name)->getDbalConnection();
+
+        if (Configuration::get('app.env') == 'development') {
+            $cache = new ArrayCache();
+        } else {
+            $cache = new FilesystemCache(Configuration::get('app.cache'));
+        }
+
+        $config = new \Doctrine\ORM\Configuration();
+        $config->setMetadataCacheImpl($cache);
+        $driver = $config->newDefaultAnnotationDriver([APPPATH . 'Entities'], false);
+
+        $config->setMetadataDriverImpl($driver);
+        $config->setQueryCacheImpl($cache);
+
+        $proxyDir = APPPATH . 'Proxies';
+        $proxyNamespace = 'App\Proxies';
+
+        $config->setProxyDir($proxyDir);
+        $config->setProxyNamespace($proxyNamespace);
+        Autoloader::register($proxyDir, $proxyNamespace);
+
+        if (Configuration::get('app.env') == 'development') {
+            $config->setAutoGenerateProxyClasses(true);
+            $logger = new DoctrineLogBridge(\Logger::getInstance()->getMonologInstance());
+            $config->setSQLLogger($logger);
+        } else {
+            $config->setAutoGenerateProxyClasses(false);
+        }
+
+        return EntityManager::create($databaseConnection, $config);
     }
 
     /**

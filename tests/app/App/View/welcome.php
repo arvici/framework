@@ -7,6 +7,10 @@
         This are just some demo pages. For testing out the functionality of the Framework.
     </p>
 
+    <div class="well">
+        <?php dump($models); ?>
+    </div>
+
     <a href="/session" class="btn btn-info">
         Session Demo
     </a>

@@ -18,7 +18,6 @@ defined('BASEPATH') || define('BASEPATH', __DIR__ . DS . 'app/');
  */
 defined('APPPATH') || define('APPPATH', BASEPATH . 'App' . DS);
 
-
 /**
  * Load all configuration files.
  */
@@ -28,13 +27,7 @@ foreach (glob($configDir . '*.php') as $fileName) {
 }
 
 /**
- * Start the logger.
+ * Start the application
  */
-\Logger::start();
-
-/**
- * Test logger to console
- */
-\Logger::clearLog();
-\Logger::getInstance()->addHandler(new \Monolog\Handler\TestHandler());
-\Logger::debug('PHPUnit Tests Started...');
+$bootstrapper = new \Arvici\Heart\Bootstrapper();
+$bootstrapper->startTest();

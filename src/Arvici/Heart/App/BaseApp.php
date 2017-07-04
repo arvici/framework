@@ -12,6 +12,7 @@ namespace Arvici\Heart\App;
 
 use Arvici\Component\Router;
 use Arvici\Heart\Config\Configuration;
+use Arvici\Heart\Console\Application;
 
 abstract class BaseApp
 {
@@ -48,4 +49,14 @@ abstract class BaseApp
      * @return string
      */
     abstract public function getAppDirectory();
+
+    /**
+     * Add CLI commands to CLI tool.
+     *
+     * @param Application $application
+     */
+    public function getCommands(Application $application)
+    {
+        // Implement to add custom commands.
+    }
 }

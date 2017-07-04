@@ -8,15 +8,24 @@
 
 namespace App\Controller;
 
+use App\Entities\SampleEntity;
 use Arvici\Component\Controller\BasicController;
 use Arvici\Exception\ControllerNotFoundException;
+use Arvici\Heart\Database\Database;
 
 
 class Welcome extends BasicController
 {
     public function index()
     {
-        $this->view->body('welcome')->render();
+        $sample = new SampleEntity();
+        $em = Database::entityManager();
+        $em->persist($sample);
+        $em->flush();
+
+        $this->view->body('welcome')->data([
+            'models' => $em->getRepository('App\Entities\SampleEntity')->findAll()
+        ])->render();
     }
 
     public function session()

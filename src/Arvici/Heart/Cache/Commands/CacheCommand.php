@@ -11,6 +11,9 @@ namespace Arvici\Heart\Cache\Commands;
 
 use Arvici\Component\Cache;
 use Arvici\Component\Console\Command;
+use Arvici\Heart\Config\Configuration;
+use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\FilesystemCache;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -41,6 +44,16 @@ class CacheCommand extends Command
 
             $io->writeln('<info>Done</info>');
         }
+
+        // Clear Doctrine cache
+        if (Configuration::get('app.env') == 'development') {
+            $cache = new ArrayCache();
+        } else {
+            $cache = new FilesystemCache(Configuration::get('app.cache'));
+        }
+        $io->write('Clearing <info>Doctrine (' . (new \ReflectionClass($cache))->getShortName() . ')</info>... ');
+        $cache->flushAll();
+        $io->writeln('<info>Done</info>');
 
         $io->success('Cache cleared!');
     }
