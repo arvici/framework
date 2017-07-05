@@ -1,5 +1,5 @@
 
 name: Arvici Migrations
 table_name: migration_versions
-migrations_namespace: App\Migrations
-migrations_directory: ./app/App/Migrations
+migrations_namespace: App\Migration
+migrations_directory: ./app/App/Migration

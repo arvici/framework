@@ -97,13 +97,13 @@ class Database
 
         $config = new \Doctrine\ORM\Configuration();
         $config->setMetadataCacheImpl($cache);
-        $driver = $config->newDefaultAnnotationDriver([APPPATH . 'Entities'], false);
+        $driver = $config->newDefaultAnnotationDriver([APPPATH . 'Entity'], false);
 
         $config->setMetadataDriverImpl($driver);
         $config->setQueryCacheImpl($cache);
 
-        $proxyDir = APPPATH . 'Proxies';
-        $proxyNamespace = 'App\Proxies';
+        $proxyDir = APPPATH . 'Proxy';
+        $proxyNamespace = 'App\Proxy';
 
         $config->setProxyDir($proxyDir);
         $config->setProxyNamespace($proxyNamespace);
