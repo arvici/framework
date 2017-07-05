@@ -93,6 +93,8 @@ class Application extends BaseApplication
             new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
             new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand(),
             new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand(),
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\LatestCommand(),
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\UpToDateCommand(),
 
             // ORM Commands
             new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand(),
