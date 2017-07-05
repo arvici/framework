@@ -70,6 +70,15 @@ class View
 
         $this->engine = new \ReflectionClass("\\Arvici\\Heart\\Renderer\\" . $engine);
         $this->data = new DataCollection();
+
+        // Make sure to append extension of engine to path.
+        if ($this->path) {
+            $extension = pathinfo($this->path, PATHINFO_EXTENSION);
+            if ($extension === "") {
+                $clazz = $this->engine->getName();
+                $this->path .= '.' . $clazz::getExtension();
+            }
+        }
     }
 
     /**
@@ -174,13 +183,7 @@ class View
             AppManager::getInstance()->initApps();
         } catch (\Exception $exception) {}
         foreach (AppManager::getInstance()->getApps() as $app) {
-            $testPath = $app->getAppDirectory() . DS . $path . DS . $this->path;
-            $extension = pathinfo($testPath, PATHINFO_EXTENSION);
-
-            if ($extension === "") {
-                $clazz = $this->engine->getName();
-                $testPath .= '.' . $clazz::getExtension();
-            }
+            $testPath = $app->getAppDirectory() . DS . $path . DS . $this->getPath();
 
             if (is_file($testPath)) {
                 $path = $testPath;

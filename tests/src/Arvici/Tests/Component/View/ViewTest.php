@@ -36,7 +36,7 @@ class ViewTest extends TestCase
         $this->assertInstanceOf("\\Arvici\\Component\\View\\View", $view);
         $this->assertEquals(View::PART_BODY, $view->getType());
 
-        $this->assertEquals('body', $view->getPath());
+        $this->assertEquals('body.php', $view->getPath());
 
 
         $view = View::bodyPlaceholder();

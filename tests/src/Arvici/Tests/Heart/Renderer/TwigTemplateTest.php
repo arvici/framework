@@ -34,5 +34,9 @@ class TwigTemplateTest extends TestCase
         $output = $renderer->render(new View('twig_test1.twig', View::PART_BODY, 'TwigTemplate'));
 
         $this->assertContains("Test 2, yes", $output);
+
+        $output = $renderer->render(new View('twig_test1', View::PART_BODY, 'TwigTemplate'));
+
+        $this->assertContains("Test 2, yes", $output);
     }
 }

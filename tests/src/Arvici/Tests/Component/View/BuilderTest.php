@@ -106,7 +106,7 @@ class BuilderTest extends TestCase
 
         $this->assertCount(4, $stack);
 
-        $paths = array("header", "replaced", "added", "footer");
+        $paths = array("header.php", "replaced.php", "added.php", "footer.php");
 
         foreach ($stack as $idx => $view) {
             $this->assertEquals($paths[$idx], $view->getPath());
