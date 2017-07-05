@@ -86,7 +86,10 @@ class Application extends BaseApplication
             new CacheCommand(),
             new StaticDeployCommand(),
 
-            // Migrations Commands
+            // Doctrine DBAL.
+            new \Doctrine\DBAL\Tools\Console\Command\ImportCommand(),
+
+            // Doctrine Migrations.
             new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
             new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
             new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
@@ -96,20 +99,23 @@ class Application extends BaseApplication
             new \Doctrine\DBAL\Migrations\Tools\Console\Command\LatestCommand(),
             new \Doctrine\DBAL\Migrations\Tools\Console\Command\UpToDateCommand(),
 
-            // ORM Commands
+            // Doctrine ORM.
+            new \Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\ClearCache\ResultCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\EnsureProductionSettingsCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\ConvertDoctrine1SchemaCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\GenerateRepositoriesCommand(),
             new \Doctrine\ORM\Tools\Console\Command\GenerateEntitiesCommand(),
             new \Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand(),
-            new \Doctrine\ORM\Tools\Console\Command\GenerateRepositoriesCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\ConvertMappingCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\RunDqlCommand(),
+            new \Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand(),
             new \Doctrine\ORM\Tools\Console\Command\InfoCommand(),
             new \Doctrine\ORM\Tools\Console\Command\MappingDescribeCommand(),
-            new \Doctrine\ORM\Tools\Console\Command\ConvertMappingCommand(),
-            new \Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand(),
-            new \Doctrine\ORM\Tools\Console\Command\RunDqlCommand(),
-            new \Doctrine\ORM\Tools\Console\Command\EnsureProductionSettingsCommand(),
-
-            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand(),
-            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\DropCommand(),
-            new \Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand(),
         ]);
     }
 }
