@@ -14,11 +14,9 @@ use Arvici\Exception\RouterException;
 use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Http\Http;
 use Arvici\Heart\Tools\DebugBarHelper;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 
 
 /**
@@ -159,12 +157,12 @@ class Route
         return $default;
     }
 
-
     /**
      * Execute the route callback with given parameters.
      *
      * @param string $compiled
      * @throws ControllerNotFoundException
+     * @throws RouterException
      */
     public function execute($compiled)
     {

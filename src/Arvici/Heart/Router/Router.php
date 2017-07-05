@@ -140,7 +140,6 @@ abstract class Router
         $this->middleware = array();
     }
 
-
     /**
      * Will try to match parameters and execute the callback.
      * Will also trigger middleware.
