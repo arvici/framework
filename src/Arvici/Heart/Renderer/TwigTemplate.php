@@ -87,7 +87,7 @@ class TwigTemplate implements RendererInterface
         }
 
         $isDebug = Configuration::get('app.env') === 'development';
-        $cache = null;
+        $cache = false;
         if ((! $isDebug && Configuration::get('cache.enabled', false))
             || ($isDebug && Configuration::get('cache.forceEnabled', false))) {
             $cache = $cacheFolder . DS . 'template' . DS . 'twig';
