@@ -31,6 +31,7 @@ class HtmlTemplate implements RendererInterface
     public function setData($data)
     {
         $this->data = $data;
+        return $this;
     }
 
     /**
@@ -48,5 +49,15 @@ class HtmlTemplate implements RendererInterface
 
 
         // TODO: Implement render() method.
+    }
+
+    /**
+     * Get the default extension (php or twig for example).
+     *
+     * @return string
+     */
+    public static function getExtension()
+    {
+        return 'html';
     }
 }

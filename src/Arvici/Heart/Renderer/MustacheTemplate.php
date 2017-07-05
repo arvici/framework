@@ -84,6 +84,7 @@ class MustacheTemplate implements RendererInterface
     public function setData($data)
     {
         $this->data = $data;
+        return $this;
     }
 
     /**
@@ -112,5 +113,15 @@ class MustacheTemplate implements RendererInterface
         }
 
         return $this->mustache->render($source, $data);
+    }
+
+    /**
+     * Get the default extension (php or twig for example).
+     *
+     * @return string
+     */
+    public static function getExtension()
+    {
+        return 'php';
     }
 }

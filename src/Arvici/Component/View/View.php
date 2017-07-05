@@ -176,8 +176,10 @@ class View
         foreach (AppManager::getInstance()->getApps() as $app) {
             $testPath = $app->getAppDirectory() . DS . $path . DS . $this->path;
             $extension = pathinfo($testPath, PATHINFO_EXTENSION);
+
             if ($extension === "") {
-                $testPath .= ".php";
+                $clazz = $this->engine->getName();
+                $testPath .= '.' . $clazz::getExtension();
             }
 
             if (is_file($testPath)) {

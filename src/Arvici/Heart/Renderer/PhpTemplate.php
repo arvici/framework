@@ -32,6 +32,7 @@ class PhpTemplate implements RendererInterface
     public function setData($data)
     {
         $this->data = $data;
+        return $this;
     }
 
     /**
@@ -63,5 +64,15 @@ class PhpTemplate implements RendererInterface
         require $path;
 
         return ob_get_clean();
+    }
+
+    /**
+     * Get the default extension (php or twig for example).
+     *
+     * @return string
+     */
+    public static function getExtension()
+    {
+        return 'php';
     }
 }

@@ -34,4 +34,11 @@ interface RendererInterface
      * @return string|void
      */
     public function render(View $template, array $data = array());
+
+    /**
+     * Get the default extension (php or twig for example).
+     *
+     * @return string
+     */
+    public static function getExtension();
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mustache Template
+ * Twig Template
  *
  * @author     Tom Valk <tomvalk@lt-box.info>
  * @copyright  2017 Tom Valk
@@ -17,7 +17,6 @@ use Arvici\Heart\App\AppManager;
 use Arvici\Heart\Collections\DataCollection;
 use Arvici\Heart\Config\Configuration;
 use Twig\Environment;
-use Twig\Loader\ChainLoader;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 
@@ -92,13 +91,6 @@ class TwigTemplate implements RendererInterface
             'debug' => Configuration::get('app.env') === 'development',
         ]);
 
-
-
-        $this->mustache = new \Mustache_Engine(array(
-            'cache' => Configuration::get('app.cache', null),
-            'charset' => 'UTF-8' // We will force utf8 here, as it will be widely used.
-        ));
-
         $this->data = array();
     }
 
@@ -111,6 +103,7 @@ class TwigTemplate implements RendererInterface
     public function setData($data)
     {
         $this->data = $data;
+        return $this;
     }
 
     /**
@@ -119,7 +112,7 @@ class TwigTemplate implements RendererInterface
      * @param View $template Template view instance.
      * @param array|DataCollection $data Data.
      *
-     * @return string|void
+     * @return string
      *
      * @throws ConfigurationException
      * @throws FileNotFoundException
@@ -138,6 +131,16 @@ class TwigTemplate implements RendererInterface
             throw new FileNotFoundException("View file '" . $template->getFullPath() . "' is not found!"); // @codeCoverageIgnore
         }
 
-        return $this->mustache->render($source, $data);
+        return $this->environment->render($template->getPath(), $data);
+    }
+
+    /**
+     * Get the default extension (php or twig for example).
+     *
+     * @return string
+     */
+    public static function getExtension()
+    {
+        return 'twig';
     }
 }
