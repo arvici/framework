@@ -95,7 +95,7 @@ class TwigTemplate implements RendererInterface
 
         $this->environment = new Environment($this->loader, [
             'cache' => $cache,
-            'debug' => ,
+            'debug' => $isDebug,
         ]);
 
         $this->data = array();
