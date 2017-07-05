@@ -12,7 +12,7 @@ Configuration::define('template', function() {
          * Template Path, relative to the App path.
          * Don't add a trailing slash at the end!
          */
-        'templatePath' => 'Template/Default',
+        'templatePath' => 'Template',
 
         /**
          * View Path, used for body views, relative to App path.
