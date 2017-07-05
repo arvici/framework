@@ -21,9 +21,11 @@ defined('APPPATH') || define('APPPATH', BASEPATH . 'App' . DS);
 /**
  * Load all configuration files.
  */
-$configDir = APPPATH . '/Config/';
-foreach (glob($configDir . '*.php') as $fileName) {
-    require_once $fileName;
+$configDir = APPPATH . DS . 'Config';
+foreach (glob($configDir . DS . '*.php') as $fileName) {
+    if (preg_match("/\/Config\/([A-Za-z]+\.php)$/", $fileName)) {
+        require_once $fileName;
+    }
 }
 
 /**
