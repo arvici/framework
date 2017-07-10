@@ -154,7 +154,7 @@ class Route
         if (is_array($this->kwargs) && isset($this->kwargs[$key])) {
             return $this->kwargs[$key];
         }
-        return $default;
+        return $default; // @codeCoverageIgnore
     }
 
     /**
@@ -222,7 +222,7 @@ class Route
         } elseif (is_callable($this->callback)) {
             $callable = $this->callback;
         } else {
-            throw new RouterException('Invalid route!');
+            throw new RouterException('Invalid route!'); // @codeCoverageIgnore
         }
 
         // Execute route.

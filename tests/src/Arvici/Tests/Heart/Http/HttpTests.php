@@ -34,8 +34,8 @@ class HttpTest extends TestCase
     }
 
     /**
-     * @covers \Arvici\Heart\Http\Http::getPsrRequest()
-     * @covers \Arvici\Heart\Http\Http::getRequest()
+     * @covers \Arvici\Heart\Http\Http::getPsrRequest
+     * @covers \Arvici\Heart\Http\Http::getRequest
      */
     public function getRequest()
     {

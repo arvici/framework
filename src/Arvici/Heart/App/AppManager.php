@@ -38,6 +38,8 @@ class AppManager
     /**
      * Get singleton instance of cache manager.
      * @return AppManager
+     *
+     * @codeCoverageIgnore
      */
     public static function getInstance()
     {

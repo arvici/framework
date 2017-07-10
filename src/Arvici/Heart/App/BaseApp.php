@@ -14,6 +14,12 @@ use Arvici\Component\Router;
 use Arvici\Heart\Config\Configuration;
 use Arvici\Heart\Console\Application;
 
+/**
+ * Class BaseApp
+ * @package Arvici\Heart\App
+ *
+ * @codeCoverageIgnore
+ */
 abstract class BaseApp
 {
     /**

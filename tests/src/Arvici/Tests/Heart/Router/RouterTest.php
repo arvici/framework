@@ -521,4 +521,21 @@ class RouterTest extends TestCase
             $this->assertTrue(true);
         }
     }
+
+
+    public function testNotFoundRoute()
+    {
+        TestUtils::clearRoutes();
+
+        $router = Router::getInstance();
+        $router->setNotFoundRoute(new Route('/test/get/controller/get', 'GET', 'App\Controller\TestCalled'));
+
+        $this->spoof('/test/get/controller/get', 'GET');
+        try {
+            $router->run();
+            $this->assertTrue(false);
+        }catch (\Exception $e) {
+            $this->assertEquals(999, $e->getCode());
+        }
+    }
 }

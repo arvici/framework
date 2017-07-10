@@ -84,6 +84,7 @@ class Http
      * Get PSR request implementation.
      *
      * @return \Psr\Http\Message\ServerRequestInterface
+     * @codeCoverageIgnore
      */
     public function getPsrRequest()
     {

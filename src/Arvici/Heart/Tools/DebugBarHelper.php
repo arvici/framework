@@ -22,6 +22,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
+/**
+ * Class DebugBarHelper
+ * @package Arvici\Heart\Tools
+ *
+ * @codeCoverageIgnore
+ */
 class DebugBarHelper
 {
     private static $mimes = [

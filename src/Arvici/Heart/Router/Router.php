@@ -30,6 +30,11 @@ abstract class Router
      */
     private $routes = array();
 
+    /**
+     * @var Route
+     */
+    private $notFoundRoute;
+
     private $compiled;
 
     /**
@@ -55,9 +60,9 @@ abstract class Router
         }
 
         // Prepare the session loading.
-        if (! headers_sent()) {
-            if (Http::getInstance()->getSession() !== null && ! Http::getInstance()->getSession()->isStarted()) {
-                Http::getInstance()->getSession()->start();
+        if (! headers_sent()) { // @codeCoverageIgnore
+            if (Http::getInstance()->getSession() !== null && ! Http::getInstance()->getSession()->isStarted()) { // @codeCoverageIgnore
+                Http::getInstance()->getSession()->start(); // @codeCoverageIgnore
             }
         }
 
@@ -86,18 +91,22 @@ abstract class Router
 
         // Try to match debug routes.
         if (Configuration::get('app.env') === 'development' && Configuration::get('app.profiler', false)) {
-            if (strpos(Http::getInstance()->getRequest()->getPathInfo(), '/__debug__') === 0) {
-                $response = DebugBarHelper::getInstance()->processDebugRequest(Http::getInstance()->getRequest());
-                if ($response instanceof Response) {
-                    $response->prepare(Http::getInstance()->getRequest());
-                    $response->send();
-                    return;
+            if (strpos(Http::getInstance()->getRequest()->getPathInfo(), '/__debug__') === 0) { // @codeCoverageIgnore
+                $response = DebugBarHelper::getInstance()->processDebugRequest(Http::getInstance()->getRequest()); // @codeCoverageIgnore
+                if ($response instanceof Response) { // @codeCoverageIgnore
+                    $response->prepare(Http::getInstance()->getRequest()); // @codeCoverageIgnore
+                    $response->send(); // @codeCoverageIgnore
+                    return; // @codeCoverageIgnore
                 }
             }
         }
 
         // 404
-        throw new NotFoundException('Route not found!');
+        if ($this->notFoundRoute === null) {
+            throw new NotFoundException('Route not found!');
+        }
+        Http::getInstance()->setRoute($this->notFoundRoute);
+        $this->executeRoute($this->notFoundRoute, $method);
     }
 
 
@@ -132,12 +141,33 @@ abstract class Router
     }
 
     /**
+     * Set the not found route.
+     *
+     * @param Route $route
+     * @return $this
+     */
+    public function setNotFoundRoute(Route $route)
+    {
+        $this->notFoundRoute = $route;
+        return $this;
+    }
+
+    /**
+     * @return Route
+     */
+    public function getNotFoundRoute()
+    {
+        return $this->notFoundRoute;
+    }
+
+    /**
      * Clear all routes and middleware.
      */
     public function clearRoutes()
     {
-        $this->routes =     array();
-        $this->middleware = array();
+        $this->routes =        [];
+        $this->middleware =    [];
+        $this->notFoundRoute = null;
     }
 
     /**
