@@ -54,8 +54,8 @@ class Builder
     {
         $stack = Configuration::get('template.defaultStack');
 
-        if (! is_array($stack) || empty($stack)) {
-            throw new RendererException("The default stack, defined in the configuration is not defined or empty! Can't use it!"); // @codeCoverageIgnore
+        if (! is_array($stack)) {
+            $stack = [];
         }
 
         $this->render->replaceAll($stack);
