@@ -62,8 +62,6 @@ class Csrf
      */
     private static function generateToken ()
     {
-        if (function_exists('mcrypt_create_iv'))
-            return bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
         return bin2hex(openssl_random_pseudo_bytes(32));
     }
 }
