@@ -21,8 +21,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \Arvici\Heart\Database\Driver\MySQL\Connection
  * @covers \Arvici\Heart\Database\Driver\PDOConnection
- * @covers \Arvici\Heart\Database\Connection
- * @covers \Arvici\Heart\Database\Statement
  * @covers \Arvici\Heart\Database\Database
  */
 class ConnectionTest extends TestCase

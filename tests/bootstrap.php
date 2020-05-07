@@ -8,6 +8,28 @@ defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 require_once dirname(__DIR__) . DS . 'vendor' . DS .'autoload.php';
 
 
+if (!isset($_SESSION))
+{
+    // If we are run from the command line interface then we do not care
+    // about headers sent using the session_start.
+    if (PHP_SAPI === 'cli')
+    {
+        $_SESSION = array();
+    }
+    elseif (!headers_sent())
+    {
+        if (!session_start())
+        {
+            throw new Exception(__METHOD__ . 'session_start failed.');
+        }
+    }
+    else
+    {
+        throw new Exception(
+            __METHOD__ . 'Session started after headers sent.');
+    }
+}
+
 /**
  * Define the base directory containing the 'App' folder.
  */
