@@ -7,7 +7,24 @@ web:
     - ./tests/nginx:/etc/nginx/conf.d
   links:
     - php
+
+db:
+  image: mysql:5.7
+  ports:
+    - '33306:3306'
+  environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    - MYSQL_DATABASE=arvici_test
+    - MYSQL_USER=arvici
+    - MYSQL_PASSWORD=arvici
+  volumes:
+    - ./docker/mysql:/var/lib/mysql:delegated
+  command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
+
 php:
-  image: php:7-fpm
+  build: .
   volumes:
     - ./:/code
+    - ./tests/php/php-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini:cached
+  links:
+    - db

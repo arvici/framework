@@ -18,13 +18,14 @@ class Welcome extends BasicController
 {
     public function index()
     {
-        $sample = new SampleEntity();
-        $em = Database::entityManager();
-        $em->persist($sample);
-        $em->flush();
+//        $sample = new SampleEntity();
+//        $em = Database::entityManager();
+//        $em->persist($sample);
+//        $em->flush();
 
         return $this->view->body('welcome')->data([
-            'models' => $em->getRepository('App\Entity\SampleEntity')->findAll()
+            'models' => [],
+//            'models' => $em->getRepository('App\Entity\SampleEntity')->findAll()
         ])->render();
     }
 

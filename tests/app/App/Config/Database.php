@@ -23,9 +23,9 @@ Configuration::define('database', function() {
             'default' => [
                 'driver'        => 'MySQL',
 
-                'host'          => 'localhost',
-                'username'      => 'root',
-                'password'      => '',
+                'host'          => 'db',
+                'username'      => 'arvici',
+                'password'      => 'arvici',
                 'port'          => 3306,
                 'database'      => 'arvici_test'
             ],

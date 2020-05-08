@@ -8,6 +8,8 @@ tests/app/cache
 tests/app/logs/*
 !tests/app/logs/.gitkeep
 
+docker/mysql
+
 ### Composer
 composer.phar
 vendor/

@@ -58,7 +58,6 @@ class Http
     private function __construct()
     {
         $this->request = Request::createFromGlobals();
-        $this->context = new Context();
 
         $sessionConfig = Configuration::get('app.session', []);
         $sessionKey = isset($sessionConfig['name']) ? $sessionConfig['name'] : 'arvici_session';
@@ -70,6 +69,8 @@ class Http
             $this->getSession()->setName($sessionKey);
             $this->getSession()->save();
         }
+
+        $this->context = new Context();
     }
 
     /**
